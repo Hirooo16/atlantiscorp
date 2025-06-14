@@ -29,7 +29,6 @@
       justify-content: space-between;
       border-bottom: 2px solid #006280;
       user-select: none;
-      z-index: 1000;
     }
     header h1 {
       font-weight: 800;
@@ -54,7 +53,6 @@
       flex: 1 1 auto;
       overflow: hidden;
       position: relative;
-      z-index: 0;
     }
     /* Sidebar Navigation */
     nav.side-menu {
@@ -64,7 +62,6 @@
       flex-direction: column;
       padding: 24px 16px;
       border-right: 2px solid #006280;
-      z-index: 0;
     }
     nav.side-menu h2 {
       margin: 0 0 16px;
@@ -106,7 +103,6 @@
       border-left: 2px solid #006280;
       display: flex;
       flex-direction: column;
-      z-index: 0;
     }
     section.content-area > h2 {
       margin-top: 0;
@@ -115,46 +111,6 @@
       color: #8ed0f9;
       user-select: none;
     }
-
-    /* Filter container styling */
-    #filter-container {
-      margin-bottom: 16px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      max-width: 800px;
-    }
-    #filter-input {
-      flex: 1 1 240px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid #0077b6;
-      background-color: #005a7c;
-      color: #d6eafc;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
-      outline-offset: 2px;
-      outline-color: #55aaff;
-      transition: border-color 0.3s ease;
-    }
-    #filter-input::placeholder {
-      color: #a0c5ef;
-    }
-    #filter-clear-btn {
-      background-color: #0096c7;
-      color: #d0f0fd;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
-    #filter-clear-btn:hover {
-      background-color: #00b0ff;
-    }
-
     /* Table Styles */
     table {
       width: 100%;
@@ -170,7 +126,6 @@
       text-align: left;
       color: #c7e0ff;
       border-bottom: 2px solid #0077b6;
-      user-select: none;
     }
     tbody tr:nth-child(odd) {
       background-color: #00485a;
@@ -183,9 +138,6 @@
       border-bottom: 1px solid #006ba6;
       color: #cce7ff;
       vertical-align: middle;
-      max-width: 220px;
-      word-break: break-word;
-      white-space: normal;
     }
     tbody tr:hover {
       background-color: #0077b6;
@@ -270,7 +222,7 @@
       transition: background-color 0.25s ease;
       user-select: none;
       font-size: 1rem;
-      min-height: 44px;
+      min-height: 44px; /* bigger for touch */
       min-width: 120px;
     }
     form.item-form button:hover:not(:disabled) {
@@ -293,47 +245,44 @@
       user-select: none;
     }
 
-    /* Chat box container floating top right */
+    /* Chat box container */
     #chat-container {
-      position: fixed;
-      top: 80px; /* below header */
-      right: 24px;
-      width: 320px;
-      max-height: 56px;
       background-color: #003f61;
-      border-radius: 24px;
-      box-shadow: 0 0 22px rgba(0, 128, 190, 0.8);
-      overflow: hidden;
-      transition: max-height 0.35s ease, width 0.35s ease, padding 0.35s ease;
+      border-radius: 16px;
       padding: 0;
+      box-shadow: 0 0 22px rgba(0, 128, 190, 0.8);
+      max-width: 400px;
+      width: 360px;
       display: flex;
       flex-direction: column;
-      z-index: 1500;
+      position: relative;
       user-select: none;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      max-height: 56px; /* only header visible by default */
+      overflow: hidden;
+      margin-left: 24px;
     }
     #chat-container.active {
-      max-height: 500px;
-      width: 360px;
-      padding: 16px 20px 20px 20px;
-      border-radius: 16px;
+      max-height: 600px; /* expanded chat */
+      padding: 20px 24px;
+      overflow: visible;
     }
     #chat-header {
       font-weight: 700;
-      font-size: 1.5rem;
+      font-size: 1.6rem; /* increased font size */
       color: #85d2ff;
+      margin-bottom: 0;
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 20px;
+      padding: 12px 0;
       cursor: pointer;
       user-select: none;
-      min-height: 56px;
-      border-radius: 24px;
-      background-color: #004d7a;
-      box-shadow: 0 0 8px #0077bc88;
+      min-height: 48px; /* larger clickable area */
+      border-radius: 16px;
     }
     #chat-header .material-icons {
-      font-size: 32px;
+      font-size: 32px; /* bigger icon */
       color: #55aaff;
       user-select: none;
     }
@@ -402,7 +351,7 @@
       font-size: 1rem;
       font-family: 'Inter', sans-serif;
       resize: none;
-      min-height: 56px;
+      min-height: 56px; /* larger touch target */
       max-height: 100px;
       outline-offset: 2px;
       outline-color: #55aaff;
@@ -417,13 +366,13 @@
       color: #cce7ff;
       border: none;
       border-radius: 20px;
-      padding: 14px 28px;
+      padding: 14px 28px; /* larger */
       font-weight: 700;
       cursor: pointer;
       user-select: none;
       transition: background-color 0.3s ease;
-      min-height: 56px;
-      min-width: 100px;
+      min-height: 56px; /* larger touch target */
+      min-width: 100px; /* bigger clickable */
       font-size: 1rem;
     }
     #chat-send-btn:disabled {
@@ -470,42 +419,42 @@
         padding: 16px 12px;
       }
       #chat-container {
-        width: 280px;
-        right: 16px;
-        top: 70px;
-        padding: 0;
-        max-height: 48px;
-        border-radius: 24px;
+        width: 100%;
+        margin-left: 0;
+        max-height: 56px;
+        padding: 0 16px;
+        border-radius: 0;
       }
       #chat-container.active {
-        max-height: 480px;
-        width: 320px;
-        padding: 16px 20px 20px 20px;
+        max-height: 500px;
+        padding: 16px;
         border-radius: 16px;
+        margin-top: 16px;
       }
       #chat-header {
-        font-size: 1.6rem;
-        min-height: 48px;
-        padding: 12px 16px;
+        font-size: 1.8rem;
+        min-height: 56px;
       }
       #chat-header .material-icons {
-        font-size: 28px;
+        font-size: 36px;
       }
       #chat-input {
-        min-height: 48px;
-        font-size: 1rem;
-        padding: 12px 14px;
+        min-height: 56px;
+        font-size: 1.1rem;
+        padding: 14px 18px;
       }
       #chat-send-btn {
-        padding: 12px 26px;
-        min-height: 48px;
-        min-width: 90px;
-        font-size: 1rem;
+        padding: 16px 32px;
+        min-height: 56px;
+        min-width: 120px;
+        font-size: 1.1rem;
       }
     }
+
   </style>
 </head>
 <body>
+
   <header role="banner" aria-label="Header ATLANTIS CORP">
     <h1>ATLANTIS CORP</h1>
     <button id="logout-btn" aria-label="Keluar dari akun">Logout</button>
@@ -520,116 +469,114 @@
     </nav>
 
     <section class="content-area" tabindex="0">
-      <h2>Dashboard - Stok Barang</h2>
+      <!-- Dashboard display -->
+      <section id="dashboard-section" role="tabpanel" aria-labelledby="btn-dashboard">
+        <h2>Dashboard - Stok Barang</h2>
 
-      <div id="filter-container">
-        <input type="text" id="filter-input" placeholder="Cari Jenis Barang..." aria-label="Filter cari jenis barang">
-        <button id="filter-clear-btn" aria-label="Reset filter">Reset</button>
-      </div>
+        <section aria-labelledby="aqua-tech-title">
+          <h3 id="aqua-tech-title">Aqua Tech (Perangkat IT)</h3>
+          <table aria-describedby="desc-aqua-tech">
+            <caption id="desc-aqua-tech">Daftar barang perangkat IT seperti laptop, tablet, hp, monitor</caption>
+            <thead>
+              <tr>
+                <th>Kode Barang</th>
+                <th>Jenis Barang</th>
+                <th>Model/Merk</th>
+                <th>Serial Number</th>
+                <th>Spesifikasi</th>
+                <th>Harga Beli</th>
+                <th>Status</th>
+                <th>PIC</th>
+                <th>Gambar</th>
+              </tr>
+            </thead>
+            <tbody id="aqua-tech-table-body">
+              <tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </section>
 
-      <!-- Aqua Tech Section -->
-      <section aria-labelledby="aqua-tech-title">
-        <h3 id="aqua-tech-title">Aqua Tech (Perangkat IT)</h3>
-        <table aria-describedby="desc-aqua-tech">
-          <caption id="desc-aqua-tech">Daftar barang perangkat IT seperti laptop, tablet, hp, monitor</caption>
-          <thead>
-            <tr>
-              <th>Kode Barang</th>
-              <th>Jenis Barang</th>
-              <th>Model/Merk</th>
-              <th>Serial Number</th>
-              <th>Spesifikasi</th>
-              <th>Harga Beli</th>
-              <th>Status</th>
-              <th>PIC</th>
-              <th>Gambar</th>
-            </tr>
-          </thead>
-          <tbody id="aqua-tech-table-body">
-            <tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
-          </tbody>
-        </table>
+        <section style="margin-top: 40px;" aria-labelledby="aqua-threads-title">
+          <h3 id="aqua-threads-title">Aqua Threads (Penjualan Kaos)</h3>
+          <table aria-describedby="desc-aqua-threads">
+            <caption id="desc-aqua-threads">Daftar kaos yang dijual</caption>
+            <thead>
+              <tr>
+                <th>Kode Barang</th>
+                <th>Jenis Barang</th>
+                <th>Model/Merk</th>
+                <th>Serial Number</th>
+                <th>Spesifikasi</th>
+                <th>Harga Beli</th>
+                <th>Status</th>
+                <th>PIC</th>
+                <th>Gambar</th>
+              </tr>
+            </thead>
+            <tbody id="aqua-threads-table-body">
+              <tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <button id="download-data-btn" style="margin-top:32px; padding:12px 28px; font-weight: 700; border-radius:14px; cursor:pointer; border:none; background:#0096c7; color:#ccefff; user-select:none;">Download Semua Data (Excel)</button>
       </section>
 
-      <!-- Aqua Threads Section -->
-      <section style="margin-top: 40px;" aria-labelledby="aqua-threads-title">
-        <h3 id="aqua-threads-title">Aqua Threads (Penjualan Kaos)</h3>
-        <table aria-describedby="desc-aqua-threads">
-          <caption id="desc-aqua-threads">Daftar kaos yang dijual</caption>
-          <thead>
-            <tr>
-              <th>Kode Barang</th>
-              <th>Jenis Barang</th>
-              <th>Model/Merk</th>
-              <th>Serial Number</th>
-              <th>Spesifikasi</th>
-              <th>Harga Beli</th>
-              <th>Status</th>
-              <th>PIC</th>
-              <th>Gambar</th>
-            </tr>
-          </thead>
-          <tbody id="aqua-threads-table-body">
-            <tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
-          </tbody>
-        </table>
+      <!-- Update dashboard -->
+      <section id="update-section" role="tabpanel" aria-labelledby="btn-update" hidden>
+        <h2>Update Status Barang</h2>
+        <section aria-label="Pilih barang yang ingin diupdate" style="max-width:720px;">
+          <label for="update-select">Pilih barang:</label>
+          <select id="update-select" aria-required="true" style="width:100%; padding:10px; border-radius:10px; border: 1px solid #0077b6; background:#005a7c; color:#ccefff; margin-bottom:16px;"></select>
+
+          <label for="update-status-select">Ubah status menjadi:</label>
+          <select id="update-status-select" aria-required="true" style="width:100%; padding:10px; border-radius:10px; border: 1px solid #0077b6; background:#005a7c; color:#ccefff; margin-bottom:22px;">
+            <option value="stock">Stock</option>
+            <option value="sold">Sudah Terjual</option>
+            <option value="lost">Hilang</option>
+          </select>
+
+          <button id="update-item-btn" style="background:#00ace6; color:#e0f2ff; border:none; padding:14px 28px; border-radius:14px; font-weight:700; cursor:pointer; user-select:none;">Update Status</button>
+        </section>
       </section>
 
-      <button id="download-data-btn" style="margin-top:32px; padding:12px 28px; font-weight: 700; border-radius:14px; cursor:pointer; border:none; background:#0096c7; color:#ccefff; user-select:none;">Download Semua Data (Excel)</button>
-    </section>
+      <!-- Create data new -->
+      <section id="create-section" role="tabpanel" aria-labelledby="btn-create" hidden>
+        <h2>Tambah Barang Baru</h2>
+        <form id="create-form" class="item-form" aria-label="Formulir tambah barang">
+          <label for="create-category">Pilih Kategori Barang:</label>
+          <select id="create-category" required>
+            <option value="" disabled selected>Pilih Aqua Tech atau Aqua Threads</option>
+            <option value="aqua-tech">Aqua Tech (Perangkat IT)</option>
+            <option value="aqua-threads">Aqua Threads (Kaos)</option>
+          </select>
 
-    <section id="update-section" role="tabpanel" aria-labelledby="btn-update" hidden>
-      <h2>Update Status Barang</h2>
-      <section aria-label="Pilih barang yang ingin diupdate" style="max-width:720px;">
-        <label for="update-select">Pilih barang:</label>
-        <select id="update-select" aria-required="true" style="width:100%; padding:10px; border-radius:10px; border: 1px solid #0077b6; background:#005a7c; color:#ccefff; margin-bottom:16px;"></select>
+          <label for="create-type">Jenis Barang:</label>
+          <input type="text" id="create-type" placeholder="Contoh: Laptop, Kaos" required />
 
-        <label for="update-status-select">Ubah status menjadi:</label>
-        <select id="update-status-select" aria-required="true" style="width:100%; padding:10px; border-radius:10px; border: 1px solid #0077b6; background:#005a7c; color:#ccefff; margin-bottom:22px;">
-          <option value="stock">Stock</option>
-          <option value="sold">Sudah Terjual</option>
-          <option value="lost">Hilang</option>
-        </select>
+          <label for="create-model">Model / Merk:</label>
+          <input type="text" id="create-model" placeholder="Contoh: Dell XPS 13, Kaos Merk X" required />
 
-        <button id="update-item-btn" style="background:#00ace6; color:#e0f2ff; border:none; padding:14px 28px; border-radius:14px; font-weight:700; cursor:pointer; user-select:none;">Update Status</button>
+          <label for="create-serial">Serial Number:</label>
+          <input type="text" id="create-serial" placeholder="Nomor Serial" required />
+
+          <label for="create-specs">Detail Spesifikasi:</label>
+          <textarea id="create-specs" rows="4" placeholder="RAM, Prosesor, Memory, VGA, dll" required></textarea>
+
+          <label for="create-price">Harga Beli (Rp):</label>
+          <input type="number" id="create-price" min="0" step="1000" placeholder="0" required />
+
+          <label for="create-pic">PIC Upload:</label>
+          <input type="text" id="create-pic" placeholder="Nama PIC" required />
+
+          <label for="create-image">Upload Gambar Barang (opsional, max 2MB):</label>
+          <input type="file" id="create-image" accept="image/*" />
+
+          <div id="preview-container" aria-live="polite" style="margin-bottom:20px;"></div>
+
+          <button type="submit" id="create-submit-btn">Tambah Barang</button>
+        </form>
       </section>
-    </section>
-
-    <section id="create-section" role="tabpanel" aria-labelledby="btn-create" hidden>
-      <h2>Tambah Barang Baru</h2>
-      <form id="create-form" class="item-form" aria-label="Formulir tambah barang">
-        <label for="create-category">Pilih Kategori Barang:</label>
-        <select id="create-category" required>
-          <option value="" disabled selected>Pilih Aqua Tech atau Aqua Threads</option>
-          <option value="aqua-tech">Aqua Tech (Perangkat IT)</option>
-          <option value="aqua-threads">Aqua Threads (Kaos)</option>
-        </select>
-
-        <label for="create-type">Jenis Barang:</label>
-        <input type="text" id="create-type" placeholder="Contoh: Laptop, Kaos" required />
-
-        <label for="create-model">Model / Merk:</label>
-        <input type="text" id="create-model" placeholder="Contoh: Dell XPS 13, Kaos Merk X" required />
-
-        <label for="create-serial">Serial Number:</label>
-        <input type="text" id="create-serial" placeholder="Nomor Serial" required />
-
-        <label for="create-specs">Detail Spesifikasi:</label>
-        <textarea id="create-specs" rows="4" placeholder="RAM, Prosesor, Memory, VGA, dll" required></textarea>
-
-        <label for="create-price">Harga Beli (Rp):</label>
-        <input type="number" id="create-price" min="0" step="1000" placeholder="0" required />
-
-        <label for="create-pic">PIC Upload:</label>
-        <input type="text" id="create-pic" placeholder="Nama PIC" required />
-
-        <label for="create-image">Upload Gambar Barang (opsional, max 2MB):</label>
-        <input type="file" id="create-image" accept="image/*" />
-
-        <div id="preview-container" aria-live="polite" style="margin-bottom:20px;"></div>
-
-        <button type="submit" id="create-submit-btn">Tambah Barang</button>
-      </form>
     </section>
 
     <aside id="chat-container" aria-label="Kotak chat admin" role="complementary">
@@ -655,7 +602,7 @@
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <script>
-// Firebase config and init (unchanged)
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBdKELW2FNsL7H1zB8R765czcDPaSYybdg",
   authDomain: "atlantis-store.firebaseapp.com",
@@ -688,13 +635,12 @@ const aquaThreadsBody = document.getElementById('aqua-threads-table-body');
 
 const downloadBtn = document.getElementById('download-data-btn');
 
-const filterInput = document.getElementById('filter-input');
-const filterClearBtn = document.getElementById('filter-clear-btn');
-
+// Update form elements
 const updateSelect = document.getElementById('update-select');
 const updateStatusSelect = document.getElementById('update-status-select');
 const updateItemBtn = document.getElementById('update-item-btn');
 
+// Create form elements
 const createForm = document.getElementById('create-form');
 const createCategory = document.getElementById('create-category');
 const createType = document.getElementById('create-type');
@@ -706,6 +652,7 @@ const createImage = document.getElementById('create-image');
 const createPic = document.getElementById('create-pic');
 const previewContainer = document.getElementById('preview-container');
 
+// Chat elements
 const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
 const chatSendBtn = document.getElementById('chat-send-btn');
@@ -713,24 +660,23 @@ const messagesList = document.getElementById('messages-list');
 const chatHeader = document.getElementById('chat-header');
 
 let chatActive = false;
+// Current user
 let currentUser = null;
 
+// Data cache
 let itemsCache = {
   'aqua-tech': {},
   'aqua-threads': {}
 };
 
+// Utility: sanitize strings to prevent XSS
 function sanitize(str) {
   const temp = document.createElement('div');
   temp.textContent = str;
   return temp.innerHTML;
 }
 
-function sanitizePlain(str) {
-  if(!str) return '';
-  return str.toString().replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
-}
-
+// Generate unique code for item: format "ATL-YYYYMMDDHHMMSS-XXXX"
 function generateItemCode() {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
@@ -739,15 +685,18 @@ function generateItemCode() {
   return `ATL-${ymd}-${rand.toString().padStart(4, '0')}`;
 }
 
+// Show alert message
 function showAlert(msg) {
   alert(msg);
 }
 
+// Show error console & alert
 function showError(msg) {
   console.error(msg);
   showAlert(msg);
 }
 
+// Tab panel / menu logic
 function activateTab(tabBtn) {
   [btnDashboard, btnUpdate, btnCreate].forEach(btn => {
     const isActive = (btn === tabBtn);
@@ -766,14 +715,16 @@ btnDashboard.addEventListener('click', () => activateTab(btnDashboard));
 btnUpdate.addEventListener('click', () => activateTab(btnUpdate));
 btnCreate.addEventListener('click', () => activateTab(btnCreate));
 
+// Authentication state monitoring
 auth.onAuthStateChanged(user => {
   if (user) {
     currentUser = user;
+    console.log("User logged in:", user.uid);
     loadAllDataRealtime();
     setupChatListener();
   } else {
     currentUser = null;
-    window.location.href = "Login.html";
+    window.location.href = "Login.html"; // redirect to login
   }
 });
 
@@ -781,17 +732,25 @@ logoutBtn.addEventListener('click', () => {
   auth.signOut();
 });
 
+// Load items data with realtime updates
 function loadAllDataRealtime() {
+  // Clear caches
   itemsCache['aqua-tech'] = {};
   itemsCache['aqua-threads'] = {};
+
+  // Clear tables & select
   aquaTechBody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
   aquaThreadsBody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
   updateSelect.innerHTML = '';
+
+  // Listen for aqua-tech items
   database.ref('items/aqua-tech').on('value', snapshot => {
     const val = snapshot.val() || {};
     itemsCache['aqua-tech'] = val;
     renderItems('aqua-tech');
   });
+
+  // Listen for aqua-threads items
   database.ref('items/aqua-threads').on('value', snapshot => {
     const val = snapshot.val() || {};
     itemsCache['aqua-threads'] = val;
@@ -799,52 +758,45 @@ function loadAllDataRealtime() {
   });
 }
 
+// Render items into tables and update-select dropdown
 function renderItems(category) {
-  const tbody = category === 'aqua-tech' ? aquaTechBody : aquaThreadsBody;
+  const tbody = (category === 'aqua-tech') ? aquaTechBody : aquaThreadsBody;
   const items = itemsCache[category];
   tbody.innerHTML = '';
+  // We'll repopulate select after rendering both tables
+  // So do not empty updateSelect here
+
   if (!items || Object.keys(items).length === 0) {
     tbody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Tidak ada data.</td></tr>';
     return;
   }
-  // Get filter text and lowercase for case-insensitive filter
-  const filterText = filterInput.value.trim().toLowerCase();
+
   Object.entries(items).forEach(([code, item]) => {
-    // Apply filter on jenis barang (type)
-    if(filterText && !item.type.toLowerCase().includes(filterText)) {
-      return; // skip this item if it doesn't match filter
-    }
+    // Table row
     const tr = document.createElement('tr');
+
     function addColumn(text) {
       const td = document.createElement('td');
-      td.textContent = text;
+      td.innerHTML = sanitize(text);
       return td;
     }
+
     tr.appendChild(addColumn(code));
     tr.appendChild(addColumn(item.type));
     tr.appendChild(addColumn(item.model));
     tr.appendChild(addColumn(item.serial));
-    tr.appendChild(addColumn(sanitizePlain(item.specs)));
+    tr.appendChild(addColumn(item.specs.replace(/\n/g, '<br>')));
     tr.appendChild(addColumn(`Rp${Number(item.price).toLocaleString('id-ID')}`));
     let statusText = '';
-    if(item.status === 'stock') statusText = 'Stock';
-    else if(item.status === 'sold') statusText = 'Terjual';
-    else if(item.status === 'lost') statusText = 'Hilang';
-    else statusText = item.status || '';
-    const statusTd = document.createElement('td');
-    statusTd.textContent = statusText;
-    if(statusText === 'Stock') {
-      statusTd.style.color = '#4caf50';
-      statusTd.style.fontWeight = '700';
-    } else if(statusText === 'Terjual') {
-      statusTd.style.color = '#f44336';
-      statusTd.style.fontWeight = '700';
-    } else if(statusText === 'Hilang') {
-      statusTd.style.color = '#9e9e9e';
-      statusTd.style.fontWeight = '700';
-    }
-    tr.appendChild(statusTd);
+    if(item.status === 'stock') statusText = '<span style="color:#4caf50; font-weight:700;">Stock</span>';
+    else if(item.status === 'sold') statusText = '<span style="color:#f44336; font-weight:700;">Terjual</span>';
+    else if(item.status === 'lost') statusText = '<span style="color:#9e9e9e; font-weight:700;">Hilang</span>';
+    else statusText = sanitize(item.status);
+    tr.appendChild(addColumn(statusText));
+
     tr.appendChild(addColumn(item.pic || 'Tidak ada PIC'));
+
+    // Image column
     const tdImg = document.createElement('td');
     if(item.imageUrl) {
       const img = document.createElement('img');
@@ -857,11 +809,14 @@ function renderItems(category) {
       tdImg.style.color = '#789bb7';
     }
     tr.appendChild(tdImg);
+
     tbody.appendChild(tr);
   });
-  populateUpdateSelectAll();
+
+  populateUpdateSelectAll(); // Refresh select options based on all items
 }
 
+// Populate update select dropdown combining both categories
 function populateUpdateSelectAll() {
   const allOptions = [];
   ['aqua-tech', 'aqua-threads'].forEach(category => {
@@ -883,6 +838,7 @@ function populateUpdateSelectAll() {
   });
 }
 
+// Update item status handler
 updateItemBtn.addEventListener('click', () => {
   const selectedCode = updateSelect.value;
   const newStatus = updateStatusSelect.value;
@@ -894,16 +850,20 @@ updateItemBtn.addEventListener('click', () => {
     showAlert('Pilih status baru.');
     return;
   }
+  // Find category and item in cache
   let foundCategory = null;
   if(itemsCache['aqua-tech'] && itemsCache['aqua-tech'][selectedCode]) foundCategory = 'aqua-tech';
   else if(itemsCache['aqua-threads'] && itemsCache['aqua-threads'][selectedCode]) foundCategory = 'aqua-threads';
+
   if(!foundCategory) {
     showAlert('Barang tidak ditemukan.');
     return;
   }
+  // Update in Firebase
   database.ref(`items/${foundCategory}/${selectedCode}/status`).set(newStatus)
   .then(() => {
     showAlert(`Status barang ${selectedCode} berhasil diupdate menjadi ${newStatus}.`);
+    // Clear selection
     updateSelect.value = '';
     updateStatusSelect.value = '';
   })
@@ -912,6 +872,7 @@ updateItemBtn.addEventListener('click', () => {
   });
 });
 
+// Image preview for create form
 createImage.addEventListener('change', () => {
   previewContainer.innerHTML = '';
   if(createImage.files.length === 0) return;
@@ -928,8 +889,11 @@ createImage.addEventListener('change', () => {
   previewContainer.appendChild(img);
 });
 
+// Create new item form submit
 createForm.addEventListener('submit', e => {
   e.preventDefault();
+
+  // Get input values
   const category = createCategory.value;
   const type = createType.value.trim();
   const model = createModel.value.trim();
@@ -938,14 +902,21 @@ createForm.addEventListener('submit', e => {
   const priceRaw = createPrice.value.trim();
   const price = Number(priceRaw);
   const picValue = createPic.value.trim();
+
   if(!category || !type || !model || !serial || !specs || !priceRaw || isNaN(price) || price < 0 || !picValue) {
     showAlert('Mohon isi semua data dengan benar, termasuk PIC.');
     return;
   }
+
+  // Disable submit button during process
   const submitBtn = createForm.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
   submitBtn.textContent = 'Menyimpan...';
+
+  // Generate item code
   const itemCode = generateItemCode();
+
+  // Prepare item object
   const newItem = {
     type,
     model,
@@ -957,10 +928,13 @@ createForm.addEventListener('submit', e => {
     createdAt: new Date().toISOString(),
     pic: picValue
   };
+
+  // Upload image if any
   if(createImage.files.length > 0) {
     const file = createImage.files[0];
     const ext = file.name.split('.').pop();
     const storageRef = storage.ref(`item-images/${itemCode}.${ext}`);
+
     storageRef.put(file)
       .then(snapshot => snapshot.ref.getDownloadURL())
       .then(downloadURL => {
@@ -980,6 +954,7 @@ createForm.addEventListener('submit', e => {
         submitBtn.textContent = 'Tambah Barang';
       });
   } else {
+    // No image upload
     database.ref(`items/${category}/${itemCode}`).set(newItem)
       .then(() => {
         showAlert(`Barang baru dengan kode ${itemCode} berhasil ditambahkan.`);
@@ -996,8 +971,10 @@ createForm.addEventListener('submit', e => {
   }
 });
 
+// Download data as excel handler
 downloadBtn.addEventListener('click', () => {
   const workbook = XLSX.utils.book_new();
+
   function addSheetFromItems(category, sheetName) {
     const items = itemsCache[category];
     if(!items) return;
@@ -1020,11 +997,14 @@ downloadBtn.addEventListener('click', () => {
     const ws = XLSX.utils.aoa_to_sheet(rows);
     XLSX.utils.book_append_sheet(workbook, ws, sheetName);
   }
+
   addSheetFromItems('aqua-tech', 'AquaTech');
   addSheetFromItems('aqua-threads', 'AquaThreads');
+
   XLSX.writeFile(workbook, 'AtlantisCorp_DataBarang_'+new Date().toISOString().slice(0,10)+'.xlsx');
 });
 
+// Chat functionality
 const chatRef = database.ref('chat/messages');
 
 function addChatMessage(msg, isSelf) {
@@ -1032,6 +1012,7 @@ function addChatMessage(msg, isSelf) {
   div.className = 'chat-message';
   if(isSelf) div.classList.add('self');
   div.textContent = msg.text;
+
   const meta = document.createElement('div');
   meta.className = 'meta';
   const time = new Date(msg.timestamp);
@@ -1041,6 +1022,7 @@ function addChatMessage(msg, isSelf) {
   messagesList.scrollTop = messagesList.scrollHeight;
 }
 
+// Listen to new chat messages realtime (limit 100 latest)
 function setupChatListener(){
   chatRef.limitToLast(100).on('child_added', snap => {
     const msg = snap.val();
@@ -1049,6 +1031,7 @@ function setupChatListener(){
   });
 }
 
+// Toggle chat visibility on header click
 chatHeader.addEventListener('click', () => {
   const chatContainer = document.getElementById('chat-container');
   chatActive = !chatActive;
@@ -1061,6 +1044,7 @@ chatHeader.addEventListener('click', () => {
   }
 });
 
+// Enable send button only if chat input not empty
 chatInput.addEventListener('input', () => {
   chatSendBtn.disabled = chatInput.value.trim() === '';
 });
