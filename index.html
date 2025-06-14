@@ -240,27 +240,31 @@
       user-select: none;
     }
 
-    /* Chat box container */
-    #chat-container {
-      background-color: #003f61;
-      border-radius: 16px;
-      padding: 20px 24px;
-      box-shadow: 0 0 22px rgba(0, 128, 190, 0.8);
+        #chat-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
       max-width: 400px;
-      height: 100%;
       display: flex;
       flex-direction: column;
+      transition: transform 0.3s ease;
+      transform: translateY(100%); /* Mulai tersembunyi */
     }
+    
+    #chat-container.active {
+      transform: translateY(0); /* Tampilkan chat */
+    }
+    
     #chat-header {
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: #85d2ff;
-      margin-bottom: 20px;
-      user-select: none;
+      cursor: pointer;
+      background-color: #003f61;
+      padding: 10px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
+    
     #chat-header .material-icons {
       font-size: 28px;
       color: #55aaff;
@@ -513,7 +517,10 @@
     </section>
 
     <aside id="chat-container" aria-label="Kotak chat admin" role="complementary">
-      <div id="chat-header"><span class="material-icons" aria-hidden="true">chat_bubble</span> Chat Admin Real-Time</div>
+      <div id="chat-header" onclick="toggleChat()">
+        <span class="material-icons" aria-hidden="true">chat_bubble</span>
+        <span id="chat-toggle-text">Chat Admin</span>
+      </div>
       <div id="messages-list" tabindex="0" aria-live="polite" aria-relevant="additions"></div>
       <form id="chat-form" aria-label="Formulir kirim pesan chat" style="margin-top:16px; display: flex; gap: 8px;">
         <textarea id="chat-input" aria-label="Input pesan chat" placeholder="Ketik pesan..." rows="2" required style="flex:1; border-radius: 18px; border: none; padding: 10px 14px; font-family: 'Inter', sans-serif; resize: none; outline-offset: 2px; outline-color: #55aaff; background-color: #00557a; color: #ccefff;"></textarea>
