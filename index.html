@@ -29,6 +29,7 @@
       justify-content: space-between;
       border-bottom: 2px solid #006280;
       user-select: none;
+      z-index: 1000;
     }
     header h1 {
       font-weight: 800;
@@ -53,6 +54,7 @@
       flex: 1 1 auto;
       overflow: hidden;
       position: relative;
+      z-index: 0;
     }
     /* Sidebar Navigation */
     nav.side-menu {
@@ -62,6 +64,7 @@
       flex-direction: column;
       padding: 24px 16px;
       border-right: 2px solid #006280;
+      z-index: 0;
     }
     nav.side-menu h2 {
       margin: 0 0 16px;
@@ -103,6 +106,7 @@
       border-left: 2px solid #006280;
       display: flex;
       flex-direction: column;
+      z-index: 0;
     }
     section.content-area > h2 {
       margin-top: 0;
@@ -138,6 +142,9 @@
       border-bottom: 1px solid #006ba6;
       color: #cce7ff;
       vertical-align: middle;
+      max-width: 220px;
+      word-break: break-word;
+      white-space: normal;
     }
     tbody tr:hover {
       background-color: #0077b6;
@@ -222,7 +229,7 @@
       transition: background-color 0.25s ease;
       user-select: none;
       font-size: 1rem;
-      min-height: 44px; /* bigger for touch */
+      min-height: 44px;
       min-width: 120px;
     }
     form.item-form button:hover:not(:disabled) {
@@ -245,44 +252,47 @@
       user-select: none;
     }
 
-    /* Chat box container */
+    /* Chat box container floating top right */
     #chat-container {
+      position: fixed;
+      top: 80px; /* below header */
+      right: 24px;
+      width: 320px;
+      max-height: 56px;
       background-color: #003f61;
-      border-radius: 16px;
-      padding: 0;
+      border-radius: 24px;
       box-shadow: 0 0 22px rgba(0, 128, 190, 0.8);
-      max-width: 400px;
-      width: 360px;
+      overflow: hidden;
+      transition: max-height 0.35s ease, width 0.35s ease, padding 0.35s ease;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      position: relative;
+      z-index: 1500;
       user-select: none;
-      transition: max-height 0.4s ease, padding 0.4s ease;
-      max-height: 56px; /* only header visible by default */
-      overflow: hidden;
-      margin-left: 24px;
     }
     #chat-container.active {
-      max-height: 600px; /* expanded chat */
-      padding: 20px 24px;
-      overflow: visible;
+      max-height: 500px;
+      width: 360px;
+      padding: 16px 20px 20px 20px;
+      border-radius: 16px;
     }
     #chat-header {
       font-weight: 700;
-      font-size: 1.6rem; /* increased font size */
+      font-size: 1.5rem;
       color: #85d2ff;
-      margin-bottom: 0;
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 0;
+      padding: 12px 20px;
       cursor: pointer;
       user-select: none;
-      min-height: 48px; /* larger clickable area */
-      border-radius: 16px;
+      min-height: 56px;
+      border-radius: 24px;
+      background-color: #004d7a;
+      box-shadow: 0 0 8px #0077bc88;
     }
     #chat-header .material-icons {
-      font-size: 32px; /* bigger icon */
+      font-size: 32px;
       color: #55aaff;
       user-select: none;
     }
@@ -351,7 +361,7 @@
       font-size: 1rem;
       font-family: 'Inter', sans-serif;
       resize: none;
-      min-height: 56px; /* larger touch target */
+      min-height: 56px;
       max-height: 100px;
       outline-offset: 2px;
       outline-color: #55aaff;
@@ -366,13 +376,13 @@
       color: #cce7ff;
       border: none;
       border-radius: 20px;
-      padding: 14px 28px; /* larger */
+      padding: 14px 28px;
       font-weight: 700;
       cursor: pointer;
       user-select: none;
       transition: background-color 0.3s ease;
-      min-height: 56px; /* larger touch target */
-      min-width: 100px; /* bigger clickable */
+      min-height: 56px;
+      min-width: 100px;
       font-size: 1rem;
     }
     #chat-send-btn:disabled {
@@ -419,35 +429,37 @@
         padding: 16px 12px;
       }
       #chat-container {
-        width: 100%;
-        margin-left: 0;
-        max-height: 56px;
-        padding: 0 16px;
-        border-radius: 0;
+        width: 280px;
+        right: 16px;
+        top: 70px;
+        padding: 0;
+        max-height: 48px;
+        border-radius: 24px;
       }
       #chat-container.active {
-        max-height: 500px;
-        padding: 16px;
+        max-height: 480px;
+        width: 320px;
+        padding: 16px 20px 20px 20px;
         border-radius: 16px;
-        margin-top: 16px;
       }
       #chat-header {
-        font-size: 1.8rem;
-        min-height: 56px;
+        font-size: 1.6rem;
+        min-height: 48px;
+        padding: 12px 16px;
       }
       #chat-header .material-icons {
-        font-size: 36px;
+        font-size: 28px;
       }
       #chat-input {
-        min-height: 56px;
-        font-size: 1.1rem;
-        padding: 14px 18px;
+        min-height: 48px;
+        font-size: 1rem;
+        padding: 12px 14px;
       }
       #chat-send-btn {
-        padding: 16px 32px;
-        min-height: 56px;
-        min-width: 120px;
-        font-size: 1.1rem;
+        padding: 12px 26px;
+        min-height: 48px;
+        min-width: 90px;
+        font-size: 1rem;
       }
     }
 
@@ -676,6 +688,12 @@ function sanitize(str) {
   return temp.innerHTML;
 }
 
+// Utility: sanitize with plain text for specs and status (no html tags)
+function sanitizePlain(str) {
+  if(!str) return '';
+  return str.toString().replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
+}
+
 // Generate unique code for item: format "ATL-YYYYMMDDHHMMSS-XXXX"
 function generateItemCode() {
   const now = new Date();
@@ -763,8 +781,6 @@ function renderItems(category) {
   const tbody = (category === 'aqua-tech') ? aquaTechBody : aquaThreadsBody;
   const items = itemsCache[category];
   tbody.innerHTML = '';
-  // We'll repopulate select after rendering both tables
-  // So do not empty updateSelect here
 
   if (!items || Object.keys(items).length === 0) {
     tbody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Tidak ada data.</td></tr>';
@@ -772,12 +788,11 @@ function renderItems(category) {
   }
 
   Object.entries(items).forEach(([code, item]) => {
-    // Table row
     const tr = document.createElement('tr');
 
     function addColumn(text) {
       const td = document.createElement('td');
-      td.innerHTML = sanitize(text);
+      td.textContent = text; // Use plain text to avoid <br> or html showing
       return td;
     }
 
@@ -785,14 +800,28 @@ function renderItems(category) {
     tr.appendChild(addColumn(item.type));
     tr.appendChild(addColumn(item.model));
     tr.appendChild(addColumn(item.serial));
-    tr.appendChild(addColumn(item.specs.replace(/\n/g, '<br>')));
+    tr.appendChild(addColumn(sanitizePlain(item.specs)));
     tr.appendChild(addColumn(`Rp${Number(item.price).toLocaleString('id-ID')}`));
+
     let statusText = '';
-    if(item.status === 'stock') statusText = '<span style="color:#4caf50; font-weight:700;">Stock</span>';
-    else if(item.status === 'sold') statusText = '<span style="color:#f44336; font-weight:700;">Terjual</span>';
-    else if(item.status === 'lost') statusText = '<span style="color:#9e9e9e; font-weight:700;">Hilang</span>';
-    else statusText = sanitize(item.status);
-    tr.appendChild(addColumn(statusText));
+    if(item.status === 'stock') statusText = 'Stock';
+    else if(item.status === 'sold') statusText = 'Terjual';
+    else if(item.status === 'lost') statusText = 'Hilang';
+    else statusText = item.status || '';
+    const statusTd = document.createElement('td');
+    statusTd.textContent = statusText;
+    // Coloring status text
+    if(statusText === 'Stock') {
+      statusTd.style.color = '#4caf50';
+      statusTd.style.fontWeight = '700';
+    } else if(statusText === 'Terjual') {
+      statusTd.style.color = '#f44336';
+      statusTd.style.fontWeight = '700';
+    } else if(statusText === 'Hilang') {
+      statusTd.style.color = '#9e9e9e';
+      statusTd.style.fontWeight = '700';
+    }
+    tr.appendChild(statusTd);
 
     tr.appendChild(addColumn(item.pic || 'Tidak ada PIC'));
 
@@ -813,7 +842,7 @@ function renderItems(category) {
     tbody.appendChild(tr);
   });
 
-  populateUpdateSelectAll(); // Refresh select options based on all items
+  populateUpdateSelectAll();
 }
 
 // Populate update select dropdown combining both categories
@@ -850,7 +879,6 @@ updateItemBtn.addEventListener('click', () => {
     showAlert('Pilih status baru.');
     return;
   }
-  // Find category and item in cache
   let foundCategory = null;
   if(itemsCache['aqua-tech'] && itemsCache['aqua-tech'][selectedCode]) foundCategory = 'aqua-tech';
   else if(itemsCache['aqua-threads'] && itemsCache['aqua-threads'][selectedCode]) foundCategory = 'aqua-threads';
@@ -859,11 +887,9 @@ updateItemBtn.addEventListener('click', () => {
     showAlert('Barang tidak ditemukan.');
     return;
   }
-  // Update in Firebase
   database.ref(`items/${foundCategory}/${selectedCode}/status`).set(newStatus)
   .then(() => {
     showAlert(`Status barang ${selectedCode} berhasil diupdate menjadi ${newStatus}.`);
-    // Clear selection
     updateSelect.value = '';
     updateStatusSelect.value = '';
   })
@@ -893,7 +919,6 @@ createImage.addEventListener('change', () => {
 createForm.addEventListener('submit', e => {
   e.preventDefault();
 
-  // Get input values
   const category = createCategory.value;
   const type = createType.value.trim();
   const model = createModel.value.trim();
@@ -908,15 +933,12 @@ createForm.addEventListener('submit', e => {
     return;
   }
 
-  // Disable submit button during process
   const submitBtn = createForm.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
   submitBtn.textContent = 'Menyimpan...';
 
-  // Generate item code
   const itemCode = generateItemCode();
 
-  // Prepare item object
   const newItem = {
     type,
     model,
@@ -929,7 +951,6 @@ createForm.addEventListener('submit', e => {
     pic: picValue
   };
 
-  // Upload image if any
   if(createImage.files.length > 0) {
     const file = createImage.files[0];
     const ext = file.name.split('.').pop();
@@ -954,7 +975,6 @@ createForm.addEventListener('submit', e => {
         submitBtn.textContent = 'Tambah Barang';
       });
   } else {
-    // No image upload
     database.ref(`items/${category}/${itemCode}`).set(newItem)
       .then(() => {
         showAlert(`Barang baru dengan kode ${itemCode} berhasil ditambahkan.`);
