@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - ATLANTIS CORP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Deep Sea Dark Theme Login Page */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #002f4b 0%, #005f73 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #d0f0fd;
+      padding: 16px;
+    }
+    .login-container {
+      background: rgba(0, 79, 102, 0.85);
+      padding: 40px 32px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 0 30px rgba(0, 94, 114, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .login-container h2 {
+      margin-bottom: 24px;
+      font-weight: 700;
+      text-align: center;
+      font-size: 2rem;
+      color: #a2d5f2;
+      user-select: none;
+    }
+    label {
+      width: 100%;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #b5d8fb;
+      user-select: none;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid #177e9c;
+      background-color: #004f70;
+      color: #d0f0fd;
+      font-size: 1rem;
+      outline-offset: 2px;
+      outline-color: #55aaff;
+      transition: border-color 0.3s;
+    }
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #a2d5f2;
+      background-color: #006680;
+    }
+    button {
+      background-color: #177e9c;
+      color: #d0f0fd;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #0b5599;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      width: 100%;
+    }
+    button:hover:not(:disabled) {
+      background-color: #55aaff;
+    }
+    button:disabled {
+      background-color: #115f7c;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .error-message {
+      margin-bottom: 16px;
+      color: #ff6f6f;
+      font-weight: 600;
+      height: 1.2em;
+      user-select: none;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-container" role="main" aria-labelledby="login-title">
+    <h2 id="login-title">ATLANTIS CORP - Login Admin</h2>
+    <div class="error-message" id="error-msg" aria-live="assertive"></div>
+    <label for="email">Email Admin</label>
+    <input type="email" id="email" autocomplete="email" placeholder="admin@yourcompany.com" required />
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password" placeholder="Kata sandi" required />
+    <button id="login-btn" aria-describedby="error-msg">Masuk</button>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBdKELW2FNsL7H1zB8R765czcDPaSYybdg",
+  authDomain: "atlantis-store.firebaseapp.com",
+  databaseURL: "https://atlantis-store-default-rtdb.firebaseio.com",
+  projectId: "atlantis-store",
+  storageBucket: "atlantis-store.appspot.com",
+  messagingSenderId: "566295949160",
+  appId: "1:566295949160:web:3ad8956c753d2f05a5f0dd",
+  measurementId: "G-F5RG09TFCK"
+};
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('login-btn');
+    const errorMsg = document.getElementById('error-msg');
+
+    function setLoading(isLoading) {
+      if(isLoading) {
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Memuat...";
+      } else {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Masuk";
+      }
+    }
+
+    loginBtn.addEventListener('click', () => {
+      errorMsg.textContent = "";
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if(!email || !password){
+        errorMsg.textContent = "Email dan password harus diisi.";
+        return;
+      }
+
+      setLoading(true);
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          // Redirect ke halaman dashboard utama setelah login sukses
+          window.location.href = 'index.html';
+        })
+        .catch((error) => {
+          const code = error.code;
+          if(code === 'auth/wrong-password' || code === 'auth/user-not-found') {
+            errorMsg.textContent = 'Email atau password salah.';
+          } else if(code === 'auth/invalid-email') {
+            errorMsg.textContent = 'Format email tidak valid.';
+          } else {
+            errorMsg.textContent = error.message;
+          }
+          setLoading(false);
+        });
+    });
+
+    // Optional: Enter key press handler
+    [emailInput, passwordInput].forEach(input => {
+      input.addEventListener('keydown', e => {
+        if(e.key === 'Enter') {
+          e.preventDefault();
+          loginBtn.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
