@@ -221,6 +221,9 @@
       cursor: pointer;
       transition: background-color 0.25s ease;
       user-select: none;
+      font-size: 1rem;
+      min-height: 44px; /* bigger for touch */
+      min-width: 120px;
     }
     form.item-form button:hover:not(:disabled) {
       background-color: #00b0ff;
@@ -266,7 +269,7 @@
     }
     #chat-header {
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: 1.6rem; /* increased font size */
       color: #85d2ff;
       margin-bottom: 0;
       display: flex;
@@ -275,9 +278,11 @@
       padding: 12px 0;
       cursor: pointer;
       user-select: none;
+      min-height: 48px; /* larger clickable area */
+      border-radius: 16px;
     }
     #chat-header .material-icons {
-      font-size: 28px;
+      font-size: 32px; /* bigger icon */
       color: #55aaff;
       user-select: none;
     }
@@ -346,7 +351,7 @@
       font-size: 1rem;
       font-family: 'Inter', sans-serif;
       resize: none;
-      min-height: 40px;
+      min-height: 56px; /* larger touch target */
       max-height: 100px;
       outline-offset: 2px;
       outline-color: #55aaff;
@@ -361,11 +366,14 @@
       color: #cce7ff;
       border: none;
       border-radius: 20px;
-      padding: 12px 24px;
+      padding: 14px 28px; /* larger */
       font-weight: 700;
       cursor: pointer;
       user-select: none;
       transition: background-color 0.3s ease;
+      min-height: 56px; /* larger touch target */
+      min-width: 100px; /* bigger clickable */
+      font-size: 1rem;
     }
     #chat-send-btn:disabled {
       background-color: #004e77;
@@ -418,10 +426,28 @@
         border-radius: 0;
       }
       #chat-container.active {
-        max-height: 400px;
+        max-height: 500px;
         padding: 16px;
         border-radius: 16px;
         margin-top: 16px;
+      }
+      #chat-header {
+        font-size: 1.8rem;
+        min-height: 56px;
+      }
+      #chat-header .material-icons {
+        font-size: 36px;
+      }
+      #chat-input {
+        min-height: 56px;
+        font-size: 1.1rem;
+        padding: 14px 18px;
+      }
+      #chat-send-btn {
+        padding: 16px 32px;
+        min-height: 56px;
+        min-width: 120px;
+        font-size: 1.1rem;
       }
     }
 
