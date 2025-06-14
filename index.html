@@ -11,8 +11,8 @@
       box-sizing: border-box;
     }
     body {
-      margin: 0;
-      min-height: 100vh;
+      margin: 0; 
+      min-height: 100vh; 
       font-family: 'Inter', sans-serif;
       background: linear-gradient(135deg, #002538 0%, #004661 100%);
       color: #cce7ff;
@@ -95,6 +95,7 @@
       color: #f0f9ff;
       font-weight: 700;
     }
+
     /* Content area */
     section.content-area {
       flex: 1 1 auto;
@@ -114,6 +115,7 @@
       color: #8ed0f9;
       user-select: none;
     }
+
     /* Filter container styling */
     #filter-container {
       margin-bottom: 16px;
@@ -152,6 +154,7 @@
     #filter-clear-btn:hover {
       background-color: #00b0ff;
     }
+
     /* Table Styles */
     table {
       width: 100%;
@@ -188,6 +191,7 @@
       background-color: #0077b6;
       cursor: default;
     }
+
     /* Buttons in tables */
     button.action-btn {
       padding: 6px 14px;
@@ -208,6 +212,7 @@
       background-color: #00465a;
       cursor: not-allowed;
     }
+
     /* Forms for Add and Update */
     form.item-form {
       max-width: 680px;
@@ -275,6 +280,7 @@
       background-color: #005b81;
       cursor: not-allowed;
     }
+
     /* Image preview styling */
     .image-preview {
       margin-bottom: 16px;
@@ -286,91 +292,64 @@
       box-shadow: 0 0 8px rgba(0, 127, 255, 0.4);
       user-select: none;
     }
-    /* Professional Floating Chatbox */
+
+    /* Chat box container floating top right */
     #chat-container {
       position: fixed;
-      bottom: 24px;
+      top: 80px; /* below header */
       right: 24px;
-      width: 360px;
+      width: 320px;
       max-height: 56px;
       background-color: #003f61;
-      border-radius: 28px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      border-radius: 24px;
+      box-shadow: 0 0 22px rgba(0, 128, 190, 0.8);
       overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s, padding 0.4s;
+      transition: max-height 0.35s ease, width 0.35s ease, padding 0.35s ease;
       padding: 0;
       display: flex;
       flex-direction: column;
-      z-index: 2000;
-      font-size: 1rem;
+      z-index: 1500;
       user-select: none;
-      font-synthesis: none;
-      will-change: max-height, padding;
     }
     #chat-container.active {
-      max-height: 480px;
-      padding: 20px 22px 24px 22px;
-      width: 380px;
-      border-radius: 20px;
+      max-height: 500px;
+      width: 360px;
+      padding: 16px 20px 20px 20px;
+      border-radius: 16px;
     }
     #chat-header {
       font-weight: 700;
-      font-size: 1.45rem;
+      font-size: 1.5rem;
       color: #85d2ff;
-      background-color: #004f7a;
-      border-radius: 28px;
-      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       user-select: none;
-      box-shadow: 0 0 14px rgba(7, 52, 91, 0.8);
-      user-select: none;
-    }
-    #chat-header .title-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-grow: 1;
+      min-height: 56px;
+      border-radius: 24px;
+      background-color: #004d7a;
+      box-shadow: 0 0 8px #0077bc88;
     }
     #chat-header .material-icons {
       font-size: 32px;
       color: #55aaff;
       user-select: none;
-      flex-shrink: 0;
-    }
-    #chat-toggle-btn {
-      background: transparent;
-      border: none;
-      color: #85d2ff;
-      font-size: 28px;
-      cursor: pointer;
-      padding: 0;
-      margin: 0;
-      user-select: none;
-      transition: color 0.3s ease;
-      flex-shrink: 0;
-    }
-    #chat-toggle-btn:hover {
-      color: #aad8ff;
     }
     #messages-list {
       flex: 1 1 auto;
       overflow-y: auto;
       background-color: #00557a;
-      padding: 14px 18px;
-      margin-top: 16px;
+      padding: 12px 16px;
       border-radius: 14px;
-      border: 1px solid #0072bb;
+      border: 1px solid #006899;
       color: #cbe9ff;
-      font-size: 0.95rem;
-      line-height: 1.4;
-      display: none;
+      font-size: 0.93rem;
+      line-height: 1.3;
       user-select: text;
-      -webkit-font-smoothing: antialiased;
-      scrollbar-width: thin;
-      scrollbar-color: #55aaff #003b59;
+      margin-top: 14px;
+      display: none;
     }
     #chat-container.active #messages-list {
       display: block;
@@ -380,103 +359,81 @@
     }
     #messages-list::-webkit-scrollbar-thumb {
       background-color: #55aaff;
-      border-radius: 5px;
-      border: 2px solid #003b59;
+      border-radius: 4px;
     }
     .chat-message {
-      margin-bottom: 16px;
-      padding: 12px 18px;
-      border-radius: 18px;
-      max-width: 78%;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      max-width: 85%;
       word-wrap: break-word;
-      background-color: #0070b1;
+      background-color: #006c9e;
       position: relative;
       user-select: text;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
-    }
-    .chat-message:hover {
-      background-color: #005f8d;
     }
     .chat-message.self {
       margin-left: auto;
       background-color: #0099f7;
-      color: #001f35;
-      font-weight: 700;
-      box-shadow: 0 2px 12px rgba(0, 149, 255, 0.6);
+      color: #002433;
+      user-select: text;
     }
     .chat-message .meta {
       font-size: 0.75rem;
-      color: #a6c9f4;
-      margin-top: 8px;
+      color: #bbdefb;
+      margin-top: 4px;
       text-align: right;
       font-style: italic;
       user-select: none;
     }
     #chat-input-container {
-      margin-top: 18px;
-      display: none;
+      margin-top: 20px;
+      display: flex;
       gap: 14px;
-      user-select: auto;
+      display: none;
     }
     #chat-container.active #chat-input-container {
       display: flex;
     }
     #chat-input {
       flex: 1 1 auto;
-      border-radius: 24px;
+      border-radius: 20px;
       border: none;
-      padding: 14px 22px;
-      font-size: 1.05rem;
+      padding: 12px 16px;
+      font-size: 1rem;
       font-family: 'Inter', sans-serif;
       resize: none;
       min-height: 56px;
-      max-height: 120px;
-      outline-offset: 3px;
+      max-height: 100px;
+      outline-offset: 2px;
       outline-color: #55aaff;
-      background-color: #005679;
-      color: #d1e8ff;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
-      transition: background-color 0.3s ease;
-      box-sizing: border-box;
-      -webkit-font-smoothing: antialiased;
+      background-color: #00557a;
+      color: #ccefff;
     }
     #chat-input::placeholder {
-      color: #a8c8f2;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-    }
-    #chat-input:focus {
-      background-color: #006995;
-      box-shadow: inset 0 3px 8px rgba(0,0,0,0.5);
+      color: #a0c5ef;
     }
     #chat-send-btn {
-      background-color: #007ddb;
-      color: #e2f0ff;
+      background-color: #008ce6;
+      color: #cce7ff;
       border: none;
-      border-radius: 24px;
-      padding: 14px 30px;
+      border-radius: 20px;
+      padding: 14px 28px;
       font-weight: 700;
-      font-size: 1rem;
       cursor: pointer;
       user-select: none;
-      transition: background-color 0.25s ease;
+      transition: background-color 0.3s ease;
       min-height: 56px;
-      min-width: 110px;
-      box-shadow: 0 2px 8px rgba(0,120,210,0.8);
-      flex-shrink: 0;
+      min-width: 100px;
+      font-size: 1rem;
     }
     #chat-send-btn:disabled {
-      background-color: #004f79;
+      background-color: #004e77;
       cursor: not-allowed;
-      box-shadow: none;
     }
     #chat-send-btn:hover:not(:disabled) {
-      background-color: #008fff;
-      box-shadow: 0 3px 12px rgba(0,143,255,0.9);
+      background-color: #00a1ff;
     }
+
     /* Responsive */
     @media (max-width: 1100px) {
       nav.side-menu {
@@ -515,12 +472,10 @@
       #chat-container {
         width: 280px;
         right: 16px;
-        bottom: 24px;
-        top: auto;
-        max-height: 48px;
+        top: 70px;
         padding: 0;
-        border-radius: 28px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        max-height: 48px;
+        border-radius: 24px;
       }
       #chat-container.active {
         max-height: 480px;
@@ -568,7 +523,7 @@
       <h2>Dashboard - Stok Barang</h2>
 
       <div id="filter-container">
-        <input type="text" id="filter-input" placeholder="Cari Jenis Barang..." aria-label="Filter cari jenis barang" autocomplete="off" />
+        <input type="text" id="filter-input" placeholder="Cari Jenis Barang..." aria-label="Filter cari jenis barang">
         <button id="filter-clear-btn" aria-label="Reset filter">Reset</button>
       </div>
 
@@ -624,23 +579,23 @@
     </section>
 
     <section id="update-section" role="tabpanel" aria-labelledby="btn-update" hidden>
-      <!-- Update status section unchanged -->
       <h2>Update Status Barang</h2>
       <section aria-label="Pilih barang yang ingin diupdate" style="max-width:720px;">
         <label for="update-select">Pilih barang:</label>
         <select id="update-select" aria-required="true" style="width:100%; padding:10px; border-radius:10px; border: 1px solid #0077b6; background:#005a7c; color:#ccefff; margin-bottom:16px;"></select>
+
         <label for="update-status-select">Ubah status menjadi:</label>
         <select id="update-status-select" aria-required="true" style="width:100%; padding:10px; border-radius:10px; border: 1px solid #0077b6; background:#005a7c; color:#ccefff; margin-bottom:22px;">
           <option value="stock">Stock</option>
           <option value="sold">Sudah Terjual</option>
           <option value="lost">Hilang</option>
         </select>
+
         <button id="update-item-btn" style="background:#00ace6; color:#e0f2ff; border:none; padding:14px 28px; border-radius:14px; font-weight:700; cursor:pointer; user-select:none;">Update Status</button>
       </section>
     </section>
 
     <section id="create-section" role="tabpanel" aria-labelledby="btn-create" hidden>
-      <!-- Create new item form unchanged -->
       <h2>Tambah Barang Baru</h2>
       <form id="create-form" class="item-form" aria-label="Formulir tambah barang">
         <label for="create-category">Pilih Kategori Barang:</label>
@@ -649,35 +604,38 @@
           <option value="aqua-tech">Aqua Tech (Perangkat IT)</option>
           <option value="aqua-threads">Aqua Threads (Kaos)</option>
         </select>
+
         <label for="create-type">Jenis Barang:</label>
         <input type="text" id="create-type" placeholder="Contoh: Laptop, Kaos" required />
+
         <label for="create-model">Model / Merk:</label>
         <input type="text" id="create-model" placeholder="Contoh: Dell XPS 13, Kaos Merk X" required />
+
         <label for="create-serial">Serial Number:</label>
         <input type="text" id="create-serial" placeholder="Nomor Serial" required />
+
         <label for="create-specs">Detail Spesifikasi:</label>
         <textarea id="create-specs" rows="4" placeholder="RAM, Prosesor, Memory, VGA, dll" required></textarea>
+
         <label for="create-price">Harga Beli (Rp):</label>
         <input type="number" id="create-price" min="0" step="1000" placeholder="0" required />
+
         <label for="create-pic">PIC Upload:</label>
         <input type="text" id="create-pic" placeholder="Nama PIC" required />
+
         <label for="create-image">Upload Gambar Barang (opsional, max 2MB):</label>
         <input type="file" id="create-image" accept="image/*" />
+
         <div id="preview-container" aria-live="polite" style="margin-bottom:20px;"></div>
+
         <button type="submit" id="create-submit-btn">Tambah Barang</button>
       </form>
     </section>
 
-    <!-- Professional Floating Chatbox -->
     <aside id="chat-container" aria-label="Kotak chat admin" role="complementary">
       <div id="chat-header" tabindex="0" aria-pressed="false" role="button" aria-label="Toggle chat kotak">
-        <div class="title-wrapper">
-          <span class="material-icons" aria-hidden="true">chat_bubble</span>
-          Chat Admin Real-Time
-        </div>
-        <button id="chat-toggle-btn" aria-label="Tutup/Tampilkan chat">
-          <span class="material-icons">expand_less</span>
-        </button>
+        <span class="material-icons" aria-hidden="true">chat_bubble</span>
+        Chat Admin Real-Time
       </div>
       <div id="messages-list" tabindex="0" aria-live="polite" aria-relevant="additions"></div>
       <form id="chat-form" aria-label="Formulir kirim pesan chat" style="margin-top:16px; display: flex; gap: 8px;">
@@ -697,6 +655,7 @@
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <script>
+// Firebase config and init (unchanged)
 const firebaseConfig = {
   apiKey: "AIzaSyBdKELW2FNsL7H1zB8R765czcDPaSYybdg",
   authDomain: "atlantis-store.firebaseapp.com",
@@ -715,20 +674,27 @@ const storage = firebase.storage();
 
 // Elements
 const logoutBtn = document.getElementById('logout-btn');
+
 const btnDashboard = document.getElementById('btn-dashboard');
 const btnUpdate = document.getElementById('btn-update');
 const btnCreate = document.getElementById('btn-create');
+
 const dashboardSection = document.getElementById('dashboard-section');
 const updateSection = document.getElementById('update-section');
 const createSection = document.getElementById('create-section');
+
 const aquaTechBody = document.getElementById('aqua-tech-table-body');
 const aquaThreadsBody = document.getElementById('aqua-threads-table-body');
+
 const downloadBtn = document.getElementById('download-data-btn');
+
 const filterInput = document.getElementById('filter-input');
 const filterClearBtn = document.getElementById('filter-clear-btn');
+
 const updateSelect = document.getElementById('update-select');
 const updateStatusSelect = document.getElementById('update-status-select');
 const updateItemBtn = document.getElementById('update-item-btn');
+
 const createForm = document.getElementById('create-form');
 const createCategory = document.getElementById('create-category');
 const createType = document.getElementById('create-type');
@@ -739,15 +705,16 @@ const createPrice = document.getElementById('create-price');
 const createImage = document.getElementById('create-image');
 const createPic = document.getElementById('create-pic');
 const previewContainer = document.getElementById('preview-container');
+
 const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
 const chatSendBtn = document.getElementById('chat-send-btn');
 const messagesList = document.getElementById('messages-list');
 const chatHeader = document.getElementById('chat-header');
-const chatToggleBtn = document.getElementById('chat-toggle-btn');
 
 let chatActive = false;
 let currentUser = null;
+
 let itemsCache = {
   'aqua-tech': {},
   'aqua-threads': {}
@@ -767,9 +734,9 @@ function sanitizePlain(str) {
 function generateItemCode() {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
-  const ymd = \`\${now.getFullYear()}\${pad(now.getMonth() + 1)}\${pad(now.getDate())}\${pad(now.getHours())}\${pad(now.getMinutes())}\${pad(now.getSeconds())}\`;
+  const ymd = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
   const rand = Math.floor(Math.random() * 10000);
-  return \`ATL-\${ymd}-\${rand.toString().padStart(4, '0')}\`;
+  return `ATL-${ymd}-${rand.toString().padStart(4, '0')}`;
 }
 
 function showAlert(msg) {
@@ -840,9 +807,13 @@ function renderItems(category) {
     tbody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Tidak ada data.</td></tr>';
     return;
   }
+  // Get filter text and lowercase for case-insensitive filter
   const filterText = filterInput.value.trim().toLowerCase();
   Object.entries(items).forEach(([code, item]) => {
-    if(filterText && !item.type.toLowerCase().includes(filterText)) return;
+    // Apply filter on jenis barang (type)
+    if(filterText && !item.type.toLowerCase().includes(filterText)) {
+      return; // skip this item if it doesn't match filter
+    }
     const tr = document.createElement('tr');
     function addColumn(text) {
       const td = document.createElement('td');
@@ -854,7 +825,7 @@ function renderItems(category) {
     tr.appendChild(addColumn(item.model));
     tr.appendChild(addColumn(item.serial));
     tr.appendChild(addColumn(sanitizePlain(item.specs)));
-    tr.appendChild(addColumn(\`Rp\${Number(item.price).toLocaleString('id-ID')}\`));
+    tr.appendChild(addColumn(`Rp${Number(item.price).toLocaleString('id-ID')}`));
     let statusText = '';
     if(item.status === 'stock') statusText = 'Stock';
     else if(item.status === 'sold') statusText = 'Terjual';
@@ -878,7 +849,7 @@ function renderItems(category) {
     if(item.imageUrl) {
       const img = document.createElement('img');
       img.src = item.imageUrl;
-      img.alt = \`Gambar \${item.type} - \${item.model}\`;
+      img.alt = `Gambar ${item.type} - ${item.model}`;
       img.className = 'image-preview';
       tdImg.appendChild(img);
     } else {
@@ -899,7 +870,7 @@ function populateUpdateSelectAll() {
     Object.entries(items).forEach(([code, item]) => {
       allOptions.push({
         code,
-        label: \`[\${category.toUpperCase()}] \${code} - \${item.model}\`
+        label: `[${category.toUpperCase()}] ${code} - ${item.model}`
       });
     });
   });
@@ -930,9 +901,9 @@ updateItemBtn.addEventListener('click', () => {
     showAlert('Barang tidak ditemukan.');
     return;
   }
-  database.ref(\`items/\${foundCategory}/\${selectedCode}/status\`).set(newStatus)
+  database.ref(`items/${foundCategory}/${selectedCode}/status`).set(newStatus)
   .then(() => {
-    showAlert(\`Status barang \${selectedCode} berhasil diupdate menjadi \${newStatus}.\`);
+    showAlert(`Status barang ${selectedCode} berhasil diupdate menjadi ${newStatus}.`);
     updateSelect.value = '';
     updateStatusSelect.value = '';
   })
@@ -989,15 +960,15 @@ createForm.addEventListener('submit', e => {
   if(createImage.files.length > 0) {
     const file = createImage.files[0];
     const ext = file.name.split('.').pop();
-    const storageRef = storage.ref(\`item-images/\${itemCode}.\${ext}\`);
+    const storageRef = storage.ref(`item-images/${itemCode}.${ext}`);
     storageRef.put(file)
       .then(snapshot => snapshot.ref.getDownloadURL())
       .then(downloadURL => {
         newItem.imageUrl = downloadURL;
-        return database.ref(\`items/\${category}/\${itemCode}\`).set(newItem);
+        return database.ref(`items/${category}/${itemCode}`).set(newItem);
       })
       .then(() => {
-        showAlert(\`Barang baru dengan kode \${itemCode} berhasil ditambahkan.\`);
+        showAlert(`Barang baru dengan kode ${itemCode} berhasil ditambahkan.`);
         createForm.reset();
         previewContainer.innerHTML = '';
         submitBtn.disabled = false;
@@ -1009,9 +980,9 @@ createForm.addEventListener('submit', e => {
         submitBtn.textContent = 'Tambah Barang';
       });
   } else {
-    database.ref(\`items/\${category}/\${itemCode}\`).set(newItem)
+    database.ref(`items/${category}/${itemCode}`).set(newItem)
       .then(() => {
-        showAlert(\`Barang baru dengan kode \${itemCode} berhasil ditambahkan.\`);
+        showAlert(`Barang baru dengan kode ${itemCode} berhasil ditambahkan.`);
         createForm.reset();
         previewContainer.innerHTML = '';
         submitBtn.disabled = false;
@@ -1064,7 +1035,7 @@ function addChatMessage(msg, isSelf) {
   const meta = document.createElement('div');
   meta.className = 'meta';
   const time = new Date(msg.timestamp);
-  meta.textContent = \`\${msg.senderName || 'Admin'} • \${time.toLocaleTimeString('id-ID')}\`;
+  meta.textContent = `${msg.senderName || 'Admin'} • ${time.toLocaleTimeString('id-ID')}`;
   div.appendChild(meta);
   messagesList.appendChild(div);
   messagesList.scrollTop = messagesList.scrollHeight;
@@ -1084,19 +1055,10 @@ chatHeader.addEventListener('click', () => {
   if(chatActive) {
     chatContainer.classList.add('active');
     chatHeader.setAttribute('aria-pressed', 'true');
-    chatToggleIcon.textContent = 'expand_more';
   } else {
     chatContainer.classList.remove('active');
     chatHeader.setAttribute('aria-pressed', 'false');
-    chatToggleIcon.textContent = 'expand_less';
   }
-});
-
-const chatToggleIcon = document.getElementById('chat-toggle-btn');
-
-chatToggleIcon.addEventListener('click', (e) => {
-  e.stopPropagation();
-  chatHeader.click();
 });
 
 chatInput.addEventListener('input', () => {
@@ -1128,17 +1090,6 @@ chatForm.addEventListener('submit', e => {
       showError('Gagal mengirim pesan: ' + err.message);
       chatSendBtn.disabled = false;
     });
-});
-
-// Filter input event for live filtering tables of items
-filterInput.addEventListener('input', () => {
-  renderItems('aqua-tech');
-  renderItems('aqua-threads');
-});
-filterClearBtn.addEventListener('click', () => {
-  filterInput.value = '';
-  renderItems('aqua-tech');
-  renderItems('aqua-threads');
 });
 </script>
 </body>
