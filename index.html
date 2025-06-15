@@ -205,6 +205,7 @@
       font-size: 0.9rem;
       transition: background-color 0.3s ease;
       user-select: none;
+      margin-right: 6px;
     }
     button.action-btn:hover:not(:disabled) {
       background-color: #0096c7;
@@ -297,7 +298,7 @@
       position: fixed;
       top: 64px; /* bawah header */
       right: 0;
-      width: 360px;
+      width: 400px;
       height: calc(100% - 64px);
       background-color: #003f61;
       border-left: 2px solid #006280;
@@ -344,12 +345,15 @@
     }
     /* Chat users list/sidebar */
     #chat-users-list {
-      width: 140px;
+      width: 160px;
       background-color: #00557a;
       border-right: 1px solid #0077b6;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      padding: 0;
+      margin: 0;
+      user-select: none;
     }
     #chat-users-list h3 {
       margin: 8px;
@@ -357,7 +361,7 @@
       font-size: 1rem;
       color: #a9d8ff;
       border-bottom: 1px solid #0077b6;
-      user-select: none;
+      padding-left: 8px;
     }
     #chat-users-list ul {
       list-style: none;
@@ -366,14 +370,13 @@
       overflow-y: auto;
     }
     #chat-users-list li {
-      padding: 10px 14px;
+      padding: 10px 8px;
       cursor: pointer;
       border-bottom: 1px solid #0077b6;
       color: #cce7ff;
-      user-select: none;
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: 2px;
     }
     #chat-users-list li.selected,
     #chat-users-list li:hover {
@@ -382,8 +385,15 @@
       color: #fff;
     }
     #chat-users-list li .material-icons {
-      font-size: 20px;
+      font-size: 18px;
       color: #b3d8ff;
+      user-select: none;
+      align-self: flex-start;
+    }
+    #chat-users-list li .contact-email {
+      font-size: 0.8rem;
+      color: #d0e9ff;
+      user-select: none;
     }
     /* Chat messages area */
     #chat-messages-area {
@@ -394,6 +404,7 @@
       color: #e0f0ff;
       padding: 12px 16px;
       overflow: hidden;
+      user-select: text;
     }
     #chat-messages-header {
       font-weight: 700;
@@ -401,6 +412,9 @@
       border-bottom: 1px solid #0173b1;
       padding-bottom: 4px;
       user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     #chat-messages-list {
       flex: 1 1 auto;
@@ -409,7 +423,6 @@
       flex-direction: column;
       gap: 12px;
       padding-right: 8px;
-      user-select: text;
     }
     #chat-messages-list::-webkit-scrollbar {
       width: 8px;
@@ -430,7 +443,6 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      user-select: text;
     }
     .chat-message.self {
       align-self: flex-end;
@@ -539,6 +551,49 @@
       user-select: none;
     }
     #create-group-container button:hover {
+      background-color: #00b0ff;
+    }
+    /* Add contact container */
+    #add-contact-container {
+      padding: 12px 16px;
+      background-color: #004d7a;
+      border-top: 1px solid #0077b6;
+      user-select: none;
+    }
+    #add-contact-container label,
+    #add-contact-container select,
+    #add-contact-container button {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+    }
+    #add-contact-container select {
+      border-radius: 10px;
+      border: 1px solid #0077b6;
+      background-color: #005a7c;
+      color: #ccefff;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      outline-offset: 2px;
+      outline-color: #55aaff;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    #add-contact-container button {
+      margin-top: 12px;
+      padding: 10px 16px;
+      border-radius: 14px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      background-color: #0096c7;
+      color: #d0f0fd;
+      transition: background-color 0.25s ease;
+      user-select: none;
+    }
+    #add-contact-container button:hover {
       background-color: #00b0ff;
     }
     /* Responsive */
@@ -666,10 +721,11 @@
                 <th scope="col">Status</th>
                 <th scope="col">PIC</th>
                 <th scope="col">Gambar</th>
+                <th scope="col" style="width:90px;">Aksi</th>
               </tr>
             </thead>
             <tbody id="aqua-tech-table-body">
-              <tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
+              <tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
             </tbody>
           </table>
         </section>
@@ -689,10 +745,11 @@
                 <th scope="col">Status</th>
                 <th scope="col">PIC</th>
                 <th scope="col">Gambar</th>
+                <th scope="col" style="width:90px;">Aksi</th>
               </tr>
             </thead>
             <tbody id="aqua-threads-table-body">
-              <tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
+              <tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
             </tbody>
           </table>
         </section>
@@ -766,19 +823,29 @@
     </div>
     <div id="chat-body" role="region" aria-live="polite" aria-relevant="additions">
       <nav id="chat-users-list" aria-label="Daftar pengguna dan grup chat">
-        <h3>Kontak</h3>
+        <h3>Kontak & Grup</h3>
         <ul id="chat-user-items" role="list" tabindex="0" aria-activedescendant="" aria-multiselectable="false">
           <!-- User & Grup chat list items -->
         </ul>
+        <div id="add-contact-container" aria-label="Tambah Kontak Baru">
+          <label for="select-add-contact">Tambah Kontak:</label>
+          <select id="select-add-contact" size="8" autocomplete="off">
+            <!-- Loaded contact emails here -->
+          </select>
+          <button id="btn-add-contact" type="button">Tambah ke Chat</button>
+        </div>
         <div id="create-group-container" aria-label="Buat grup chat baru">
           <label for="new-group-name">Buat Grup Baru:</label>
           <input type="text" id="new-group-name" placeholder="Nama Grup" autocomplete="off" />
+          <label for="select-add-group-members">Tambah anggota ke grup:</label>
+          <select id="select-add-group-members" multiple size="6" style="margin-bottom:8px; font-family: 'Inter', sans-serif; font-size: 0.9rem; border-radius: 8px; background:#005a7c; color:#ccefff; border: 1px solid #0077b6;"></select>
           <button id="create-group-btn" type="button">Buat Grup</button>
         </div>
       </nav>
       <section id="chat-messages-area" aria-label="Area pesan chat">
         <header id="chat-messages-header" aria-live="polite" aria-atomic="true">
           Pilih kontak untuk mulai chat
+          <button id="delete-chat-room-btn" style="background:#a92727; color:#fff; border:none; border-radius:10px; padding:4px 10px; font-size:0.8rem; cursor:pointer; margin-left:12px; display:none;" aria-label="Hapus chat room saat ini">Hapus Chat</button>
         </header>
         <div id="chat-messages-list" role="log" aria-live="polite" tabindex="0">
           <!-- Chat messages -->
@@ -801,7 +868,6 @@
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <script>
-// Firebase config and init
 const firebaseConfig = {
   apiKey: "AIzaSyBdKELW2FNsL7H1zB8R765czcDPaSYybdg",
   authDomain: "atlantis-store.firebaseapp.com",
@@ -812,13 +878,11 @@ const firebaseConfig = {
   appId: "1:566295949160:web:3ad8956c753d2f05a5f0dd",
   measurementId: "G-F5RG09TFCK"
 };
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const database = firebase.database();
 const storage = firebase.storage();
 
-// Elements
 const logoutBtn = document.getElementById('logout-btn');
 const btnDashboard = document.getElementById('btn-dashboard');
 const btnUpdate = document.getElementById('btn-update');
@@ -844,7 +908,6 @@ const createPic = document.getElementById('create-pic');
 const previewContainer = document.getElementById('preview-container');
 const filterInput = document.getElementById('filter-input');
 
-// Chat controls
 const navChatToggle = document.getElementById('nav-chat-toggle');
 const chatPanel = document.getElementById('chat-panel');
 const chatPanelCloseBtn = chatPanel.querySelector('.close-chat-btn');
@@ -856,23 +919,26 @@ const chatMessagesList = document.getElementById('chat-messages-list');
 const chatInputForm = document.getElementById('chat-input-container');
 const chatInput = document.getElementById('chat-input');
 const chatSendBtn = document.getElementById('chat-send-btn');
+const contactsSelect = document.getElementById('select-add-contact');
+const addContactBtn = document.getElementById('btn-add-contact');
+const groupMembersSelect = document.getElementById('select-add-group-members');
+const deleteChatRoomBtn = document.getElementById('delete-chat-room-btn');
 
 let chatActive = false;
 let currentUser = null;
 let itemsCache = { 'aqua-tech': {}, 'aqua-threads': {} };
 
-// Chat State
 let chatRooms = {}; // roomId => {name, members, isGroup}
 let selectedRoomId = null;
+let allUsers = {}; // userId => {email,name,avatarUrl}
 
-// --- UTILS ---
 function sanitize(str) {
   const temp = document.createElement('div');
   temp.textContent = str;
   return temp.innerHTML;
 }
 function sanitizePlain(str) {
-  if(!str) return '';
+  if (!str) return '';
   return str.toString().replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
 }
 function generateItemCode() {
@@ -885,7 +951,6 @@ function generateItemCode() {
 function showAlert(msg) { alert(msg); }
 function showError(msg) { console.error(msg); showAlert(msg); }
 
-// ---- TAB NAVIGATION ----
 function activateTab(tabBtn) {
   [btnDashboard, btnUpdate, btnCreate].forEach(btn => {
     const isActive = (btn === tabBtn);
@@ -903,13 +968,13 @@ btnDashboard.addEventListener('click', () => activateTab(btnDashboard));
 btnUpdate.addEventListener('click', () => activateTab(btnUpdate));
 btnCreate.addEventListener('click', () => activateTab(btnCreate));
 
-// ---- AUTH & LOAD DATA ----
 auth.onAuthStateChanged(user => {
   if (user) {
     currentUser = user;
     console.log("User logged in:", user.uid);
     loadAllDataRealtime();
     loadChatRooms();
+    loadAllUsers();
   } else {
     currentUser = null;
     window.location.href = "login.html";
@@ -917,12 +982,11 @@ auth.onAuthStateChanged(user => {
 });
 logoutBtn.addEventListener('click', () => { auth.signOut(); });
 
-// Load barang data realtime
 function loadAllDataRealtime() {
   itemsCache['aqua-tech'] = {};
   itemsCache['aqua-threads'] = {};
-  aquaTechBody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
-  aquaThreadsBody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
+  aquaTechBody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
+  aquaThreadsBody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
   updateSelect.innerHTML = '';
 
   database.ref('items/aqua-tech').on('value', snap => {
@@ -935,7 +999,6 @@ function loadAllDataRealtime() {
   });
 }
 
-// Create table row element helper
 function createTableRow(code, item) {
   const tr = document.createElement('tr');
   function addColumn(text) {
@@ -973,10 +1036,33 @@ function createTableRow(code, item) {
     tdImg.style.color = '#789bb7';
   }
   tr.appendChild(tdImg);
+  // Action buttons for update and delete
+  const tdActions = document.createElement('td');
+  // Delete button stock item
+  const delBtn = document.createElement('button');
+  delBtn.className = 'action-btn';
+  delBtn.textContent = 'Hapus';
+  delBtn.title = `Hapus item ${code}`;
+  delBtn.addEventListener('click', () => {
+    if(confirm(`Hapus barang dengan kode ${code}?\nTindakan ini tidak dapat dibatalkan.`)) {
+      // Find category of item
+      let category = null;
+      if(itemsCache['aqua-tech'][code]) category = 'aqua-tech';
+      else if(itemsCache['aqua-threads'][code]) category = 'aqua-threads';
+      if(category){
+        database.ref(`items/${category}/${code}`).remove()
+        .then(() => alert(`Barang ${code} berhasil dihapus.`))
+        .catch(err => showError('Gagal menghapus barang: ' + err.message));
+      } else {
+        alert('Barang tidak ditemukan atau telah dihapus.');
+      }
+    }
+  });
+  tdActions.appendChild(delBtn);
+  tr.appendChild(tdActions);
   return tr;
 }
 
-// Populate update select dropdown all items
 function populateUpdateSelectAll() {
   const allOptions = [];
   ['aqua-tech', 'aqua-threads'].forEach(category => {
@@ -995,7 +1081,6 @@ function populateUpdateSelectAll() {
   });
 }
 
-// Update item status
 updateItemBtn.addEventListener('click', () => {
   const selectedCode = updateSelect.value;
   const newStatus = updateStatusSelect.value;
@@ -1014,7 +1099,6 @@ updateItemBtn.addEventListener('click', () => {
   .catch(err => { showError('Gagal update status: ' + err.message); });
 });
 
-// Image preview create form
 createImage.addEventListener('change', () => {
   previewContainer.innerHTML = '';
   if(createImage.files.length === 0) return;
@@ -1031,7 +1115,6 @@ createImage.addEventListener('change', () => {
   previewContainer.appendChild(img);
 });
 
-// Create new item submit
 createForm.addEventListener('submit', e => {
   e.preventDefault();
   const category = createCategory.value;
@@ -1096,7 +1179,6 @@ createForm.addEventListener('submit', e => {
   }
 });
 
-// Download as Excel
 downloadBtn.addEventListener('click', () => {
   const workbook = XLSX.utils.book_new();
   function addSheetFromItems(category, sheetName) {
@@ -1126,15 +1208,14 @@ downloadBtn.addEventListener('click', () => {
   XLSX.writeFile(workbook, 'AtlantisCorp_DataBarang_'+new Date().toISOString().slice(0,10)+'.xlsx');
 });
 
-// Filter render helper
 function renderFilteredItems() {
   const filterValue = filterInput.value.toLowerCase();
   ['aqua-tech','aqua-threads'].forEach(category => {
     const tbody = (category === 'aqua-tech') ? aquaTechBody : aquaThreadsBody;
     const items = itemsCache[category];
     tbody.innerHTML = '';
-    if (!items || Object.keys(items).length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Tidak ada data.</td></tr>';
+    if(!items || Object.keys(items).length === 0) {
+      tbody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Tidak ada data.</td></tr>';
       return;
     }
     let filteredCount = 0;
@@ -1145,7 +1226,7 @@ function renderFilteredItems() {
       }
     });
     if(filteredCount === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" style="color:#ff6a6a; text-align:center;">Tidak ada data yang sesuai filter.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="10" style="color:#ff6a6a; text-align:center;">Tidak ada data yang sesuai filter.</td></tr>';
     }
   });
   populateUpdateSelectAll();
@@ -1153,18 +1234,16 @@ function renderFilteredItems() {
 filterInput.addEventListener('input', renderFilteredItems);
 
 // --- CHAT ROOM MANAGEMENT ---
-// Chat database refs
 const chatRoomsRef = database.ref('chatRooms');
 const messagesRef = database.ref('messages');
+const usersRef = database.ref('users');
 
-// Load chat rooms where current user is member
 function loadChatRooms() {
   chatRoomsRef.orderByChild(`members/${currentUser.uid}`).equalTo(true).on('value', snap=>{
     chatRooms = snap.val() || {};
     renderChatRooms();
   });
 }
-
 function renderChatRooms() {
   chatUsersList.innerHTML = '';
   const rooms = Object.entries(chatRooms);
@@ -1186,15 +1265,14 @@ function renderChatRooms() {
     icon.className = 'material-icons';
     icon.textContent = room.isGroup ? 'group' : 'person';
     li.appendChild(icon);
-    // Show room name or for 1-on-1 show other user email
     let name = room.name;
     if(!room.isGroup && room.name === 'Direct Chat'){
-      // find other member id
       const membersIds = Object.keys(room.members || {});
       const otherId = membersIds.find(id => id !== currentUser.uid);
-      if(otherId){
-        // fetch other user email - naive for demo, here just show truncated uid
-        name = 'User: '+otherId.substring(0,8);
+      if(otherId && allUsers[otherId]){
+        name = allUsers[otherId].email || otherId.substring(0,8);
+      } else if(otherId){
+        name = otherId.substring(0,8);
       }
     }
     const textNode = document.createTextNode(name);
@@ -1213,8 +1291,6 @@ function renderChatRooms() {
     chatUsersList.appendChild(li);
   });
 }
-
-// Clear chat message area
 function clearChatArea(){
   chatMessagesHeader.textContent = 'Pilih kontak untuk mulai chat';
   chatMessagesList.innerHTML = '';
@@ -1222,17 +1298,15 @@ function clearChatArea(){
   chatInput.value = '';
   chatSendBtn.disabled = true;
   selectedRoomId = null;
+  deleteChatRoomBtn.style.display = 'none';
 }
-
-// Select chat room to view messages
 function selectChatRoom(roomId) {
   if(selectedRoomId === roomId) return;
   selectedRoomId = roomId;
   renderChatRooms();
   loadChatMessages(roomId);
+  deleteChatRoomBtn.style.display = 'inline-block'; 
 }
-
-// Load chat messages for selected room
 function loadChatMessages(roomId) {
   chatMessagesList.innerHTML = '';
   chatInputForm.hidden = false;
@@ -1244,9 +1318,10 @@ function loadChatMessages(roomId) {
   } else {
     chatMessagesHeader.textContent = 'Chat tidak ditemukan';
     chatInputForm.hidden = true;
+    deleteChatRoomBtn.style.display = 'none';
     return;
   }
-  messagesRef.child(roomId).off(); // Remove previous listener if any
+  messagesRef.child(roomId).off();
   messagesRef.child(roomId).limitToLast(100).on('child_added', snap => {
     const msg = snap.val();
     if(!msg) return;
@@ -1254,8 +1329,6 @@ function loadChatMessages(roomId) {
   });
   chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
 }
-
-// Add a chat message element to message list
 function addChatMessage(msg, isSelf) {
   const div = document.createElement('div');
   div.className = 'chat-message';
@@ -1276,8 +1349,6 @@ function addChatMessage(msg, isSelf) {
   chatMessagesList.appendChild(div);
   chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
 }
-
-// Send chat message handler
 chatInputForm.addEventListener('submit', e => {
   e.preventDefault();
   if(!selectedRoomId){
@@ -1311,11 +1382,8 @@ chatInputForm.addEventListener('submit', e => {
 chatInput.addEventListener('input', () => {
   chatSendBtn.disabled = chatInput.value.trim() === '';
 });
-
-// Toggle chat panel open/close
 navChatToggle.addEventListener('click', ()=>{
   chatPanel.classList.toggle('open');
-  // If open, dim main content
   document.querySelector('.content-area').classList.toggle('dimmed', chatPanel.classList.contains('open'));
 });
 chatPanelCloseBtn.addEventListener('click', ()=>{
@@ -1323,64 +1391,141 @@ chatPanelCloseBtn.addEventListener('click', ()=>{
   document.querySelector('.content-area').classList.remove('dimmed');
 });
 
-// Create group chat
+// Load all users to populate "Tambah Kontak"
+function loadAllUsers() {
+  usersRef.on('value', snap => {
+    allUsers = snap.val() || {};
+    populateContactsSelect();
+    populateGroupMembersSelect();
+  });
+}
+function populateContactsSelect() {
+  // Clear and create options except current user
+  contactsSelect.innerHTML = '';
+  Object.entries(allUsers).forEach(([uid, user]) => {
+    if(uid === currentUser.uid) return;
+    const option = document.createElement('option');
+    option.value = uid;
+    option.textContent = user.email || uid;
+    contactsSelect.appendChild(option);
+  });
+}
+function populateGroupMembersSelect() {
+  groupMembersSelect.innerHTML = '';
+  Object.entries(allUsers).forEach(([uid, user]) => {
+    if(uid === currentUser.uid) return;
+    const option = document.createElement('option');
+    option.value = uid;
+    option.textContent = user.email || uid;
+    groupMembersSelect.appendChild(option);
+  });
+}
+
+// Add selected contact as new chat room or open existing
+addContactBtn.addEventListener('click', () => {
+  const selectedUid = contactsSelect.value;
+  if(!selectedUid){
+    alert('Pilih kontak terlebih dahulu.');
+    return;
+  }
+  if(selectedUid === currentUser.uid){
+    alert('Tidak dapat menambahkan diri sendiri.');
+    return;
+  }
+  // Check existing direct chat room with this user
+  const rooms = Object.entries(chatRooms);
+  const existingRoom = rooms.find(([id, room])=>{
+    if(!room.isGroup){
+      const members = Object.keys(room.members || {});
+      return members.includes(currentUser.uid) && members.includes(selectedUid);
+    }
+    return false;
+  });
+  if(existingRoom){
+    alert('Sudah ada chat dengan kontak ini.');
+    selectChatRoom(existingRoom[0]);
+    return;
+  }
+  // Create new direct chat room
+  const newRoomId = database.ref('chatRooms').push().key;
+  const newRoomData = {
+    name: 'Direct Chat',
+    isGroup: false,
+    members: {
+      [currentUser.uid]: true,
+      [selectedUid]: true
+    }
+  };
+  const updates = {};
+  updates['chatRooms/' + newRoomId] = newRoomData;
+  database.ref().update(updates)
+    .then(() => {
+      alert('Kontak berhasil ditambahkan dan room chat dibuat.');
+      selectChatRoom(newRoomId);
+    })
+    .catch(e => alert('Gagal membuat chat room: ' + e.message));
+});
+
+// Create group chat with selected members
 createGroupBtn.addEventListener('click', () => {
   const name = createGroupInput.value.trim();
   if(name.length < 3){
-    showAlert('Nama grup minimal 3 karakter.');
+    alert('Nama grup minimal 3 karakter.');
     return;
   }
-  if(!currentUser) {
-    showAlert('Silakan login ulang.');
+  const selectedOptions = Array.from(groupMembersSelect.selectedOptions);
+  if(selectedOptions.length === 0){
+    alert('Pilih anggota grup minimal satu.');
     return;
   }
-  // Generate new room id
+  if(!currentUser){
+    alert('Silakan login ulang.');
+    return;
+  }
   const roomId = database.ref('chatRooms').push().key;
   if(!roomId){
     showError('Gagal membuat grup.');
     return;
   }
+  // Members object include current user and selected
+  const membersObj = { [currentUser.uid]: true };
+  selectedOptions.forEach(opt => {
+    if(opt.value !== currentUser.uid) membersObj[opt.value] = true;
+  });
   const newRoom = {
     name,
     isGroup: true,
-    members: { [currentUser.uid]: true }
+    members: membersObj
   };
   chatRoomsRef.child(roomId).set(newRoom)
     .then(() => {
       createGroupInput.value = '';
+      groupMembersSelect.selectedIndex = -1;
       selectChatRoom(roomId);
-      showAlert('Grup chat berhasil dibuat.');
+      alert('Grup chat berhasil dibuat.');
     })
     .catch(err => showError('Gagal membuat grup: ' + err.message));
 });
 
-// --- Barang Filtering: On filter input ---
-filterInput.addEventListener('input', renderFilteredItems);
-
-// --- Load Data Realtime for Filtering ---
-function renderFilteredItems() {
-  const filterValue = filterInput.value.toLowerCase();
-  ['aqua-tech','aqua-threads'].forEach(category => {
-    const tbody = (category === 'aqua-tech') ? aquaTechBody : aquaThreadsBody;
-    const items = itemsCache[category];
-    tbody.innerHTML = '';
-    if(!items || Object.keys(items).length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" style="color:#8dbfef; text-align:center;">Tidak ada data.</td></tr>';
-      return;
-    }
-    let filteredCount = 0;
-    Object.entries(items).forEach(([code, item]) => {
-      if(item.type.toLowerCase().includes(filterValue) || item.model.toLowerCase().includes(filterValue)){
-        tbody.appendChild(createTableRow(code, item));
-        filteredCount++;
-      }
-    });
-    if(filteredCount === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" style="color:#ff6a6a; text-align:center;">Tidak ada data yang sesuai filter.</td></tr>';
-    }
-  });
-  populateUpdateSelectAll();
-}
+// Delete current chat room handler
+deleteChatRoomBtn.addEventListener('click', () => {
+  if(!selectedRoomId) return;
+  const room = chatRooms[selectedRoomId];
+  if(!room) {
+    alert('Chat room tidak ditemukan.');
+    return;
+  }
+  if(!confirm(`Hapus chat room "${room.name || 'Chat'}"? Ini akan menghapus semua pesannya.`)) return;
+  chatRoomsRef.child(selectedRoomId).remove()
+    .then(() => {
+      messagesRef.child(selectedRoomId).remove();
+      alert('Chat room berhasil dihapus.');
+      selectedRoomId = null;
+      clearChatArea();
+      renderChatRooms();
+    })
+    .catch(err => showError('Gagal menghapus chat room: ' + err.message));
+});
 
 </script>
 </body>
