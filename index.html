@@ -1220,6 +1220,7 @@
     const fullNameInput = document.getElementById('full-name');
     const nickNameInput = document.getElementById('nick-name');
     const birthPlaceSelect = document.getElementById('birth-place');
+    const countries = ['Indonesia', 'Malaysia', 'Singapura', 'Thailand', 'Vietnam'];
     const birthDateInput = document.getElementById('birth-date');
     const ageDisplay = document.getElementById('age-display');
     const addressInput = document.getElementById('address');
@@ -1962,6 +1963,16 @@ function calculateAge(birthDate) {
   return age;
 }
 
+function populateBirthPlaces() {
+  birthPlaceSelect.innerHTML = '<option value="">-- Pilih Negara --</option>';
+  countries.forEach(country => {
+    const option = document.createElement('option');
+    option.value = country;
+    option.textContent = country;
+    birthPlaceSelect.appendChild(option);
+  });
+}
+      
 // Tampilkan umur saat tanggal lahir berubah
 birthDateInput.addEventListener('change', () => {
   const birthDate = new Date(birthDateInput.value);
