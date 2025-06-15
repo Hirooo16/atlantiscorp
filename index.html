@@ -1913,65 +1913,73 @@ function setupUserPresence() {
 }
 
 function loadUserProfile() {
+  if (!currentUser) {
+    alert('Silakan login terlebih dahulu.');
+    return;
+  }
+
   const uid = currentUser.uid;
   const userRef = database.ref('users/' + uid);
-  userRef.once('value').then(snapshot => {
-    const data = snapshot.val();
-    
-    // Selalu tampilkan tab profil
-    activateTab(btnProfile);
-    
-    if (data) {
-      // Isi form dengan data yang ada, jika ada
-      fullNameInput.value = data.fullName || '';
-      nickNameInput.value = data.nickName || '';
-      birthPlaceSelect.value = data.birthPlace || '';
-      birthDateInput.value = data.birthDate || '';
-      addressInput.value = data.address || '';
-      displayAge();
 
-      // Jika data profil kosong (contoh: nama lengkap kosong), beri arahan
-      if (!data.fullName || !data.birthPlace || !data.birthDate) {
-        alert("Profil Anda belum lengkap. Mohon isi data diri Anda pada form ini.");
+  userRef.once('value')
+    .then(snapshot => {
+      const data = snapshot.val();
+
+      // Selalu tampilkan tab profil
+      activateTab(btnProfile);
+
+      if (data) {
+        // Isi form jika data tersedia
+        fullNameInput.value = data.fullName || '';
+        nickNameInput.value = data.nickName || '';
+        birthPlaceSelect.value = data.birthPlace || '';
+        birthDateInput.value = data.birthDate || '';
+        addressInput.value = data.address || '';
+        displayAge();
+
+        // Cek kelengkapan data penting
+        if (!data.fullName || !data.birthPlace || !data.birthDate) {
+          alert("Profil Anda belum lengkap. Mohon isi data diri Anda pada form ini.");
+        }
+
+      } else {
+        // Data profil belum ada sama sekali
+        alert("Profil Anda belum diisi. Mohon lengkapi data diri Anda pada form ini.");
       }
-
-    } else {
-      // Data profil belum ada sama sekali
-      alert("Profil Anda belum diisi. Mohon lengkapi data diri Anda pada form ini.");
-      // Semua input kosong sudah default
-    }
-  }).catch(err => {
-    console.error("Gagal memuat profil:", err);
-    activateTab(btnProfile);
-    alert("Terjadi kesalahan saat memuat profil. Mohon isi data diri Anda.");
-  });
+    })
+    .catch(err => {
+      console.error("Gagal memuat profil:", err);
+      activateTab(btnProfile);
+      alert("Terjadi kesalahan saat memuat profil. Mohon isi data diri Anda.");
+    });
 }
 
-
-
-// Calculate age from birth date
+// Hitung umur dari tanggal lahir
 function calculateAge(birthDate) {
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const m = today.getMonth() - birthDate.getMonth();
+
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
+
   return age;
 }
 
-// Calculate and display age when birth date changes
+// Tampilkan umur saat tanggal lahir berubah
 birthDateInput.addEventListener('change', () => {
   const birthDate = new Date(birthDateInput.value);
   if (isNaN(birthDate.getTime())) {
     ageDisplay.textContent = '';
     return;
   }
+
   const age = calculateAge(birthDate);
   ageDisplay.textContent = `Umur: ${age} tahun`;
 });
 
-// Save user profile form data and optionally update password
+// Simpan data profil dan password jika diisi
 profileForm.addEventListener('submit', e => {
   e.preventDefault();
   if (!currentUser) return alert('Silakan login ulang.');
@@ -1983,26 +1991,34 @@ profileForm.addEventListener('submit', e => {
     birthDate: birthDateInput.value,
     address: addressInput.value.trim()
   };
-  // Validate required fields
+
+  // Validasi form
   if (!profileData.fullName || !profileData.birthPlace || !profileData.birthDate) {
     alert('Nama lengkap, tempat lahir, dan tanggal lahir wajib diisi.');
     return;
   }
 
+  // Simpan profil ke database
   database.ref(`users/${currentUser.uid}`).update(profileData)
     .then(() => {
       alert('Profil berhasil diperbarui.');
     })
-    .catch(err => alert('Gagal memperbarui profil: ' + err.message));
+    .catch(err => {
+      console.error("Update profil error:", err);
+      alert('Gagal memperbarui profil: ' + err.message);
+    });
 
+  // Perbarui password jika diisi
   const newPassword = passwordInput.value.trim();
   if (newPassword.length >= 6) {
-    currentUser.updatePassword(newPassword).then(() => {
-      alert('Password berhasil diperbarui.');
-      passwordInput.value = '';
-    }).catch(err => {
-      alert('Gagal memperbarui password: ' + err.message);
-    });
+    currentUser.updatePassword(newPassword)
+      .then(() => {
+        alert('Password berhasil diperbarui.');
+        passwordInput.value = '';
+      })
+      .catch(err => {
+        alert('Gagal memperbarui password: ' + err.message);
+      });
   }
 });
     
