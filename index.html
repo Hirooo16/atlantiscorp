@@ -1917,20 +1917,36 @@ function loadUserProfile() {
   const userRef = database.ref('users/' + uid);
   userRef.once('value').then(snapshot => {
     const data = snapshot.val();
+    
+    // Selalu tampilkan tab profil
+    activateTab(btnProfile);
+    
     if (data) {
+      // Isi form dengan data yang ada, jika ada
       fullNameInput.value = data.fullName || '';
       nickNameInput.value = data.nickName || '';
       birthPlaceSelect.value = data.birthPlace || '';
       birthDateInput.value = data.birthDate || '';
       addressInput.value = data.address || '';
       displayAge();
+
+      // Jika data profil kosong (contoh: nama lengkap kosong), beri arahan
+      if (!data.fullName || !data.birthPlace || !data.birthDate) {
+        alert("Profil Anda belum lengkap. Mohon isi data diri Anda pada form ini.");
+      }
+
     } else {
-      console.log("Profil belum diisi.");
+      // Data profil belum ada sama sekali
+      alert("Profil Anda belum diisi. Mohon lengkapi data diri Anda pada form ini.");
+      // Semua input kosong sudah default
     }
   }).catch(err => {
     console.error("Gagal memuat profil:", err);
+    activateTab(btnProfile);
+    alert("Terjadi kesalahan saat memuat profil. Mohon isi data diri Anda.");
   });
 }
+
 
 
 // Calculate age from birth date
