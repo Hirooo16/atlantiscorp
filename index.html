@@ -6,726 +6,948 @@
   <title>ATLANTIS CORP - Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&family=Material+Icons" rel="stylesheet" />
   <style>
-    /* Reset and basics */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #002538 0%, #004661 100%);
-      color: #cce7ff;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-    }
-    /* Header */
-    header {
-      background-color: #003551;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid #006280;
-      user-select: none;
-      z-index: 1100;
-      height: 64px;
-      flex-shrink: 0;
-    }
-    header h1 {
-      font-weight: 800;
-      font-size: 1.6rem;
-      color: #70c9f9;
-    }
-    header button, #nav-chat-toggle {
-      background: #0077b6;
-      color: #d0f0fd;
-      border: none;
-      padding: 8px 20px;
-      border-radius: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 1rem;
-    }
-    header button:hover, #nav-chat-toggle:hover {
-      background-color: #0096c7;
-    }
-    #nav-chat-toggle .material-icons {
-      font-size: 20px;
-    }
-    /* Layout */
-    main {
-      display: flex;
-      flex: 1 1 auto;
-      overflow: hidden;
-      position: relative;
-      z-index: 0;
-      height: calc(100vh - 64px);
-    }
-    /* Sidebar Navigation */
-    nav.side-menu {
-      width: 280px;
-      background-color: #004c73;
-      display: flex;
-      flex-direction: column;
-      padding: 24px 16px;
-      border-right: 2px solid #006280;
-      z-index: 0;
-      flex-shrink: 0;
-    }
-    nav.side-menu h2 {
-      margin: 0 0 16px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #a3d2f3;
-      user-select: none;
-      border-bottom: 1px solid #006280;
-      padding-bottom: 12px;
-    }
-    nav.side-menu button.tab-btn {
-      background: transparent;
-      border: none;
-      color: #cce7ff;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 12px 8px;
-      text-align: left;
-      cursor: pointer;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      transition: background-color 0.25s ease;
-      user-select: none;
-    }
-    nav.side-menu button.tab-btn.active,
-    nav.side-menu button.tab-btn:hover {
-      background-color: #0077b6;
-      color: #f0f9ff;
-      font-weight: 700;
-    }
-    /* Main Content Area */
-    section.content-area {
-      flex: 1 1 auto;
-      position: relative;
-      overflow-y: auto;
-      padding: 24px;
-      background: #003347;
-      border-left: 2px solid #006280;
-      display: flex;
-      flex-direction: column;
-      z-index: 0;
-      transition: filter 0.3s ease;
-      min-width: 0;
-    }
-    section.content-area.dimmed {
-      filter: blur(3px) brightness(0.7);
-      pointer-events: none;
-      user-select: none;
-    }
-    section.content-area > h2 {
-      margin-top: 0;
-      font-weight: 800;
-      font-size: 1.8rem;
-      color: #8ed0f9;
-      user-select: none;
-    }
-    /* Filter Section */
-    #filter-controls {
-      margin-bottom: 24px;
-      max-width: 720px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    #filter-input {
-      flex: 1 1 300px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid #0077b6;
-      background: #005a7c;
-      color: #ccefff;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
-      outline-offset: 2px;
-      outline-color: #55aaff;
-      transition: border-color 0.3s ease;
-    }
-    #filter-input::placeholder {
-      color: #a0c5ef;
-    }
-    /* Table Styles */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 0.95rem;
-      table-layout: fixed;
-      word-wrap: break-word;
-    }
-    thead {
-      background-color: #005b8c;
-    }
-    thead th {
-      padding: 10px 12px;
-      text-align: left;
-      color: #c7e0ff;
-      border-bottom: 2px solid #0077b6;
-      white-space: nowrap;
-    }
-    tbody tr:nth-child(odd) {
-      background-color: #00485a;
-    }
-    tbody tr:nth-child(even) {
-      background-color: #005b7b;
-    }
-    tbody td {
-      padding: 10px 12px;
-      border-bottom: 1px solid #006ba6;
-      color: #cce7ff;
-      vertical-align: middle;
-      word-break: break-word;
-      white-space: normal;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    tbody tr:hover {
-      background-color: #0077b6;
-      cursor: default;
-    }
-    /* Buttons in tables */
-    button.action-btn {
-      padding: 6px 14px;
-      border-radius: 10px;
-      border: none;
-      background-color: #0077b6;
-      color: #d0f0fd;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      margin-right: 6px;
-      min-width: 72px;
-    }
-    button.action-btn:hover:not(:disabled) {
-      background-color: #0096c7;
-    }
-    button.action-btn:disabled {
-      background-color: #00465a;
-      cursor: not-allowed;
-    }
-    /* Forms for Add and Update */
-    form.item-form {
-      max-width: 680px;
-      background-color: #00455a;
-      border-radius: 16px;
-      padding: 28px 32px;
-      margin-bottom: 40px;
-      box-shadow: 0 0 20px rgba(0,110,160,0.6);
-      color: #cde6f1;
-    }
-    form.item-form label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 6px;
-      user-select: none;
-    }
-    form.item-form input[type="text"],
-    form.item-form input[type="number"],
-    form.item-form textarea,
-    form.item-form select {
-      width: 100%;
-      padding: 10px 14px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      border: 1px solid #0077b6;
-      background-color: #005a7c;
-      color: #d6eafc;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
-      resize: vertical;
-      outline-offset: 2px;
-      outline-color: #55aaff;
-      transition: border-color 0.3s ease;
-    }
-    form.item-form input[type="file"] {
-      margin-top: 6px;
-      margin-bottom: 20px;
-      color: #cce7ff;
-    }
-    form.item-form input[type="text"]:focus,
-    form.item-form input[type="number"]:focus,
-    form.item-form textarea:focus,
-    form.item-form select:focus {
-      border-color: #55aaff;
-      background-color: #006791;
-    }
-    form.item-form button {
-      background-color: #0096c7;
-      color: #d0f0fd;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-      user-select: none;
-      font-size: 1rem;
-      min-height: 44px;
-      min-width: 120px;
-    }
-    form.item-form button:hover:not(:disabled) {
-      background-color: #00b0ff;
-    }
-    form.item-form button:disabled {
-      background-color: #005b81;
-      cursor: not-allowed;
-    }
-    /* Image preview styling */
-    .image-preview {
-      margin-bottom: 16px;
-      border-radius: 12px;
-      max-width: 180px;
-      max-height: 140px;
-      object-fit: contain;
-      border: 1px solid #0077b6;
-      box-shadow: 0 0 8px rgba(0, 127, 255, 0.4);
-      user-select: none;
-    }
-    /* --- CHAT PANEL --- */
-    #chat-panel {
-      position: fixed;
-      top: 64px;
-      right: 0;
-      width: 400px;
-      height: calc(100% - 64px);
-      background-color: #003f61;
-      border-left: 2px solid #006280;
-      display: flex;
-      flex-direction: column;
-      z-index: 1200;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      box-shadow: -4px 0 12px rgba(0,0,0,0.5);
-      user-select: none;
-      font-size: 0.9rem;
-      color: #cce7ff;
-      min-width: 320px;
-      max-width: 480px;
-    }
-    #chat-panel.open {
-      transform: translateX(0);
-    }
-    #chat-panel-header {
-      height: 56px;
-      background-color: #004d7a;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 16px;
-      border-bottom: 1px solid #0077b6;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #85d2ff;
-      user-select: none;
-    }
-    #chat-panel-header button.close-chat-btn {
-      background: transparent;
-      border: none;
-      color: #85d2ff;
-      font-size: 28px;
-      cursor: pointer;
-      user-select: none;
-    }
-    #chat-body {
-      flex: 1 1 auto;
-      display: flex;
-      height: 100%;
-      overflow: hidden;
-      min-width: 0;
-    }
-    /* Users list */
-    #chat-users-list {
-      width: 180px;
-      background-color: #00557a;
-      border-right: 1px solid #0077b6;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      padding: 8px 0;
-      margin: 0;
-      user-select: none;
-    }
-    #chat-users-list h3 {
-      margin: 0 0 8px 16px;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #a9d8ff;
-      border-bottom: 1px solid #0077b6;
-      padding-bottom: 8px;
-    }
-    #chat-users-list ul {
-      list-style: none;
-      margin: 0; padding: 0;
-      flex: 1 1 auto;
-      overflow-y: auto;
-      min-width: 0;
-    }
-    #chat-users-list li {
-      padding: 10px 12px;
-      cursor: pointer;
-      border-bottom: 1px solid #0077b6;
-      color: #cce7ff;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    #chat-users-list li.selected,
-    #chat-users-list li:hover {
-      background-color: #0077b6;
-      font-weight: 700;
-      color: #fff;
-    }
-    #chat-users-list li .material-icons {
-      font-size: 18px;
-      color: #b3d8ff;
-      user-select: none;
-      align-self: flex-start;
-    }
-    #chat-users-list li .contact-email {
-      font-size: 0.8rem;
-      color: #d0e9ff;
-      user-select: none;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    /* Chat messages area */
-    #chat-messages-area {
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column;
-      background-color: #015083;
-      color: #e0f0ff;
-      padding: 12px 16px;
-      overflow: hidden;
-      user-select: text;
-      min-width: 0;
-      max-width: 100%;
-    }
-    #chat-messages-header {
-      font-weight: 700;
-      margin-bottom: 8px;
-      border-bottom: 1px solid #0173b1;
-      padding-bottom: 4px;
-      user-select: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    #delete-chat-room-btn {
-      background:#a92727; color:#fff; border:none; border-radius:10px; padding:4px 10px; font-size:0.8rem; cursor:pointer; display:none;
-      user-select:none;
-      flex-shrink: 0;
-    }
-    #chat-messages-list {
-      flex: 1 1 auto;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding-right: 8px;
-      min-width: 0;
-    }
-    #chat-messages-list::-webkit-scrollbar {
-      width: 8px;
-    }
-    #chat-messages-list::-webkit-scrollbar-thumb {
-      background-color: #55aaff;
-      border-radius: 4px;
-    }
-    .chat-message {
-      max-width: 70%;
-      padding: 10px 14px;
-      border-radius: 14px;
-      word-wrap: break-word;
-      background-color: #0173b1;
-      box-shadow: 0 2px 6px rgba(0, 90, 140, 0.7);
-      color: #d4e9f7;
-      font-size: clamp(0.8rem, 0.9vw, 1.1rem);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      word-break: break-word;
-    }
-    .chat-message.self {
-      align-self: flex-end;
-      background-color: #66b2ff;
-      box-shadow: 0 2px 8px rgba(50, 120, 210, 0.8);
-      color: #002433;
-    }
-    .chat-message .sender {
-      font-weight: 700;
-      color: #b9defb;
-      font-size: clamp(0.6rem, 0.8vw, 0.9rem);
-      user-select: none;
-    }
-    .chat-message .text {
-      white-space: pre-wrap;
-    }
-    .chat-message .meta {
-      font-size: clamp(0.6rem, 0.7vw, 0.8rem);
-      color: #a0c9f7;
-      text-align: right;
-      font-style: italic;
-      user-select: none;
-    }
-    /* Chat input area */
-    #chat-input-container {
-      margin-top: 8px;
-      display: flex;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    #chat-input {
-      flex: 1 1 auto;
-      border-radius: 20px;
-      border: none;
-      padding: 12px 16px;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
-      resize: none;
-      min-height: 56px;
-      max-height: 120px;
-      outline-offset: 2px;
-      outline-color: #55aaff;
-      background-color: #00557a;
-      color: #ccefff;
-      white-space: pre-wrap;
-    }
-    #chat-input::placeholder {
-      color: #a0c5ef;
-    }
-    #chat-send-btn {
-      background-color: #008ce6;
-      color: #cce7ff;
-      border: none;
-      border-radius: 20px;
-      padding: 14px 28px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s ease;
-      min-height: 56px;
-      min-width: 100px;
-      font-size: 1rem;
-    }
-    #chat-send-btn:disabled {
-      background-color: #004e77;
-      cursor: not-allowed;
-    }
-    #chat-send-btn:hover:not(:disabled) {
-      background-color: #00a1ff;
-    }
-    /* Create group container */
-    #create-group-container {
-      padding: 12px 16px;
-      background-color: #004d7a;
-      border-top: 1px solid #0077b6;
-      user-select: none;
-    }
-    #create-group-container label,
-    #create-group-container input,
-    #create-group-container button,
-    #create-group-container select {
-      display: block;
-      width: 100%;
-      margin-top: 6px;
-    }
-    #create-group-container input,
-    #create-group-container select {
-      border-radius: 10px;
-      border: 1px solid #0077b6;
-      background-color: #005a7c;
-      color: #ccefff;
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      outline-offset: 2px;
-      outline-color: #55aaff;
-      font-family: 'Inter', sans-serif;
-    }
-    #create-group-container select {
-      height: 120px;
-      resize: vertical;
-    }
-    #create-group-container button {
-      margin-top: 12px;
-      padding: 10px 16px;
-      border-radius: 14px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      background-color: #0096c7;
-      color: #d0f0fd;
-      transition: background-color 0.25s ease;
-      user-select: none;
-    }
-    #create-group-container button:hover {
-      background-color: #00b0ff;
-    }
-    /* Responsive */
-    @media (max-width: 1100px) {
-      nav.side-menu {
-        width: 220px;
-        padding: 20px 12px;
+      /* Reset and basics */
+      *, *::before, *::after {
+        box-sizing: border-box;
       }
-      section.content-area {
-        padding: 16px 18px;
-      }
-    }
-    @media (max-width: 768px) {
-      main {
+      
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #002538 0%, #004661 100%);
+        color: #cce7ff;
+        display: flex;
         flex-direction: column;
-        overflow: auto;
+        height: 100vh;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-      nav.side-menu {
-        width: 100%;
-        border-right: none;
+      
+      /* Header */
+      header {
+        background-color: rgba(0, 53, 81, 0.85);
+        padding: 12px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         border-bottom: 2px solid #006280;
-        flex-direction: row;
-        padding: 12px;
-        gap: 8px;
-        overflow-x: auto;
+        user-select: none;
+        z-index: 1100;
+        height: 64px;
+        flex-shrink: 0;
+        backdrop-filter: saturate(180%) blur(10px);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        position: sticky;
+        top: 0;
+        transition: background-color 0.3s ease;
+      }
+      header:hover {
+        background-color: rgba(0, 53, 81, 0.95);
+      }
+      header h1 {
+        font-weight: 800;
+        font-size: 1.6rem;
+        color: #70c9f9;
+        letter-spacing: 0.05em;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      }
+      header button, #nav-chat-toggle {
+        background: #0077b6;
+        color: #d0f0fd;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s ease;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 119, 182, 0.5);
+        will-change: transform, box-shadow;
+      }
+      header button:hover, #nav-chat-toggle:hover {
+        background-color: #0096c7;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 150, 199, 0.6);
+      }
+      #nav-chat-toggle .material-icons {
+        font-size: 20px;
+        user-select: none;
+        pointer-events: none;
+      }
+      
+      /* Layout */
+      main {
+        display: flex;
+        flex: 1 1 auto;
+        overflow: hidden;
+        position: relative;
+        z-index: 0;
+        height: calc(100vh - 64px);
+      }
+      
+      /* Sidebar Navigation */
+      nav.side-menu {
+        width: 280px;
+        background: rgba(0, 76, 115, 0.75);
+        display: flex;
+        flex-direction: column;
+        padding: 24px 16px;
+        border-right: 2px solid #006280;
+        z-index: 0;
+        flex-shrink: 0;
+        backdrop-filter: saturate(180%) blur(10px);
+        box-shadow: inset -4px 0 6px -3px rgba(0,0,0,0.5);
+        transition: width 0.3s ease;
+      }
+      nav.side-menu h2 {
+        margin: 0 0 16px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #a3d2f3;
+        user-select: none;
+        border-bottom: 1px solid #006280;
+        padding-bottom: 12px;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.3);
       }
       nav.side-menu button.tab-btn {
-        flex: none;
-        margin-bottom: 0;
-        padding: 10px 14px;
-        font-size: 0.9rem;
-        white-space: nowrap;
+        background: transparent;
+        border: none;
+        color: #cce7ff;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 12px 8px;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        transition: background-color 0.25s ease, box-shadow 0.25s ease;
+        user-select: none;
+        box-shadow: inset 0 0 0 1px transparent;
+        will-change: background-color, box-shadow;
       }
+      nav.side-menu button.tab-btn.active,
+      nav.side-menu button.tab-btn:hover {
+        background-color: #0077b6;
+        color: #f0f9ff;
+        font-weight: 700;
+        box-shadow: 0 4px 14px rgba(0, 119, 182, 0.5);
+      }
+      
+      /* Main Content Area */
       section.content-area {
-        border-left: none;
-        padding: 16px 12px;
+        flex: 1 1 auto;
+        position: relative;
+        overflow-y: auto;
+        padding: 24px;
+        background: rgba(0, 51, 71, 0.85);
+        border-left: 2px solid #006280;
+        display: flex;
+        flex-direction: column;
+        z-index: 0;
+        transition: filter 0.3s ease;
+        min-width: 0;
+        backdrop-filter: saturate(180%) blur(12px);
+        box-shadow: inset 4px 0 6px -3px rgba(0,0,0,0.4);
+        border-radius: 0 16px 16px 0;
       }
-      #chat-panel {
+      section.content-area.dimmed {
+        filter: blur(3px) brightness(0.7);
+        pointer-events: none;
+        user-select: none;
+      }
+      section.content-area > h2 {
+        margin-top: 0;
+        font-weight: 800;
+        font-size: 1.8rem;
+        color: #8ed0f9;
+        user-select: none;
+        text-shadow: 0 1px 1px rgba(0, 68, 102, 0.8);
+      }
+      
+      /* Filter Section */
+      #filter-controls {
+        margin-bottom: 24px;
+        max-width: 720px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      #filter-input {
+        flex: 1 1 300px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #0077b6;
+        background: #005a7c;
+        color: #ccefff;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        outline-offset: 2px;
+        outline-color: #55aaff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: inset 0 2px 8px rgba(0, 120, 190, 0.5);
+      }
+      #filter-input:focus {
+        border-color: #55aaff;
+        box-shadow: 0 0 12px #55aaff;
+      }
+      #filter-input::placeholder {
+        color: #a0c5ef;
+        font-style: italic;
+      }
+      
+      /* Table Styles */
+      table {
         width: 100%;
-        height: 300px;
-        top: auto;
-        bottom: 0;
-        border-left: none;
-        border-top: 2px solid #006280;
-        transform: translateY(100%);
-        transition: transform 0.3s ease;
+        border-collapse: collapse;
+        margin-top: 12px;
+        font-size: 0.95rem;
+        table-layout: fixed;
+        word-wrap: break-word;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      thead {
+        background: linear-gradient(135deg, #0077b6, #004c73);
+        color: #c7e0ff;
+        font-weight: 700;
+      }
+      thead th {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 2px solid #0096c7;
+        white-space: nowrap;
+        text-shadow: 0 1px 0 rgba(0, 50, 80, 0.7);
+      }
+      tbody tr:nth-child(odd) {
+        background-color: rgba(0, 72, 90, 0.85);
+      }
+      tbody tr:nth-child(even) {
+        background-color: rgba(0, 91, 123, 0.85);
+      }
+      tbody td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(0, 107, 166, 0.7);
+        color: #cce7ff;
+        vertical-align: middle;
+        word-break: break-word;
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      tbody tr:hover {
+        background-color: #0077b6;
+        cursor: default;
+      }
+      
+      /* Buttons in tables */
+      button.action-btn {
+        padding: 6px 14px;
+        border-radius: 10px;
+        border: none;
+        background-color: #0077b6;
+        color: #d0f0fd;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        user-select: none;
+        margin-right: 6px;
+        min-width: 72px;
+        box-shadow: 0 2px 8px rgba(0, 119, 182, 0.6);
+        will-change: background-color, box-shadow;
+      }
+      button.action-btn:hover:not(:disabled) {
+        background-color: #0096c7;
+        box-shadow: 0 4px 14px rgba(0, 150, 199, 0.8);
+      }
+      button.action-btn:disabled {
+        background-color: #00465a;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      
+      /* Forms for Add and Update */
+      form.item-form {
+        max-width: 680px;
+        background: rgba(0, 69, 90, 0.75);
+        border-radius: 16px;
+        padding: 28px 32px;
+        margin-bottom: 40px;
+        box-shadow: 0 0 20px rgba(0,110,160,0.9);
+        color: #cde6f1;
+        backdrop-filter: saturate(180%) blur(12px);
+        border: 1px solid #0077b6;
+        transition: box-shadow 0.3s ease;
+      }
+      form.item-form:hover {
+        box-shadow: 0 0 28px rgba(0,140,220,0.9);
+      }
+      form.item-form label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        user-select: none;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+      }
+      form.item-form input[type="text"],
+      form.item-form input[type="number"],
+      form.item-form textarea,
+      form.item-form select {
+        width: 100%;
+        padding: 10px 14px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 1px solid #0077b6;
+        background-color: #005a7c;
+        color: #d6eafc;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        resize: vertical;
+        outline-offset: 2px;
+        outline-color: #55aaff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        box-shadow: inset 0 2px 8px rgba(0, 120, 190, 0.5);
+        will-change: border-color, box-shadow, background-color;
+      }
+      form.item-form input[type="text"]:focus,
+      form.item-form input[type="number"]:focus,
+      form.item-form textarea:focus,
+      form.item-form select:focus {
+        border-color: #55aaff;
+        background-color: #006791;
+        box-shadow: 0 0 12px #55aaff;
+      }
+      form.item-form input[type="file"] {
+        margin-top: 6px;
+        margin-bottom: 20px;
+        color: #cce7ff;
+      }
+      form.item-form button {
+        background-color: #0096c7;
+        color: #d0f0fd;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.25s ease, box-shadow 0.25s ease;
+        user-select: none;
+        font-size: 1rem;
+        min-height: 44px;
+        min-width: 120px;
+        box-shadow: 0 4px 18px rgba(0, 150, 215, 0.8);
+        will-change: background-color, box-shadow;
+      }
+      form.item-form button:hover:not(:disabled) {
+        background-color: #00b0ff;
+        box-shadow: 0 8px 24px rgba(0, 180, 255, 0.9);
+      }
+      form.item-form button:disabled {
+        background-color: #005b81;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      
+      /* Image preview styling */
+      .image-preview {
+        margin-bottom: 16px;
+        border-radius: 12px;
+        max-width: 180px;
+        max-height: 140px;
+        object-fit: contain;
+        border: 1px solid #0077b6;
+        box-shadow: 0 0 12px rgba(0, 127, 255, 0.6);
+        user-select: none;
+        transition: box-shadow 0.3s ease;
+      }
+      .image-preview:hover {
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.9);
+      }
+      
+      /* --- CHAT PANEL --- */
+      #chat-panel {
+        position: fixed;
+        top: 64px;
+        right: 0;
+        width: 400px;
+        height: calc(100% - 64px);
+        background-color: rgba(0, 63, 97, 0.85);
+        border-left: 2px solid #006280;
+        display: flex;
+        flex-direction: column;
+        z-index: 1200;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+        box-shadow: -4px 0 16px rgba(0,0,0,0.6);
+        user-select: none;
+        font-size: 0.9rem;
+        color: #cce7ff;
+        min-width: 320px;
+        max-width: 480px;
+        backdrop-filter: saturate(180%) blur(16px);
+        border-radius: 0 0 0 16px;
       }
       #chat-panel.open {
-        transform: translateY(0);
+        transform: translateX(0);
       }
-      #chat-body {
-        flex-direction: column;
-      }
-      #chat-users-list {
-        width: 100%;
-        height: 80px;
-        border-right: none;
+      #chat-panel-header {
+        height: 56px;
+        background-color: rgba(0, 77, 122, 0.9);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
         border-bottom: 1px solid #0077b6;
-        flex-direction: row;
-        overflow-x: auto;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #85d2ff;
+        user-select: none;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+        border-radius: 0 0 16px 0;
+        box-shadow: 0 4px 12px rgba(0, 102, 153, 0.4);
+      }
+      #chat-panel-header button.close-chat-btn {
+        background: transparent;
+        border: none;
+        color: #85d2ff;
+        font-size: 28px;
+        cursor: pointer;
+        user-select: none;
+        transition: color 0.3s ease;
+      }
+      #chat-panel-header button.close-chat-btn:hover {
+        color: #ccefff;
+      }
+      
+      #chat-body {
+        flex: 1 1 auto;
+        display: flex;
+        height: 100%;
+        overflow: hidden;
+        min-width: 0;
+      }
+      
+      /* Users list */
+      #chat-users-list {
+        width: 180px;
+        background-color: rgba(0, 85, 122, 0.85);
+        border-right: 1px solid #0077b6;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        padding: 8px 0;
+        margin: 0;
+        user-select: none;
+        backdrop-filter: saturate(180%) blur(10px);
+        box-shadow: inset -3px 0 6px -2px rgba(0,0,0,0.6);
+        border-radius: 0 0 0 16px;
+      }
+      #chat-users-list h3 {
+        margin: 0 0 8px 16px;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #a9d8ff;
+        border-bottom: 1px solid #0077b6;
+        padding-bottom: 8px;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.4);
       }
       #chat-users-list ul {
-        flex-direction: row;
+        list-style: none;
+        margin: 0; padding: 0;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        min-width: 0;
       }
       #chat-users-list li {
-        border-bottom: none;
-        border-right: 1px solid #0077b6;
-        padding: 10px 8px;
+        padding: 10px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #0077b6;
+        color: #cce7ff;
+        user-select: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: background-color 0.25s ease, color 0.25s ease;
+        border-radius: 8px;
       }
-      #chat-users-list li:last-child {
-        border-right: none;
+      #chat-users-list li.selected,
+      #chat-users-list li:hover {
+        background-color: #0077b6;
+        font-weight: 700;
+        color: #fff;
+        box-shadow: 0 0 8px #0096c7;
       }
+      #chat-users-list li .material-icons {
+        font-size: 18px;
+        color: #b3d8ff;
+        user-select: none;
+        align-self: flex-start;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+      }
+      #chat-users-list li .contact-email {
+        font-size: 0.8rem;
+        color: #d0e9ff;
+        user-select: none;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      /* Chat messages area */
       #chat-messages-area {
         flex: 1 1 auto;
-        height: calc(100% - 80px);
+        display: flex;
+        flex-direction: column;
+        background-color: rgba(1, 80, 131, 0.9);
+        color: #e0f0ff;
+        padding: 12px 16px;
+        overflow: hidden;
+        user-select: text;
+        min-width: 0;
+        max-width: 100%;
+        border-radius: 0 16px 16px 0;
+        box-shadow: inset -3px 0 12px rgba(0,0,0,0.4);
+        backdrop-filter: saturate(180%) blur(12px);
       }
+      #chat-messages-header {
+        font-weight: 700;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #0173b1;
+        padding-bottom: 4px;
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        color: #aad6ff;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+      }
+      #delete-chat-room-btn {
+        background:#a92727;
+        color:#fff;
+        border:none;
+        border-radius:10px;
+        padding:4px 10px;
+        font-size:0.8rem;
+        cursor:pointer;
+        display:none;
+        user-select:none;
+        flex-shrink: 0;
+        transition: background-color 0.25s ease;
+      }
+      #delete-chat-room-btn:hover {
+        background-color:#c43333;
+      }
+      #chat-messages-list {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-right: 8px;
+        min-width: 0;
+      }
+      #chat-messages-list::-webkit-scrollbar {
+        width: 8px;
+      }
+      #chat-messages-list::-webkit-scrollbar-thumb {
+        background-color: #55aaff;
+        border-radius: 4px;
+      }
+      
+      /* Chat message bubbles */
+      .chat-message {
+        max-width: 70%;
+        padding: 10px 14px;
+        border-radius: 14px;
+        word-wrap: break-word;
+        background-color: #0173b1;
+        box-shadow: 0 2px 6px rgba(0, 90, 140, 0.7);
+        color: #d4e9f7;
+        font-size: clamp(0.8rem, 0.9vw, 1.1rem);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        word-break: break-word;
+        user-select: text;
+        transition: background-color 0.3s ease;
+      }
+      .chat-message.self {
+        align-self: flex-end;
+        background-color: #66b2ff;
+        box-shadow: 0 2px 8px rgba(50, 120, 210, 0.8);
+        color: #002433;
+      }
+      .chat-message .sender {
+        font-weight: 700;
+        color: #b9defb;
+        font-size: clamp(0.6rem, 0.8vw, 0.9rem);
+        user-select: none;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+      }
+      .chat-message .text {
+        white-space: pre-wrap;
+      }
+      .chat-message .meta {
+        font-size: clamp(0.6rem, 0.7vw, 0.8rem);
+        color: #a0c9f7;
+        text-align: right;
+        font-style: italic;
+        user-select: none;
+      }
+      
+      /* Chat input area */
       #chat-input-container {
         margin-top: 8px;
+        display: flex;
+        gap: 12px;
+        flex-shrink: 0;
       }
-    }
-        /* Profil section styling */
-    #profile-section {
-      display: none;
-      max-width: 720px;
-      background-color: #00455a;
-      border-radius: 16px;
-      padding: 32px;
-      color: #ccefff;
-      box-shadow: 0 0 20px rgba(0,110,160,0.6);
-    }
-    #profile-section.active {
-      display: block;
-    }
-    #profile-section label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 6px;
-      user-select: none;
-    }
-    #profile-section input[type="text"],
-    #profile-section input[type="email"],
-    #profile-section input[type="date"],
-    #profile-section select,
-    #profile-section textarea {
-      width: 100%;
-      padding: 10px 14px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      border: 1px solid #0077b6;
-      background-color: #005a7c;
-      color: #d6eafc;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
-      outline-offset: 2px;
-      outline-color: #55aaff;
-      transition: border-color 0.3s ease;
-    }
-    #profile-section button {
-      background-color: #0096c7;
-      color: #d0f0fd;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-      user-select: none;
-      font-size: 1rem;
-      min-height: 44px;
-      min-width: 120px;
-    }
-    #profile-section button:hover:not(:disabled) {
-      background-color: #00b0ff;
-    }
-    #profile-section button:disabled {
-      background-color: #005b81;
-      cursor: not-allowed;
-    }
-
+      #chat-input {
+        flex: 1 1 auto;
+        border-radius: 20px;
+        border: none;
+        padding: 12px 16px;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        resize: none;
+        min-height: 56px;
+        max-height: 120px;
+        outline-offset: 2px;
+        outline-color: #55aaff;
+        background-color: #00557a;
+        color: #ccefff;
+        white-space: pre-wrap;
+        box-shadow: inset 0 0 8px rgba(0,85,130,0.9);
+        transition: box-shadow 0.3s ease;
+      }
+      #chat-input:focus {
+        box-shadow: 0 0 12px #55aaff;
+      }
+      #chat-input::placeholder {
+        color: #a0c5ef;
+        font-style: italic;
+      }
+      #chat-send-btn {
+        background-color: #008ce6;
+        color: #cce7ff;
+        border: none;
+        border-radius: 20px;
+        padding: 14px 28px;
+        font-weight: 700;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        min-height: 56px;
+        min-width: 100px;
+        font-size: 1rem;
+        box-shadow: 0 4px 16px rgba(0, 140, 230, 0.7);
+        will-change: background-color, box-shadow;
+      }
+      #chat-send-btn:disabled {
+        background-color: #004e77;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      #chat-send-btn:hover:not(:disabled) {
+        background-color: #00a1ff;
+        box-shadow: 0 8px 24px rgba(0, 161, 255, 0.9);
+      }
+      
+      /* Create group container */
+      #create-group-container {
+        padding: 12px 16px;
+        background-color: rgba(0, 77, 122, 0.85);
+        border-top: 1px solid #0077b6;
+        user-select: none;
+        backdrop-filter: saturate(180%) blur(12px);
+        border-radius: 0 0 16px 16px;
+        box-shadow: inset 0 1px 4px rgba(0,116,189,0.7);
+      }
+      #create-group-container label,
+      #create-group-container input,
+      #create-group-container button,
+      #create-group-container select {
+        display: block;
+        width: 100%;
+        margin-top: 6px;
+        font-family: 'Inter', sans-serif;
+      }
+      #create-group-container input,
+      #create-group-container select {
+        border-radius: 10px;
+        border: 1px solid #0077b6;
+        background-color: #005a7c;
+        color: #ccefff;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        outline-offset: 2px;
+        outline-color: #55aaff;
+        box-shadow: inset 0 1px 6px rgba(0, 120, 190, 0.6);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      #create-group-container input:focus,
+      #create-group-container select:focus {
+        border-color: #55aaff;
+        box-shadow: 0 0 12px #55aaff;
+      }
+      #create-group-container select {
+        height: 120px;
+        resize: vertical;
+      }
+      #create-group-container button {
+        margin-top: 12px;
+        padding: 10px 16px;
+        border-radius: 14px;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+        background-color: #0096c7;
+        color: #d0f0fd;
+        transition: background-color 0.25s ease, box-shadow 0.25s ease;
+        user-select: none;
+        box-shadow: 0 4px 18px rgba(0, 150, 215, 0.8);
+        will-change: background-color, box-shadow;
+      }
+      #create-group-container button:hover {
+        background-color: #00b0ff;
+        box-shadow: 0 8px 24px rgba(0, 180, 255, 0.9);
+      }
+      
+      /* Responsive */
+      @media (max-width: 1100px) {
+        nav.side-menu {
+          width: 220px;
+          padding: 20px 12px;
+        }
+        section.content-area {
+          padding: 16px 18px;
+        }
+      }
+      @media (max-width: 768px) {
+        main {
+          flex-direction: column;
+          overflow: auto;
+        }
+        nav.side-menu {
+          width: 100%;
+          border-right: none;
+          border-bottom: 2px solid #006280;
+          flex-direction: row;
+          padding: 12px;
+          gap: 8px;
+          overflow-x: auto;
+          box-shadow: inset 0 -4px 8px -3px rgba(0,0,0,0.5);
+        }
+        nav.side-menu button.tab-btn {
+          flex: none;
+          margin-bottom: 0;
+          padding: 10px 14px;
+          font-size: 0.9rem;
+          white-space: nowrap;
+          box-shadow: none !important;
+        }
+        section.content-area {
+          border-left: none;
+          padding: 16px 12px;
+          border-radius: 0 0 16px 16px;
+        }
+        #chat-panel {
+          width: 100%;
+          height: 300px;
+          top: auto;
+          bottom: 0;
+          border-left: none;
+          border-top: 2px solid #006280;
+          transform: translateY(100%);
+          transition: transform 0.3s ease;
+          border-radius: 16px 16px 0 0;
+          box-shadow: 0 -4px 20px rgba(0,0,0,0.7);
+        }
+        #chat-panel.open {
+          transform: translateY(0);
+        }
+        #chat-body {
+          flex-direction: column;
+        }
+        #chat-users-list {
+          width: 100%;
+          height: 80px;
+          border-right: none;
+          border-bottom: 1px solid #0077b6;
+          flex-direction: row;
+          overflow-x: auto;
+          border-radius: 16px 16px 0 0;
+          box-shadow: inset 0 -3px 8px rgba(0,0,0,0.6);
+        }
+        #chat-users-list ul {
+          flex-direction: row;
+        }
+        #chat-users-list li {
+          border-bottom: none;
+          border-right: 1px solid #0077b6;
+          padding: 10px 8px;
+          border-radius: 12px;
+        }
+        #chat-users-list li:last-child {
+          border-right: none;
+        }
+        #chat-messages-area {
+          flex: 1 1 auto;
+          height: calc(100% - 80px);
+          border-radius: 0 0 16px 16px;
+        }
+        #chat-input-container {
+          margin-top: 8px;
+        }
+      }
+      
+      /* Profile section styling */
+      #profile-section {
+        display: none;
+        max-width: 720px;
+        background: rgba(0, 69, 90, 0.75);
+        border-radius: 16px;
+        padding: 32px;
+        color: #ccefff;
+        box-shadow: 0 0 20px rgba(0,110,160,0.9);
+        backdrop-filter: saturate(180%) blur(12px);
+        border: 1px solid #0077b6;
+        transition: box-shadow 0.3s ease;
+      }
+      #profile-section.active {
+        display: block;
+      }
+      #profile-section:hover {
+        box-shadow: 0 0 28px rgba(0,140,220,0.9);
+      }
+      #profile-section label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        user-select: none;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+      }
+      #profile-section input[type="text"],
+      #profile-section input[type="email"],
+      #profile-section input[type="date"],
+      #profile-section select,
+      #profile-section textarea {
+        width: 100%;
+        padding: 10px 14px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 1px solid #0077b6;
+        background-color: #005a7c;
+        color: #d6eafc;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        outline-offset: 2px;
+        outline-color: #55aaff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        box-shadow: inset 0 1px 8px rgba(0, 120, 190, 0.6);
+        will-change: border-color, box-shadow, background-color;
+      }
+      #profile-section input[type="text"]:focus,
+      #profile-section input[type="email"]:focus,
+      #profile-section input[type="date"]:focus,
+      #profile-section select:focus,
+      #profile-section textarea:focus {
+        border-color: #55aaff;
+        background-color: #006791;
+        box-shadow: 0 0 12px #55aaff;
+      }
+      #profile-section button {
+        background-color: #0096c7;
+        color: #d0f0fd;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.25s ease, box-shadow 0.25s ease;
+        user-select: none;
+        font-size: 1rem;
+        min-height: 44px;
+        min-width: 120px;
+        box-shadow: 0 4px 18px rgba(0, 150, 215, 0.8);
+        will-change: background-color, box-shadow;
+      }
+      #profile-section button:hover:not(:disabled) {
+        background-color: #00b0ff;
+        box-shadow: 0 8px 24px rgba(0, 180, 255, 0.9);
+      }
+      #profile-section button:disabled {
+        background-color: #005b81;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      
+      /* Status indicator dots for chat */
+      .status-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 6px;
+        flex-shrink: 0;
+        box-shadow: 0 0 6px rgba(0,0,0,0.6);
+      }
+      .status-online {
+        background-color: #4caf50;
+        box-shadow: 0 0 6px #4caf50;
+      }
+      .status-busy {
+        background-color: #fbc02d;
+        box-shadow: 0 0 6px #fbc02d;
+      }
+      .status-offline {
+        background-color: #9e9e9e;
+        box-shadow: 0 0 6px #9e9e9e;
+      }
+      
+      /* Scrollbar styling for side menu and chat users list */
+      nav.side-menu::-webkit-scrollbar,
+      #chat-users-list::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      nav.side-menu::-webkit-scrollbar-thumb,
+      #chat-users-list::-webkit-scrollbar-thumb {
+        background-color: rgba(85,170,255,0.6);
+        border-radius: 4px;
+      }
+      nav.side-menu:hover::-webkit-scrollbar-thumb,
+      #chat-users-list:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(85,170,255,0.9);
+      }
+      
+      /* Utility spacing scale based on 8px grid */
+      .mt-8 { margin-top: 8px; }
+      .mt-16 { margin-top: 16px; }
+      .mt-24 { margin-top: 24px; }
+      .mt-32 { margin-top: 32px; }
+      .mt-40 { margin-top: 40px; }
+      .mt-48 { margin-top: 48px; }
+      .mb-8 { margin-bottom: 8px; }
+      .mb-16 { margin-bottom: 16px; }
+      .mb-24 { margin-bottom: 24px; }
+      .mb-32 { margin-bottom: 32px; }
+      .mb-40 { margin-bottom: 40px; }
+          
   </style>
 </head>
 <body>
-
   <header role="banner" aria-label="Header ATLANTIS CORP">
     <h1>ATLANTIS CORP</h1>
     <div style="display:flex; align-items:center; gap:12px;">
@@ -776,11 +998,10 @@
           <button type="submit">Simpan Profil</button>
         </form>
       </section>
-      <!-- Dashboard display -->
+
       <section id="dashboard-section" role="tabpanel" aria-labelledby="btn-dashboard">
         <h2>Dashboard - Stok Barang</h2>
         
-        <!-- Filter Controls -->
         <section id="filter-controls" aria-label="Kontrol filter untuk pencarian barang">
           <input type="text" id="filter-input" placeholder="Cari berdasarkan jenis atau model..." aria-label="Filter barang berdasarkan jenis atau model" autocomplete="off" />
         </section>
@@ -885,6 +1106,7 @@
           <button type="submit" id="create-submit-btn">Tambah Barang</button>
         </form>
       </section>
+
     </section>
   </main>
 
@@ -934,391 +1156,422 @@
 
   <!-- SheetJS for Excel export -->
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBdKELW2FNsL7H1zB8R765czcDPaSYybdg",
-  authDomain: "atlantis-store.firebaseapp.com",
-  databaseURL: "https://atlantis-store-default-rtdb.firebaseio.com",
-  projectId: "atlantis-store",
-  storageBucket: "atlantis-store.appspot.com",
-  messagingSenderId: "566295949160",
-  appId: "1:566295949160:web:3ad8956c753d2f05a5f0dd",
-  measurementId: "G-F5RG09TFCK"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const database = firebase.database();
-const storage = firebase.storage();
-
-const logoutBtn = document.getElementById('logout-btn');
-const btnDashboard = document.getElementById('btn-dashboard');
-const btnUpdate = document.getElementById('btn-update');
-const btnCreate = document.getElementById('btn-create');
-const dashboardSection = document.getElementById('dashboard-section');
-const updateSection = document.getElementById('update-section');
-const createSection = document.getElementById('create-section');
-const aquaTechBody = document.getElementById('aqua-tech-table-body');
-const aquaThreadsBody = document.getElementById('aqua-threads-table-body');
-const downloadBtn = document.getElementById('download-data-btn');
-const updateSelect = document.getElementById('update-select');
-const updateStatusSelect = document.getElementById('update-status-select');
-const updateItemBtn = document.getElementById('update-item-btn');
-const createForm = document.getElementById('create-form');
-const createCategory = document.getElementById('create-category');
-const createType = document.getElementById('create-type');
-const createModel = document.getElementById('create-model');
-const createSerial = document.getElementById('create-serial');
-const createSpecs = document.getElementById('create-specs');
-const createPrice = document.getElementById('create-price');
-const createImage = document.getElementById('create-image');
-const createPic = document.getElementById('create-pic');
-const previewContainer = document.getElementById('preview-container');
-const filterInput = document.getElementById('filter-input');
-
-const navChatToggle = document.getElementById('nav-chat-toggle');
-const chatPanel = document.getElementById('chat-panel');
-const chatPanelCloseBtn = chatPanel.querySelector('.close-chat-btn');
-const chatUsersList = document.getElementById('chat-user-items');
-const createGroupInput = document.getElementById('new-group-name');
-const createGroupBtn = document.getElementById('create-group-btn');
-const chatMessagesHeader = document.getElementById('chat-messages-header');
-const chatMessagesList = document.getElementById('chat-messages-list');
-const chatInputForm = document.getElementById('chat-input-container');
-const chatInput = document.getElementById('chat-input');
-const chatSendBtn = document.getElementById('chat-send-btn');
-const contactsSelect = document.getElementById('select-add-contact');
-const addContactBtn = document.getElementById('btn-add-contact');
-const groupMembersSelect = document.getElementById('select-add-group-members');
-const deleteChatRoomBtn = document.getElementById('delete-chat-room-btn');
-const contactSearchInput = document.getElementById('contact-search');
-
-let chatActive = false;
-let currentUser = null;
-let itemsCache = { 'aqua-tech': {}, 'aqua-threads': {} };
-
-let chatRooms = {}; // roomId => {name, members, isGroup}
-let selectedRoomId = null;
-let allUsers = {}; // userId => {email,name,avatarUrl}
-
-function sanitize(str) {
-  const temp = document.createElement('div');
-  temp.textContent = str;
-  return temp.innerHTML;
-}
-function sanitizePlain(str) {
-  if (!str) return '';
-  return str.toString().replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
-}
-function generateItemCode() {
-  const now = new Date();
-  const pad = n => String(n).padStart(2, '0');
-  const ymd = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
-  const rand = Math.floor(Math.random() * 10000);
-  return `ATL-${ymd}-${rand.toString().padStart(4, '0')}`;
-}
-function showAlert(msg) { alert(msg); }
-function showError(msg) { console.error(msg); showAlert(msg); }
-
-function activateTab(tabBtn) {
-  [btnDashboard, btnUpdate, btnCreate].forEach(btn => {
-    const isActive = (btn === tabBtn);
-    btn.classList.toggle('active', isActive);
-    btn.setAttribute('aria-pressed', isActive.toString());
-  });
-  dashboardSection.hidden = (tabBtn !== btnDashboard);
-  updateSection.hidden = (tabBtn !== btnUpdate);
-  createSection.hidden = (tabBtn !== btnCreate);
-  if (!dashboardSection.hidden) dashboardSection.focus();
-  else if (!updateSection.hidden) updateSection.focus();
-  else if (!createSection.hidden) createSection.focus();
-}
-btnDashboard.addEventListener('click', () => activateTab(btnDashboard));
-btnUpdate.addEventListener('click', () => activateTab(btnUpdate));
-btnCreate.addEventListener('click', () => activateTab(btnCreate));
-
-auth.onAuthStateChanged(user => {
-  if (user) {
-    currentUser = user;
-    console.log("User logged in:", user.uid);
-    loadAllDataRealtime();
-    loadChatRooms();
-    loadAllUsers();
-  } else {
-    currentUser = null;
-    window.location.href = "login.html";
-  }
-});
-logoutBtn.addEventListener('click', () => { auth.signOut(); });
-
-function loadAllDataRealtime() {
-  itemsCache['aqua-tech'] = {};
-  itemsCache['aqua-threads'] = {};
-  aquaTechBody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
-  aquaThreadsBody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
-  updateSelect.innerHTML = '';
-
-  database.ref('items/aqua-tech').on('value', snap => {
-    itemsCache['aqua-tech'] = snap.val() || {};
-    renderFilteredItems();
-  });
-  database.ref('items/aqua-threads').on('value', snap => {
-    itemsCache['aqua-threads'] = snap.val() || {};
-    renderFilteredItems();
-  });
-}
-
-function createTableRow(code, item) {
-  const tr = document.createElement('tr');
-  function addColumn(text) {
-    const td = document.createElement('td');
-    td.textContent = text;
-    return td;
-  }
-  tr.appendChild(addColumn(code));
-  tr.appendChild(addColumn(item.type));
-  tr.appendChild(addColumn(item.model));
-  tr.appendChild(addColumn(item.serial));
-  tr.appendChild(addColumn(sanitizePlain(item.specs)));
-  tr.appendChild(addColumn(`Rp${Number(item.price).toLocaleString('id-ID')}`));
-  let statusText = '';
-  if(item.status === 'stock') statusText = 'Stock';
-  else if(item.status === 'sold') statusText = 'Terjual';
-  else if(item.status === 'lost') statusText = 'Hilang';
-  else statusText = item.status || '';
-  const statusTd = document.createElement('td');
-  statusTd.textContent = statusText;
-  if(statusText === 'Stock') { statusTd.style.color = '#4caf50'; statusTd.style.fontWeight = '700'; }
-  else if(statusText === 'Terjual') { statusTd.style.color = '#f44336'; statusTd.style.fontWeight = '700'; }
-  else if(statusText === 'Hilang') { statusTd.style.color = '#9e9e9e'; statusTd.style.fontWeight = '700'; }
-  tr.appendChild(statusTd);
-  tr.appendChild(addColumn(item.pic || 'Tidak ada PIC'));
-  const tdImg = document.createElement('td');
-  if(item.imageUrl){
-    const img = document.createElement('img');
-    img.src = item.imageUrl;
-    img.alt = `Gambar ${item.type} - ${item.model}`;
-    img.className = 'image-preview';
-    tr.style.verticalAlign = 'middle';
-    tdImg.appendChild(img);
-  } else {
-    tdImg.textContent = 'No Image';
-    tdImg.style.color = '#789bb7';
-  }
-  tr.appendChild(tdImg);
-  // Action buttons for update and delete
-  const tdActions = document.createElement('td');
-  tdActions.style.whiteSpace = 'nowrap';
-  // Delete stock item button
-  const delBtn = document.createElement('button');
-  delBtn.className = 'action-btn';
-  delBtn.textContent = 'Hapus';
-  delBtn.title = `Hapus item ${code}`;
-  delBtn.type = 'button';
-  delBtn.addEventListener('click', () => {
-    if(confirm(`Hapus barang dengan kode ${code}?\nTindakan ini tidak dapat dibatalkan.`)) {
-      let category = null;
-      if(itemsCache['aqua-tech'][code]) category = 'aqua-tech';
-      else if(itemsCache['aqua-threads'][code]) category = 'aqua-threads';
-      if(category){
-        database.ref(`items/${category}/${code}`).remove()
-        .then(() => alert(`Barang ${code} berhasil dihapus.`))
-        .catch(err => showError('Gagal menghapus barang: ' + err.message));
+    <script>
+    // Firebase initialization
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdKELW2FNsL7H1zB8R765czcDPaSYybdg",
+      authDomain: "atlantis-store.firebaseapp.com",
+      databaseURL: "https://atlantis-store-default-rtdb.firebaseio.com",
+      projectId: "atlantis-store",
+      storageBucket: "atlantis-store.appspot.com",
+      messagingSenderId: "566295949160",
+      appId: "1:566295949160:web:3ad8956c753d2f05a5f0dd",
+      measurementId: "G-F5RG09TFCK"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+    const storage = firebase.storage();
+    
+    // DOM Elements
+    const logoutBtn = document.getElementById('logout-btn');
+    const btnDashboard = document.getElementById('btn-dashboard');
+    const btnUpdate = document.getElementById('btn-update');
+    const btnCreate = document.getElementById('btn-create');
+    const btnProfile = document.getElementById('btn-profile');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const updateSection = document.getElementById('update-section');
+    const createSection = document.getElementById('create-section');
+    const profileSection = document.getElementById('profile-section');
+    const aquaTechBody = document.getElementById('aqua-tech-table-body');
+    const aquaThreadsBody = document.getElementById('aqua-threads-table-body');
+    const downloadBtn = document.getElementById('download-data-btn');
+    const updateSelect = document.getElementById('update-select');
+    const updateStatusSelect = document.getElementById('update-status-select');
+    const updateItemBtn = document.getElementById('update-item-btn');
+    const createForm = document.getElementById('create-form');
+    const createCategory = document.getElementById('create-category');
+    const createType = document.getElementById('create-type');
+    const createModel = document.getElementById('create-model');
+    const createSerial = document.getElementById('create-serial');
+    const createSpecs = document.getElementById('create-specs');
+    const createPrice = document.getElementById('create-price');
+    const createImage = document.getElementById('create-image');
+    const createPic = document.getElementById('create-pic');
+    const previewContainer = document.getElementById('preview-container');
+    const filterInput = document.getElementById('filter-input');
+    
+    const navChatToggle = document.getElementById('nav-chat-toggle');
+    const chatPanel = document.getElementById('chat-panel');
+    const chatPanelCloseBtn = chatPanel.querySelector('.close-chat-btn');
+    const chatUsersList = document.getElementById('chat-user-items');
+    const createGroupInput = document.getElementById('new-group-name');
+    const createGroupBtn = document.getElementById('create-group-btn');
+    const chatMessagesHeader = document.getElementById('chat-messages-header');
+    const chatMessagesList = document.getElementById('chat-messages-list');
+    const chatInputForm = document.getElementById('chat-input-container');
+    const chatInput = document.getElementById('chat-input');
+    const chatSendBtn = document.getElementById('chat-send-btn');
+    const contactsSelect = document.getElementById('select-add-contact');
+    const addContactBtn = document.getElementById('btn-add-contact');
+    const groupMembersSelect = document.getElementById('select-add-group-members');
+    const deleteChatRoomBtn = document.getElementById('delete-chat-room-btn');
+    const contactSearchInput = document.getElementById('contact-search');
+    
+    const fullNameInput = document.getElementById('full-name');
+    const nickNameInput = document.getElementById('nick-name');
+    const birthPlaceSelect = document.getElementById('birth-place');
+    const birthDateInput = document.getElementById('birth-date');
+    const ageDisplay = document.getElementById('age-display');
+    const addressInput = document.getElementById('address');
+    const passwordInput = document.getElementById('password');
+    const profileForm = document.getElementById('profile-form');
+    
+    let chatRooms = {};
+    let selectedRoomId = null;
+    let allUsers = {};
+    let itemsCache = { 'aqua-tech': {}, 'aqua-threads': {} };
+    let currentUser = null;
+    let userStatusDatabaseRef = null;
+    
+    // Utility functions
+    function sanitize(str) {
+      const temp = document.createElement('div');
+      temp.textContent = str;
+      return temp.innerHTML;
+    }
+    
+    function sanitizePlain(str) {
+      if (!str) return '';
+      return str.toString().replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
+    }
+    
+    function generateItemCode() {
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const ymd = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+      const rand = Math.floor(Math.random() * 10000);
+      return `ATL-${ymd}-${rand.toString().padStart(4, '0')}`;
+    }
+    
+    function showAlert(msg) { alert(msg); }
+    function showError(msg) { console.error(msg); showAlert(msg); }
+    
+    function activateTab(tabBtn) {
+      [btnProfile, btnDashboard, btnUpdate, btnCreate].forEach(btn => {
+        const isActive = (btn === tabBtn);
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', isActive.toString());
+      });
+      profileSection.hidden = (tabBtn !== btnProfile);
+      dashboardSection.hidden = (tabBtn !== btnDashboard);
+      updateSection.hidden = (tabBtn !== btnUpdate);
+      createSection.hidden = (tabBtn !== btnCreate);
+      if (!profileSection.hidden) profileSection.focus();
+      else if (!dashboardSection.hidden) dashboardSection.focus();
+      else if (!updateSection.hidden) updateSection.focus();
+      else if (!createSection.hidden) createSection.focus();
+    }
+    
+    btnProfile.addEventListener('click', () => activateTab(btnProfile));
+    btnDashboard.addEventListener('click', () => activateTab(btnDashboard));
+    btnUpdate.addEventListener('click', () => activateTab(btnUpdate));
+    btnCreate.addEventListener('click', () => activateTab(btnCreate));
+    
+    // Firebase auth state listener
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        currentUser = user;
+        loadAllDataRealtime();
+        loadChatRooms();
+        loadAllUsers();
+        setupUserPresence();
+        loadUserProfile();
       } else {
-        alert('Barang tidak ditemukan atau telah dihapus.');
-      }
-    }
-  });
-  tdActions.appendChild(delBtn);
-  tr.appendChild(tdActions);
-  return tr;
-}
-
-function populateUpdateSelectAll() {
-  const allOptions = [];
-  ['aqua-tech', 'aqua-threads'].forEach(category => {
-    const items = itemsCache[category];
-    if(!items) return;
-    Object.entries(items).forEach(([code, item]) => {
-      allOptions.push({code, label: `[${category.toUpperCase()}] ${code} - ${item.model}`});
-    });
-  });
-  updateSelect.innerHTML = '<option value="" disabled selected>Pilih barang yang akan diupdate</option>';
-  allOptions.forEach(opt => {
-    const optionElem = document.createElement('option');
-    optionElem.value = opt.code;
-    optionElem.textContent = opt.label;
-    updateSelect.appendChild(optionElem);
-  });
-}
-
-updateItemBtn.addEventListener('click', () => {
-  const selectedCode = updateSelect.value;
-  const newStatus = updateStatusSelect.value;
-  if(!selectedCode) { showAlert('Pilih barang yang ingin diupdate statusnya.'); return; }
-  if(!newStatus) { showAlert('Pilih status baru.'); return; }
-  let foundCategory = null;
-  if(itemsCache['aqua-tech'] && itemsCache['aqua-tech'][selectedCode]) foundCategory = 'aqua-tech';
-  else if(itemsCache['aqua-threads'] && itemsCache['aqua-threads'][selectedCode]) foundCategory = 'aqua-threads';
-  if(!foundCategory) { showAlert('Barang tidak ditemukan.'); return; }
-  database.ref(`items/${foundCategory}/${selectedCode}/status`).set(newStatus)
-  .then(() => {
-    showAlert(`Status barang ${selectedCode} berhasil diupdate menjadi ${newStatus}.`);
-    updateSelect.value = '';
-    updateStatusSelect.value = '';
-  })
-  .catch(err => { showError('Gagal update status: ' + err.message); });
-});
-
-createImage.addEventListener('change', () => {
-  previewContainer.innerHTML = '';
-  if(createImage.files.length === 0) return;
-  const file = createImage.files[0];
-  if(file.size > 2*1024*1024) {
-    showAlert('Ukuran gambar maksimal 2 MB.');
-    createImage.value = '';
-    return;
-  }
-  const img = document.createElement('img');
-  img.className = 'image-preview';
-  img.alt = 'Preview Gambar Barang Baru';
-  img.src = URL.createObjectURL(file);
-  previewContainer.appendChild(img);
-});
-
-createForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const category = createCategory.value;
-  const type = createType.value.trim();
-  const model = createModel.value.trim();
-  const serial = createSerial.value.trim();
-  const specs = createSpecs.value.trim();
-  const priceRaw = createPrice.value.trim();
-  const price = Number(priceRaw);
-  const picValue = createPic.value.trim();
-  if(!category || !type || !model || !serial || !specs || !priceRaw || isNaN(price) || price < 0 || !picValue) {
-    showAlert('Mohon isi semua data dengan benar, termasuk PIC.');
-    return;
-  }
-  const submitBtn = createForm.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Menyimpan...';
-  const itemCode = generateItemCode();
-  const newItem = {
-    type, model, serial, specs, price,
-    status:'stock',
-    imageUrl:null,
-    createdAt: new Date().toISOString(),
-    pic: picValue
-  };
-  if(createImage.files.length > 0) {
-    const file = createImage.files[0];
-    const ext = file.name.split('.').pop();
-    const storageRef = storage.ref(`item-images/${itemCode}.${ext}`);
-    storageRef.put(file)
-      .then(snapshot => snapshot.ref.getDownloadURL())
-      .then(url => {
-        newItem.imageUrl = url;
-        return database.ref(`items/${category}/${itemCode}`).set(newItem);
-      })
-      .then(() => {
-        showAlert(`Barang baru dengan kode ${itemCode} berhasil ditambahkan.`);
-        createForm.reset();
-        previewContainer.innerHTML = '';
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Tambah Barang';
-      })
-      .catch(err => {
-        showError('Gagal menambahkan barang: ' + err.message);
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Tambah Barang';
-      });
-  } else {
-    database.ref(`items/${category}/${itemCode}`).set(newItem)
-      .then(() => {
-        showAlert(`Barang baru dengan kode ${itemCode} berhasil ditambahkan.`);
-        createForm.reset();
-        previewContainer.innerHTML = '';
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Tambah Barang';
-      })
-      .catch(err => {
-        showError('Gagal menambahkan barang: ' + err.message);
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Tambah Barang';
-      });
-  }
-});
-
-downloadBtn.addEventListener('click', () => {
-  const workbook = XLSX.utils.book_new();
-  function addSheetFromItems(category, sheetName) {
-    const items = itemsCache[category];
-    if(!items) return;
-    const rows = [];
-    rows.push(['Kode Barang','Kategori','Jenis Barang','Model/Merk','Serial Number','Spesifikasi','Harga Beli (Rp)','Status','PIC','Tanggal Dibuat']);
-    Object.entries(items).forEach(([code, item]) => {
-      rows.push([
-        code,
-        category === 'aqua-tech' ? 'Aqua Tech' : 'Aqua Threads',
-        item.type,
-        item.model,
-        item.serial,
-        item.specs,
-        item.price,
-        item.status,
-        item.pic || '',
-        item.createdAt ? new Date(item.createdAt).toLocaleString('id-ID') : ''
-      ]);
-    });
-    const ws = XLSX.utils.aoa_to_sheet(rows);
-    XLSX.utils.book_append_sheet(workbook, ws, sheetName);
-  }
-  addSheetFromItems('aqua-tech', 'AquaTech');
-  addSheetFromItems('aqua-threads', 'AquaThreads');
-  XLSX.writeFile(workbook, 'AtlantisCorp_DataBarang_'+new Date().toISOString().slice(0,10)+'.xlsx');
-});
-
-function renderFilteredItems() {
-  const filterValue = filterInput.value.toLowerCase();
-  ['aqua-tech','aqua-threads'].forEach(category => {
-    const tbody = (category === 'aqua-tech') ? aquaTechBody : aquaThreadsBody;
-    const items = itemsCache[category];
-    tbody.innerHTML = '';
-    if(!items || Object.keys(items).length === 0) {
-      tbody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Tidak ada data.</td></tr>';
-      return;
-    }
-    let filteredCount = 0;
-    Object.entries(items).forEach(([code, item]) => {
-      if(item.type.toLowerCase().includes(filterValue) || item.model.toLowerCase().includes(filterValue)){
-        tbody.appendChild(createTableRow(code, item));
-        filteredCount++;
+        currentUser = null;
+        window.location.href = "login.html";
       }
     });
-    if(filteredCount === 0) {
-      tbody.innerHTML = '<tr><td colspan="10" style="color:#ff6a6a; text-align:center;">Tidak ada data yang sesuai filter.</td></tr>';
+    
+    logoutBtn.addEventListener('click', () => auth.signOut());
+    
+    // Load realtime data for items
+    function loadAllDataRealtime() {
+      itemsCache['aqua-tech'] = {};
+      itemsCache['aqua-threads'] = {};
+      aquaTechBody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
+      aquaThreadsBody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>';
+      updateSelect.innerHTML = '';
+    
+      database.ref('items/aqua-tech').on('value', snap => {
+        itemsCache['aqua-tech'] = snap.val() || {};
+        renderFilteredItems();
+      });
+      database.ref('items/aqua-threads').on('value', snap => {
+        itemsCache['aqua-threads'] = snap.val() || {};
+        renderFilteredItems();
+      });
     }
-  });
-  populateUpdateSelectAll();
-}
-filterInput.addEventListener('input', renderFilteredItems);
+    
+    // Create table row for an item
+    function createTableRow(code, item) {
+      const tr = document.createElement('tr');
+      function addColumn(text) {
+        const td = document.createElement('td');
+        td.textContent = text;
+        return td;
+      }
+      tr.appendChild(addColumn(code));
+      tr.appendChild(addColumn(item.type));
+      tr.appendChild(addColumn(item.model));
+      tr.appendChild(addColumn(item.serial));
+      tr.appendChild(addColumn(sanitizePlain(item.specs)));
+      tr.appendChild(addColumn(`Rp${Number(item.price).toLocaleString('id-ID')}`));
+      let statusText = '';
+      if (item.status === 'stock') statusText = 'Stock';
+      else if (item.status === 'sold') statusText = 'Terjual';
+      else if (item.status === 'lost') statusText = 'Hilang';
+      else statusText = item.status || '';
+      const statusTd = document.createElement('td');
+      statusTd.textContent = statusText;
+      if (statusText === 'Stock') { statusTd.style.color = '#4caf50'; statusTd.style.fontWeight = '700'; }
+      else if (statusText === 'Terjual') { statusTd.style.color = '#f44336'; statusTd.style.fontWeight = '700'; }
+      else if (statusText === 'Hilang') { statusTd.style.color = '#9e9e9e'; statusTd.style.fontWeight = '700'; }
+      tr.appendChild(statusTd);
+      tr.appendChild(addColumn(item.pic || 'Tidak ada PIC'));
+      const tdImg = document.createElement('td');
+      if (item.imageUrl) {
+        const img = document.createElement('img');
+        img.src = item.imageUrl;
+        img.alt = `Gambar ${item.type} - ${item.model}`;
+        img.className = 'image-preview';
+        tr.style.verticalAlign = 'middle';
+        tdImg.appendChild(img);
+      } else {
+        tdImg.textContent = 'No Image';
+        tdImg.style.color = '#789bb7';
+      }
+      tr.appendChild(tdImg);
+      // Action buttons for delete
+      const tdActions = document.createElement('td');
+      tdActions.style.whiteSpace = 'nowrap';
+      const delBtn = document.createElement('button');
+      delBtn.className = 'action-btn';
+      delBtn.textContent = 'Hapus';
+      delBtn.title = `Hapus item ${code}`;
+      delBtn.type = 'button';
+      delBtn.addEventListener('click', () => {
+        if (confirm(`Hapus barang dengan kode ${code}?\nTindakan ini tidak dapat dibatalkan.`)) {
+          let category = null;
+          if (itemsCache['aqua-tech'][code]) category = 'aqua-tech';
+          else if (itemsCache['aqua-threads'][code]) category = 'aqua-threads';
+          if (category) {
+            database.ref(`items/${category}/${code}`).remove()
+              .then(() => alert(`Barang ${code} berhasil dihapus.`))
+              .catch(err => showError('Gagal menghapus barang: ' + err.message));
+          } else {
+            alert('Barang tidak ditemukan atau telah dihapus.');
+          }
+        }
+      });
+      tdActions.appendChild(delBtn);
+      tr.appendChild(tdActions);
+      return tr;
+    }
+    
+    // Populate select list for update
+    function populateUpdateSelectAll() {
+      const allOptions = [];
+      ['aqua-tech', 'aqua-threads'].forEach(category => {
+        const items = itemsCache[category];
+        if (!items) return;
+        Object.entries(items).forEach(([code, item]) => {
+          allOptions.push({ code, label: `[${category.toUpperCase()}] ${code} - ${item.model}` });
+        });
+      });
+      updateSelect.innerHTML = '<option value="" disabled selected>Pilih barang yang akan diupdate</option>';
+      allOptions.forEach(opt => {
+        const optionElem = document.createElement('option');
+        optionElem.value = opt.code;
+        optionElem.textContent = opt.label;
+        updateSelect.appendChild(optionElem);
+      });
+    }
+    
+    updateItemBtn.addEventListener('click', () => {
+      const selectedCode = updateSelect.value;
+      const newStatus = updateStatusSelect.value;
+      if (!selectedCode) { showAlert('Pilih barang yang ingin diupdate statusnya.'); return; }
+      if (!newStatus) { showAlert('Pilih status baru.'); return; }
+      let foundCategory = null;
+      if (itemsCache['aqua-tech'] && itemsCache['aqua-tech'][selectedCode]) foundCategory = 'aqua-tech';
+      else if (itemsCache['aqua-threads'] && itemsCache['aqua-threads'][selectedCode]) foundCategory = 'aqua-threads';
+      if (!foundCategory) { showAlert('Barang tidak ditemukan.'); return; }
+      database.ref(`items/${foundCategory}/${selectedCode}/status`).set(newStatus)
+        .then(() => {
+          showAlert(`Status barang ${selectedCode} berhasil diupdate menjadi ${newStatus}.`);
+          updateSelect.value = '';
+          updateStatusSelect.value = '';
+        })
+        .catch(err => { showError('Gagal update status: ' + err.message); });
+    });
+    
+    // Image preview for create form
+    createImage.addEventListener('change', () => {
+      previewContainer.innerHTML = '';
+      if (createImage.files.length === 0) return;
+      const file = createImage.files[0];
+      if (file.size > 2 * 1024 * 1024) {
+        showAlert('Ukuran gambar maksimal 2 MB.');
+        createImage.value = '';
+        return;
+      }
+      const img = document.createElement('img');
+      img.className = 'image-preview';
+      img.alt = 'Preview Gambar Barang Baru';
+      img.src = URL.createObjectURL(file);
+      previewContainer.appendChild(img);
+    });
+    
+    // Handle create form submission
+    createForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const category = createCategory.value;
+      const type = createType.value.trim();
+      const model = createModel.value.trim();
+      const serial = createSerial.value.trim();
+      const specs = createSpecs.value.trim();
+      const priceRaw = createPrice.value.trim();
+      const price = Number(priceRaw);
+      const picValue = createPic.value.trim();
+      if (!category || !type || !model || !serial || !specs || !priceRaw || isNaN(price) || price < 0 || !picValue) {
+        showAlert('Mohon isi semua data dengan benar, termasuk PIC.');
+        return;
+      }
+      const submitBtn = createForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Menyimpan...';
+      const itemCode = generateItemCode();
+      const newItem = {
+        type, model, serial, specs, price,
+        status: 'stock',
+        imageUrl: null,
+        createdAt: new Date().toISOString(),
+        pic: picValue
+      };
+      if (createImage.files.length > 0) {
+        const file = createImage.files[0];
+        const ext = file.name.split('.').pop();
+        const storageRef = storage.ref(`item-images/${itemCode}.${ext}`);
+        storageRef.put(file)
+          .then(snapshot => snapshot.ref.getDownloadURL())
+          .then(url => {
+            newItem.imageUrl = url;
+            return database.ref(`items/${category}/${itemCode}`).set(newItem);
+          })
+          .then(() => {
+            showAlert(`Barang baru dengan kode ${itemCode} berhasil ditambahkan.`);
+            createForm.reset();
+            previewContainer.innerHTML = '';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Tambah Barang';
+          })
+          .catch(err => {
+            showError('Gagal menambahkan barang: ' + err.message);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Tambah Barang';
+          });
+      } else {
+        database.ref(`items/${category}/${itemCode}`).set(newItem)
+          .then(() => {
+            showAlert(`Barang baru dengan kode ${itemCode} berhasil ditambahkan.`);
+            createForm.reset();
+            previewContainer.innerHTML = '';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Tambah Barang';
+          })
+          .catch(err => {
+            showError('Gagal menambahkan barang: ' + err.message);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Tambah Barang';
+          });
+      }
+    });
+    
+    // Export data to Excel with SheetJS
+    downloadBtn.addEventListener('click', () => {
+      const workbook = XLSX.utils.book_new();
+      function addSheetFromItems(category, sheetName) {
+        const items = itemsCache[category];
+        if (!items) return;
+        const rows = [];
+        rows.push(['Kode Barang', 'Kategori', 'Jenis Barang', 'Model/Merk', 'Serial Number', 'Spesifikasi', 'Harga Beli (Rp)', 'Status', 'PIC', 'Tanggal Dibuat']);
+        Object.entries(items).forEach(([code, item]) => {
+          rows.push([
+            code,
+            category === 'aqua-tech' ? 'Aqua Tech' : 'Aqua Threads',
+            item.type,
+            item.model,
+            item.serial,
+            item.specs,
+            item.price,
+            item.status,
+            item.pic || '',
+            item.createdAt ? new Date(item.createdAt).toLocaleString('id-ID') : ''
+          ]);
+        });
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        XLSX.utils.book_append_sheet(workbook, ws, sheetName);
+      }
+      addSheetFromItems('aqua-tech', 'AquaTech');
+      addSheetFromItems('aqua-threads', 'AquaThreads');
+      XLSX.writeFile(workbook, 'AtlantisCorp_DataBarang_' + new Date().toISOString().slice(0, 10) + '.xlsx');
+    });
+    
+    // Filtering items with search input
+    function renderFilteredItems() {
+      const filterValue = filterInput.value.toLowerCase();
+      ['aqua-tech', 'aqua-threads'].forEach(category => {
+        const tbody = (category === 'aqua-tech') ? aquaTechBody : aquaThreadsBody;
+        const items = itemsCache[category];
+        tbody.innerHTML = '';
+        if (!items || Object.keys(items).length === 0) {
+          tbody.innerHTML = '<tr><td colspan="10" style="color:#8dbfef; text-align:center;">Tidak ada data.</td></tr>';
+          return;
+        }
+        let filteredCount = 0;
+        Object.entries(items).forEach(([code, item]) => {
+          if (item.type.toLowerCase().includes(filterValue) || item.model.toLowerCase().includes(filterValue)) {
+            tbody.appendChild(createTableRow(code, item));
+            filteredCount++;
+          }
+        });
+        if (filteredCount === 0) {
+          tbody.innerHTML = '<tr><td colspan="10" style="color:#ff6a6a; text-align:center;">Tidak ada data yang sesuai filter.</td></tr>';
+        }
+      });
+      populateUpdateSelectAll();
+    }
+    filterInput.addEventListener('input', renderFilteredItems);
+    
+    // Chat management code: rooms, messages, users, presence, and UI interactions
 
-// --- CHAT ROOM MANAGEMENT ---
 const chatRoomsRef = database.ref('chatRooms');
 const messagesRef = database.ref('messages');
 
+// Load chat rooms where current user is member
 function loadChatRooms() {
-  chatRoomsRef.orderByChild(`members/${currentUser.uid}`).equalTo(true).on('value', snap=>{
+  chatRoomsRef.orderByChild(`members/${currentUser.uid}`).equalTo(true).on('value', snap => {
     chatRooms = snap.val() || {};
     renderChatRooms();
   });
 }
 
+// Render chat room list with current selection
 function renderChatRooms() {
   chatUsersList.innerHTML = '';
   const rooms = Object.entries(chatRooms);
-  if(rooms.length === 0){
+  if (rooms.length === 0) {
     const li = document.createElement('li');
     li.textContent = 'Tidak ada chat aktif';
     li.style.userSelect = 'none';
@@ -1328,33 +1581,36 @@ function renderChatRooms() {
   }
   rooms.forEach(([roomId, room]) => {
     const li = document.createElement('li');
-    li.setAttribute('role','option');
+    li.setAttribute('role', 'option');
     li.setAttribute('tabindex', '0');
     li.dataset.roomId = roomId;
-    // Icon for group or user
+
     const icon = document.createElement('span');
     icon.className = 'material-icons';
     icon.textContent = room.isGroup ? 'group' : 'person';
     li.appendChild(icon);
+
     let name = room.name;
-    if(!room.isGroup && room.name === 'Direct Chat'){
+    if (!room.isGroup && room.name === 'Direct Chat') {
       const membersIds = Object.keys(room.members || {});
       const otherId = membersIds.find(id => id !== currentUser.uid);
-      if(otherId && allUsers[otherId]){
-        name = allUsers[otherId].email || otherId.substring(0,8);
-      } else if(otherId){
-        name = otherId.substring(0,8);
+      if (otherId && allUsers[otherId]) {
+        name = allUsers[otherId].email || otherId.substring(0, 8);
+      } else if (otherId) {
+        name = otherId.substring(0, 8);
       }
     }
     const textNode = document.createTextNode(name);
     li.appendChild(textNode);
-    if(selectedRoomId === roomId) {
+
+    if (selectedRoomId === roomId) {
       li.classList.add('selected');
       chatUsersList.setAttribute('aria-activedescendant', li.id || '');
     }
+
     li.addEventListener('click', () => selectChatRoom(roomId));
     li.addEventListener('keydown', e => {
-      if(e.key === 'Enter' || e.key === ' ') {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         selectChatRoom(roomId);
       }
@@ -1363,7 +1619,8 @@ function renderChatRooms() {
   });
 }
 
-function clearChatArea(){
+// Clear chat area UI when no room selected
+function clearChatArea() {
   chatMessagesHeader.textContent = 'Pilih kontak untuk mulai chat';
   chatMessagesList.innerHTML = '';
   chatInputForm.hidden = true;
@@ -1373,23 +1630,24 @@ function clearChatArea(){
   deleteChatRoomBtn.style.display = 'none';
 }
 
+// Handle room selection: load messages & update UI
 function selectChatRoom(roomId) {
-  if(selectedRoomId === roomId) return;
+  if (selectedRoomId === roomId) return;
   selectedRoomId = roomId;
   renderChatRooms();
   loadChatMessages(roomId);
   deleteChatRoomBtn.style.display = 'inline-block';
-  // Scroll messages container into view for accessibility
   chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
 }
 
+// Load and listen for chat messages for a specific room
 function loadChatMessages(roomId) {
   chatMessagesList.innerHTML = '';
   chatInputForm.hidden = false;
   chatInput.value = '';
   chatSendBtn.disabled = true;
   const room = chatRooms[roomId];
-  if(room) {
+  if (room) {
     chatMessagesHeader.textContent = room.name || (room.isGroup ? 'Grup Chat' : 'Chat Pribadi');
   } else {
     chatMessagesHeader.textContent = 'Chat tidak ditemukan';
@@ -1400,41 +1658,47 @@ function loadChatMessages(roomId) {
   messagesRef.child(roomId).off();
   messagesRef.child(roomId).limitToLast(100).on('child_added', snap => {
     const msg = snap.val();
-    if(!msg) return;
+    if (!msg) return;
     addChatMessage(msg, msg.senderId === currentUser.uid);
   });
 }
 
+// Render individual chat message in the message list
 function addChatMessage(msg, isSelf) {
   const div = document.createElement('div');
   div.className = 'chat-message';
-  if(isSelf) div.classList.add('self');
+  if (isSelf) div.classList.add('self');
+
   const senderDiv = document.createElement('div');
   senderDiv.className = 'sender';
   senderDiv.textContent = msg.senderName || 'Admin';
   div.appendChild(senderDiv);
+
   const textDiv = document.createElement('div');
   textDiv.className = 'text';
   textDiv.textContent = msg.text;
   div.appendChild(textDiv);
+
   const meta = document.createElement('div');
   meta.className = 'meta';
   const time = new Date(msg.timestamp);
   meta.textContent = time.toLocaleTimeString('id-ID');
   div.appendChild(meta);
+
   chatMessagesList.appendChild(div);
   chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
 }
 
+// Handle chat message send
 chatInputForm.addEventListener('submit', e => {
   e.preventDefault();
-  if(!selectedRoomId){
+  if (!selectedRoomId) {
     showAlert('Pilih kontak/chat room dulu.');
     return;
   }
   const text = chatInput.value.trim();
-  if(!text) return;
-  if(!currentUser){
+  if (!text) return;
+  if (!currentUser) {
     showAlert('Silakan login ulang.');
     return;
   }
@@ -1456,26 +1720,22 @@ chatInputForm.addEventListener('submit', e => {
       chatSendBtn.disabled = false;
     });
 });
+
 chatInput.addEventListener('input', () => {
   chatSendBtn.disabled = chatInput.value.trim() === '';
 });
 
-navChatToggle.addEventListener('click', ()=>{
+// Toggle chat panel visibility
+navChatToggle.addEventListener('click', () => {
   chatPanel.classList.toggle('open');
   document.querySelector('.content-area').classList.toggle('dimmed', chatPanel.classList.contains('open'));
 });
-chatPanelCloseBtn.addEventListener('click', ()=>{
+chatPanelCloseBtn.addEventListener('click', () => {
   chatPanel.classList.remove('open');
   document.querySelector('.content-area').classList.remove('dimmed');
 });
 
-// Load all users from Firebase Authentication listUsers()
-// Because Firebase client SDK doesn't allow reading all users except by Admin SDK on server,
-// here we simulate by loading users list from 'users' node in Realtime Database, which you must maintain on register.
-
-// For demonstration, we update the 'users' node with user details on user creation,
-// including {email, name, avatarUrl (optional)}.
-
+// Load all users to populate contact lists
 const usersRef = database.ref('users');
 
 function loadAllUsers() {
@@ -1486,19 +1746,19 @@ function loadAllUsers() {
   });
 }
 
-// Populate contacts select box with all users except current user
+// Populate contacts select box with filtered users except self
 function populateContactsSelect() {
   contactsSelect.innerHTML = '';
   const searchTerm = contactSearchInput.value.trim().toLowerCase();
   Object.entries(allUsers).forEach(([uid, user]) => {
-    if(uid === currentUser.uid) return;
-    if(searchTerm && !((user.email||'').toLowerCase().includes(searchTerm) || (user.name||'').toLowerCase().includes(searchTerm))) return;
+    if (uid === currentUser.uid) return;
+    if (searchTerm && !((user.email || '').toLowerCase().includes(searchTerm) || (user.name || '').toLowerCase().includes(searchTerm))) return;
     const option = document.createElement('option');
     option.value = uid;
     option.textContent = user.email || user.name || uid;
     contactsSelect.appendChild(option);
   });
-  if(contactsSelect.options.length === 0){
+  if (contactsSelect.options.length === 0) {
     const option = document.createElement('option');
     option.disabled = true;
     option.textContent = 'Tidak ada kontak ditemukan';
@@ -1506,16 +1766,14 @@ function populateContactsSelect() {
   }
 }
 
-// Search input event for contacts
-contactSearchInput.addEventListener('input', () => {
-  populateContactsSelect();
-});
+// Search contacts realtime filtering
+contactSearchInput.addEventListener('input', populateContactsSelect);
 
 // Populate group members multiple select
 function populateGroupMembersSelect() {
   groupMembersSelect.innerHTML = '';
   Object.entries(allUsers).forEach(([uid, user]) => {
-    if(uid === currentUser.uid) return;
+    if (uid === currentUser.uid) return;
     const option = document.createElement('option');
     option.value = uid;
     option.textContent = user.email || user.name || uid;
@@ -1523,26 +1781,26 @@ function populateGroupMembersSelect() {
   });
 }
 
-// Add selected contact as a new or existing direct chat room
+// Add selected contact as direct chat or select existing
 addContactBtn.addEventListener('click', () => {
   const selectedUid = contactsSelect.value;
-  if(!selectedUid){
+  if (!selectedUid) {
     alert('Pilih kontak terlebih dahulu.');
     return;
   }
-  if(selectedUid === currentUser.uid){
+  if (selectedUid === currentUser.uid) {
     alert('Tidak dapat menambahkan diri sendiri.');
     return;
   }
   const rooms = Object.entries(chatRooms);
-  const existingRoom = rooms.find(([id, room])=>{
-    if(!room.isGroup){
+  const existingRoom = rooms.find(([id, room]) => {
+    if (!room.isGroup) {
       const members = Object.keys(room.members || {});
       return members.includes(currentUser.uid) && members.includes(selectedUid);
     }
     return false;
   });
-  if(existingRoom){
+  if (existingRoom) {
     alert('Sudah ada chat dengan kontak ini.');
     selectChatRoom(existingRoom[0]);
     return;
@@ -1569,21 +1827,21 @@ addContactBtn.addEventListener('click', () => {
 // Create group chat with selected members + current user
 createGroupBtn.addEventListener('click', () => {
   const name = createGroupInput.value.trim();
-  if(name.length < 3){
+  if (name.length < 3) {
     alert('Nama grup minimal 3 karakter.');
     return;
   }
   const selectedOptions = Array.from(groupMembersSelect.selectedOptions);
-  if(selectedOptions.length === 0){
+  if (selectedOptions.length === 0) {
     alert('Pilih anggota grup minimal satu.');
     return;
   }
-  if(!currentUser){
+  if (!currentUser) {
     alert('Silakan login ulang.');
     return;
   }
   const roomId = database.ref('chatRooms').push().key;
-  if(!roomId){
+  if (!roomId) {
     showError('Gagal membuat grup.');
     return;
   }
@@ -1606,15 +1864,15 @@ createGroupBtn.addEventListener('click', () => {
     .catch(err => showError('Gagal membuat grup: ' + err.message));
 });
 
-// Delete chat room and its messages
+// Delete chat room and messages with confirmation
 deleteChatRoomBtn.addEventListener('click', () => {
-  if(!selectedRoomId) return;
+  if (!selectedRoomId) return;
   const room = chatRooms[selectedRoomId];
-  if(!room) {
+  if (!room) {
     alert('Chat room tidak ditemukan.');
     return;
   }
-  if(!confirm(`Hapus chat room "${room.name || 'Chat'}"? Ini akan menghapus semua pesannya.`)) return;
+  if (!confirm(`Hapus chat room "${room.name || 'Chat'}"? Ini akan menghapus semua pesannya.`)) return;
   chatRoomsRef.child(selectedRoomId).remove()
     .then(() => {
       messagesRef.child(selectedRoomId).remove();
@@ -1626,53 +1884,40 @@ deleteChatRoomBtn.addEventListener('click', () => {
     .catch(err => showError('Gagal menghapus chat room: ' + err.message));
 });
 
-  // Populate Negara pilihan (contoh sederhana)
-const countries = [
-  {code: 'ID', name: 'Indonesia'},
-  {code: 'MY', name: 'Malaysia'},
-  {code: 'SG', name: 'Singapore'},
-  {code: 'US', name: 'Amerika Serikat'},
-  {code: 'JP', name: 'Jepang'},
-  {code: 'KR', name: 'Korea Selatan'}
-  // ...tambahkan sesuai kebutuhan
-];
-function populateCountries() {
-  countries.forEach(c => {
-    const option = document.createElement('option');
-    option.value = c.name;
-    option.textContent = c.name;
-    birthPlaceSelect.appendChild(option);
+// Presence system setup for user
+function setupUserPresence() {
+  if (!currentUser) return;
+  const uid = currentUser.uid;
+  userStatusDatabaseRef = database.ref(`/status/${uid}`);
+
+  // Status objects
+  const isOfflineForDatabase = {
+    state: 'offline',
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
+  };
+  const isOnlineForDatabase = {
+    state: 'online',
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
+  };
+
+  const connectedRef = database.ref('.info/connected');
+  connectedRef.on('value', snapshot => {
+    if (snapshot.val() === false) {
+      userStatusDatabaseRef.set(isOfflineForDatabase);
+      return;
+    }
+    userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(() => {
+      userStatusDatabaseRef.set(isOnlineForDatabase);
+    });
   });
 }
-populateCountries();
 
-// Hitung umur otomatis dari tanggal lahir
-birthDateInput.addEventListener('change', () => {
-  const birthDate = new Date(birthDateInput.value);
-  if (isNaN(birthDate.getTime())) {
-    ageDisplay.textContent = '';
-    return;
-  }
-  const age = calculateAge(birthDate);
-  ageDisplay.textContent = `Umur: ${age} tahun`;
-});
-
-function calculateAge(birthDate) {
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-  if(m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-  return age;
-}
-
-// Load user profile data from Realtime Database
-function loadUser Profile() {
-  if (!currentUser ) return;
-  database.ref(`users/${currentUser .uid}`).once('value').then(snapshot => {
+// Load user profile data from database
+function loadUserProfile() {
+  if (!currentUser) return;
+  database.ref(`users/${currentUser.uid}`).once('value').then(snapshot => {
     const data = snapshot.val();
-    if(data){
+    if (data) {
       fullNameInput.value = data.fullName || '';
       nickNameInput.value = data.nickName || '';
       birthPlaceSelect.value = data.birthPlace || '';
@@ -1683,10 +1928,32 @@ function loadUser Profile() {
   }).catch(console.error);
 }
 
-// Save profile data including optional password update
+// Calculate age from birth date
+function calculateAge(birthDate) {
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+// Calculate and display age when birth date changes
+birthDateInput.addEventListener('change', () => {
+  const birthDate = new Date(birthDateInput.value);
+  if (isNaN(birthDate.getTime())) {
+    ageDisplay.textContent = '';
+    return;
+  }
+  const age = calculateAge(birthDate);
+  ageDisplay.textContent = `Umur: ${age} tahun`;
+});
+
+// Save user profile form data and optionally update password
 profileForm.addEventListener('submit', e => {
   e.preventDefault();
-  if(!currentUser ) return alert('Silakan login ulang.');
+  if (!currentUser) return alert('Silakan login ulang.');
 
   const profileData = {
     fullName: fullNameInput.value.trim(),
@@ -1695,220 +1962,29 @@ profileForm.addEventListener('submit', e => {
     birthDate: birthDateInput.value,
     address: addressInput.value.trim()
   };
-  // Validate fields
-  if(!profileData.fullName || !profileData.birthPlace || !profileData.birthDate) {
+  // Validate required fields
+  if (!profileData.fullName || !profileData.birthPlace || !profileData.birthDate) {
     alert('Nama lengkap, tempat lahir, dan tanggal lahir wajib diisi.');
     return;
   }
 
-  // Simpan data profil ke database
-  database.ref(`users/${currentUser .uid}`).update(profileData)
+  database.ref(`users/${currentUser.uid}`).update(profileData)
     .then(() => {
       alert('Profil berhasil diperbarui.');
     })
     .catch(err => alert('Gagal memperbarui profil: ' + err.message));
 
-  // Update password jika diisi
   const newPassword = passwordInput.value.trim();
-  if(newPassword.length >= 6){
-    currentUser .updatePassword(newPassword).then(()=>{
+  if (newPassword.length >= 6) {
+    currentUser.updatePassword(newPassword).then(() => {
       alert('Password berhasil diperbarui.');
       passwordInput.value = '';
-    }).catch(err=>{
+    }).catch(err => {
       alert('Gagal memperbarui password: ' + err.message);
     });
   }
 });
-
-// User presence (online, busy, offline) management
-let userStatusDatabaseRef;
-function setupUser Presence() {
-  if (!currentUser ) return;
-  const uid = currentUser .uid;
-  userStatusDatabaseRef = database.ref(`/status/${uid}`);
-
-  // Firebase Realtime Database connections status
-  const isOfflineForDatabase = {
-    state: 'offline',
-    last_changed: firebase.database.ServerValue.TIMESTAMP,
-  };
-  const isOnlineForDatabase = {
-    state: 'online',
-    last_changed: firebase.database.ServerValue.TIMESTAMP,
-  };
-
-  const connectedRef = database.ref('.info/connected');
-  connectedRef.on('value', snapshot => {
-    if(snapshot.val() === false){
-      userStatusDatabaseRef.set(isOfflineForDatabase);
-      return;
-    }
-    userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(() => {
-      userStatusDatabaseRef.set(isOnlineForDatabase);
-    });
-  });
-}
-
-// Load all users for chat, including their presence status and profile name/email
-function loadAllUsers() {
-  database.ref('users').on('value', snap => {
-    allUsers = snap.val() || {};
-    updateUser ListWithStatus();
-    populateContactsSelect();
-    populateGroupMembersSelect();
-  });
-}
-
-// Populate Contacts and Group Members selects filtered by search
-function populateContactsSelect() {
-  contactsSelect.innerHTML = '';
-  const searchTerm = contactSearchInput.value.trim().toLowerCase();
-  Object.entries(allUsers).forEach(([uid, user]) => {
-    if(uid === currentUser .uid) return;
-    if(searchTerm && !((user.email||'').toLowerCase().includes(searchTerm) || (user.fullName||'').toLowerCase().includes(searchTerm))) return;
-    const option = document.createElement('option');
-    option.value = uid;
-    option.textContent = user.fullName || user.email || uid;
-    contactsSelect.appendChild(option);
-  });
-  if(contactsSelect.options.length === 0){
-    const option = document.createElement('option');
-    option.disabled = true;
-    option.textContent = 'Tidak ada kontak ditemukan';
-    contactsSelect.appendChild(option);
-  }
-}
-
-// Update user list with status icon
-function updateUser ListWithStatus() {
-  chatUsersList.innerHTML = '';
-  const rooms = Object.entries(chatRooms);
-  if(rooms.length === 0) {
-    const li = document.createElement('li');
-    li.textContent = 'Tidak ada chat aktif';
-    li.style.userSelect = 'none';
-    chatUsersList.appendChild(li);
-    clearChatArea();
-    return;
-  }
-  rooms.forEach(([roomId, room]) => {
-    const li = document.createElement('li');
-    li.setAttribute('role','option');
-    li.setAttribute('tabindex', '0');
-    li.dataset.roomId = roomId;
-
-    const icon = document.createElement('span');
-    icon.className = 'material-icons';
-    icon.textContent = room.isGroup ? 'group' : 'person';
-    li.appendChild(icon);
-
-    let name = room.name;
-    if(!room.isGroup && room.name === 'Direct Chat'){
-      const membersIds = Object.keys(room.members || {});
-      const otherId = membersIds.find(id => id !== currentUser .uid);
-      if(otherId && allUsers[otherId]){
-        name = allUsers[otherId].fullName || allUsers[otherId].email || otherId.substring(0,8);
-        
-        // Add status dot for user
-        const status = window.userStatuses && window.userStatuses[otherId];
-        const statusDot = document.createElement('span');
-        statusDot.classList.add('status-indicator');
-        if(status && status.state === 'online') statusDot.classList.add('status-online');
-        else if(status && status.state === 'busy') statusDot.classList.add('status-busy');
-        else statusDot.classList.add('status-offline');
-        li.prepend(statusDot);
-      }
-    }
-    const textNode = document.createTextNode(name);
-    li.appendChild(textNode);
-    chatUsersList.appendChild(li);
-  });
-}
-// User presence (online, busy, offline) management
-let userStatusDatabaseRef;
-function setupUser Presence() {
-  if (!currentUser ) return;
-  const uid = currentUser .uid;
-  userStatusDatabaseRef = database.ref(`/status/${uid}`);
-
-  // Firebase Realtime Database connections status
-  const isOfflineForDatabase = {
-    state: 'offline',
-    last_changed: firebase.database.ServerValue.TIMESTAMP,
-  };
-  const isOnlineForDatabase = {
-    state: 'online',
-    last_changed: firebase.database.ServerValue.TIMESTAMP,
-  };
-
-  const connectedRef = database.ref('.info/connected');
-  connectedRef.on('value', snapshot => {
-    if(snapshot.val() === false){
-      userStatusDatabaseRef.set(isOfflineForDatabase);
-      return;
-    }
-    userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(() => {
-      userStatusDatabaseRef.set(isOnlineForDatabase);
-    });
-  });
-}
-
-// Load all users for chat, including their presence status and profile name/email
-function loadAllUsers() {
-  database.ref('users').on('value', snap => {
-    allUsers = snap.val() || {};
-    updateUser ListWithStatus();
-    populateContactsSelect();
-    populateGroupMembersSelect();
-  });
-}
-
-// Update user list with status icon
-function updateUser ListWithStatus() {
-  chatUsersList.innerHTML = '';
-  const rooms = Object.entries(chatRooms);
-  if(rooms.length === 0) {
-    const li = document.createElement('li');
-    li.textContent = 'Tidak ada chat aktif';
-    li.style.userSelect = 'none';
-    chatUsersList.appendChild(li);
-    clearChatArea();
-    return;
-  }
-  rooms.forEach(([roomId, room]) => {
-    const li = document.createElement('li');
-    li.setAttribute('role','option');
-    li.setAttribute('tabindex', '0');
-    li.dataset.roomId = roomId;
-
-    const icon = document.createElement('span');
-    icon.className = 'material-icons';
-    icon.textContent = room.isGroup ? 'group' : 'person';
-    li.appendChild(icon);
-
-    let name = room.name;
-    if(!room.isGroup && room.name === 'Direct Chat'){
-      const membersIds = Object.keys(room.members || {});
-      const otherId = membersIds.find(id => id !== currentUser .uid);
-      if(otherId && allUsers[otherId]){
-        name = allUsers[otherId].fullName || allUsers[otherId].email || otherId.substring(0,8);
-        
-        // Add status dot for user
-        const status = window.userStatuses && window.userStatuses[otherId];
-        const statusDot = document.createElement('span');
-        statusDot.classList.add('status-indicator');
-        if(status && status.state === 'online') statusDot.classList.add('status-online');
-        else if(status && status.state === 'busy') statusDot.classList.add('status-busy');
-        else statusDot.classList.add('status-offline');
-        li.prepend(statusDot);
-      }
-    }
-    const textNode = document.createTextNode(name);
-    li.appendChild(textNode);
-    chatUsersList.appendChild(li);
-  });
-}
-
-</script>
+    
+    </script>
 </body>
 </html>
