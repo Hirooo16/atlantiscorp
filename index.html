@@ -1912,21 +1912,32 @@ function setupUserPresence() {
   });
 }
 
-// Load user profile data from database
-function loadUserProfile() {
-  if (!currentUser) return;
-  database.ref(`users/${currentUser.uid}`).once('value').then(snapshot => {
-    const data = snapshot.val();
-    if (data) {
-      fullNameInput.value = data.fullName || '';
-      nickNameInput.value = data.nickName || '';
-      birthPlaceSelect.value = data.birthPlace || '';
-      birthDateInput.value = data.birthDate || '';
-      ageDisplay.textContent = data.birthDate ? `Umur: ${calculateAge(new Date(data.birthDate))} tahun` : '';
-      addressInput.value = data.address || '';
-    }
-  }).catch(console.error);
-}
+  function loadUserProfile() {
+    if (!currentUser) return;
+  
+    console.log("Mencoba memuat profil untuk:", currentUser.uid);
+  
+    database.ref(`users/${currentUser.uid}`).once('value').then(snapshot => {
+      const data = snapshot.val();
+      console.log("Data pengguna:", data);
+  
+      if (data) {
+        fullNameInput.value = data.fullName || '';
+        nickNameInput.value = data.nickName || '';
+        birthPlaceInput.value = data.birthPlace || '';
+        birthDateInput.value = data.birthDate || '';
+        ageDisplay.textContent = data.birthDate
+          ? `Umur: ${calculateAge(new Date(data.birthDate))}`
+          : '';
+        addressInput.value = data.address || '';
+      } else {
+        console.log('Data pengguna tidak ditemukan.');
+      }
+  
+    }).catch(err => {
+      console.error('Gagal memuat profil pengguna:', err);
+    });
+  }
 
 // Calculate age from birth date
 function calculateAge(birthDate) {
