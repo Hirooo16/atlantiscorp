@@ -1913,26 +1913,25 @@ function setupUserPresence() {
 }
 
 function loadUserProfile() {
-  if (!currentUser) return;
-
-  console.log("Mencoba memuat profil untuk:", currentUser.uid);
-  database.ref(`users/${currentUser.uid}`).once('value').then(snapshot => {
+  const uid = currentUser.uid;
+  const userRef = database.ref('users/' + uid);
+  userRef.once('value').then(snapshot => {
     const data = snapshot.val();
-    console.log("Data pengguna:", data);
     if (data) {
       fullNameInput.value = data.fullName || '';
       nickNameInput.value = data.nickName || '';
       birthPlaceSelect.value = data.birthPlace || '';
       birthDateInput.value = data.birthDate || '';
-      ageDisplay.textContent = data.birthDate ? `Umur: ${calculateAge(new Date(data.birthDate))}` : '';
       addressInput.value = data.address || '';
+      displayAge();
     } else {
-      console.log('Data pengguna tidak ditemukan.');
+      console.log("Profil belum diisi.");
     }
   }).catch(err => {
-    console.error('Gagal memuat profil pengguna:', err);
+    console.error("Gagal memuat profil:", err);
   });
 }
+
 
 // Calculate age from birth date
 function calculateAge(birthDate) {
