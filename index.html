@@ -663,6 +663,65 @@
         margin-top: 8px;
       }
     }
+        /* Profil section styling */
+    #profile-section {
+      display: none;
+      max-width: 720px;
+      background-color: #00455a;
+      border-radius: 16px;
+      padding: 32px;
+      color: #ccefff;
+      box-shadow: 0 0 20px rgba(0,110,160,0.6);
+    }
+    #profile-section.active {
+      display: block;
+    }
+    #profile-section label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      user-select: none;
+    }
+    #profile-section input[type="text"],
+    #profile-section input[type="email"],
+    #profile-section input[type="date"],
+    #profile-section select,
+    #profile-section textarea {
+      width: 100%;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid #0077b6;
+      background-color: #005a7c;
+      color: #d6eafc;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      outline-offset: 2px;
+      outline-color: #55aaff;
+      transition: border-color 0.3s ease;
+    }
+    #profile-section button {
+      background-color: #0096c7;
+      color: #d0f0fd;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      user-select: none;
+      font-size: 1rem;
+      min-height: 44px;
+      min-width: 120px;
+    }
+    #profile-section button:hover:not(:disabled) {
+      background-color: #00b0ff;
+    }
+    #profile-section button:disabled {
+      background-color: #005b81;
+      cursor: not-allowed;
+    }
+
   </style>
 </head>
 <body>
@@ -680,16 +739,47 @@
   <main role="main">
     <nav class="side-menu" aria-label="Navigasi utama">
       <h2>Menu</h2>
+      <button id="btn-profile" class="tab-btn" aria-pressed="false" aria-controls="profile-section" role="tab">Profil</button>
       <button id="btn-dashboard" class="tab-btn active" aria-pressed="true" aria-controls="dashboard-section" role="tab">Dashboard</button>
       <button id="btn-update" class="tab-btn" aria-pressed="false" aria-controls="update-section" role="tab">Update Barang</button>
       <button id="btn-create" class="tab-btn" aria-pressed="false" aria-controls="create-section" role="tab">Tambah Barang Baru</button>
     </nav>
 
     <section class="content-area" tabindex="0">
+
+      <section id="profile-section" role="tabpanel" aria-labelledby="btn-profile" hidden>
+        <h2>Profil Pengguna</h2>
+        <form id="profile-form" class="item-form" aria-label="Formulir profil pengguna">
+          <label for="full-name">Nama Lengkap</label>
+          <input type="text" id="full-name" name="fullName" required placeholder="Masukkan nama lengkap" autocomplete="name" />
+      
+          <label for="nick-name">Nick Name</label>
+          <input type="text" id="nick-name" name="nickName" placeholder="Masukkan nickname" autocomplete="nickname" />
+      
+          <label for="birth-place">Tempat Lahir</label>
+          <select id="birth-place" name="birthPlace" required>
+            <option value="" disabled selected>Pilih negara tempat lahir</option>
+            <!-- Negara-negara akan diisi lewat JS -->
+          </select>
+      
+          <label for="birth-date">Tanggal Lahir</label>
+          <input type="date" id="birth-date" name="birthDate" required max="" />
+      
+          <div id="age-display" aria-live="polite"></div>
+      
+          <label for="address">Alamat</label>
+          <textarea id="address" name="address" rows="3" placeholder="Masukkan alamat lengkap"></textarea>
+      
+          <label for="password">Ubah Password (kosongkan jika tidak ingin mengubah)</label>
+          <input type="password" id="password" name="password" placeholder="Masukkan password baru" autocomplete="new-password" />
+      
+          <button type="submit">Simpan Profil</button>
+        </form>
+      </section>
       <!-- Dashboard display -->
       <section id="dashboard-section" role="tabpanel" aria-labelledby="btn-dashboard">
         <h2>Dashboard - Stok Barang</h2>
-
+        
         <!-- Filter Controls -->
         <section id="filter-controls" aria-label="Kontrol filter untuk pencarian barang">
           <input type="text" id="filter-input" placeholder="Cari berdasarkan jenis atau model..." aria-label="Filter barang berdasarkan jenis atau model" autocomplete="off" />
@@ -1535,6 +1625,290 @@ deleteChatRoomBtn.addEventListener('click', () => {
     })
     .catch(err => showError('Gagal menghapus chat room: ' + err.message));
 });
+
+  // Populate Negara pilihan (contoh sederhana)
+const countries = [
+  {code: 'ID', name: 'Indonesia'},
+  {code: 'MY', name: 'Malaysia'},
+  {code: 'SG', name: 'Singapore'},
+  {code: 'US', name: 'Amerika Serikat'},
+  {code: 'JP', name: 'Jepang'},
+  {code: 'KR', name: 'Korea Selatan'}
+  // ...tambahkan sesuai kebutuhan
+];
+function populateCountries() {
+  countries.forEach(c => {
+    const option = document.createElement('option');
+    option.value = c.name;
+    option.textContent = c.name;
+    birthPlaceSelect.appendChild(option);
+  });
+}
+populateCountries();
+
+// Hitung umur otomatis dari tanggal lahir
+birthDateInput.addEventListener('change', () => {
+  const birthDate = new Date(birthDateInput.value);
+  if (isNaN(birthDate.getTime())) {
+    ageDisplay.textContent = '';
+    return;
+  }
+  const age = calculateAge(birthDate);
+  ageDisplay.textContent = `Umur: ${age} tahun`;
+});
+
+function calculateAge(birthDate) {
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if(m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+// Load user profile data from Realtime Database
+function loadUser Profile() {
+  if (!currentUser ) return;
+  database.ref(`users/${currentUser .uid}`).once('value').then(snapshot => {
+    const data = snapshot.val();
+    if(data){
+      fullNameInput.value = data.fullName || '';
+      nickNameInput.value = data.nickName || '';
+      birthPlaceSelect.value = data.birthPlace || '';
+      birthDateInput.value = data.birthDate || '';
+      ageDisplay.textContent = data.birthDate ? `Umur: ${calculateAge(new Date(data.birthDate))} tahun` : '';
+      addressInput.value = data.address || '';
+    }
+  }).catch(console.error);
+}
+
+// Save profile data including optional password update
+profileForm.addEventListener('submit', e => {
+  e.preventDefault();
+  if(!currentUser ) return alert('Silakan login ulang.');
+
+  const profileData = {
+    fullName: fullNameInput.value.trim(),
+    nickName: nickNameInput.value.trim(),
+    birthPlace: birthPlaceSelect.value,
+    birthDate: birthDateInput.value,
+    address: addressInput.value.trim()
+  };
+  // Validate fields
+  if(!profileData.fullName || !profileData.birthPlace || !profileData.birthDate) {
+    alert('Nama lengkap, tempat lahir, dan tanggal lahir wajib diisi.');
+    return;
+  }
+
+  // Simpan data profil ke database
+  database.ref(`users/${currentUser .uid}`).update(profileData)
+    .then(() => {
+      alert('Profil berhasil diperbarui.');
+    })
+    .catch(err => alert('Gagal memperbarui profil: ' + err.message));
+
+  // Update password jika diisi
+  const newPassword = passwordInput.value.trim();
+  if(newPassword.length >= 6){
+    currentUser .updatePassword(newPassword).then(()=>{
+      alert('Password berhasil diperbarui.');
+      passwordInput.value = '';
+    }).catch(err=>{
+      alert('Gagal memperbarui password: ' + err.message);
+    });
+  }
+});
+
+// User presence (online, busy, offline) management
+let userStatusDatabaseRef;
+function setupUser Presence() {
+  if (!currentUser ) return;
+  const uid = currentUser .uid;
+  userStatusDatabaseRef = database.ref(`/status/${uid}`);
+
+  // Firebase Realtime Database connections status
+  const isOfflineForDatabase = {
+    state: 'offline',
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
+  };
+  const isOnlineForDatabase = {
+    state: 'online',
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
+  };
+
+  const connectedRef = database.ref('.info/connected');
+  connectedRef.on('value', snapshot => {
+    if(snapshot.val() === false){
+      userStatusDatabaseRef.set(isOfflineForDatabase);
+      return;
+    }
+    userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(() => {
+      userStatusDatabaseRef.set(isOnlineForDatabase);
+    });
+  });
+}
+
+// Load all users for chat, including their presence status and profile name/email
+function loadAllUsers() {
+  database.ref('users').on('value', snap => {
+    allUsers = snap.val() || {};
+    updateUser ListWithStatus();
+    populateContactsSelect();
+    populateGroupMembersSelect();
+  });
+}
+
+// Populate Contacts and Group Members selects filtered by search
+function populateContactsSelect() {
+  contactsSelect.innerHTML = '';
+  const searchTerm = contactSearchInput.value.trim().toLowerCase();
+  Object.entries(allUsers).forEach(([uid, user]) => {
+    if(uid === currentUser .uid) return;
+    if(searchTerm && !((user.email||'').toLowerCase().includes(searchTerm) || (user.fullName||'').toLowerCase().includes(searchTerm))) return;
+    const option = document.createElement('option');
+    option.value = uid;
+    option.textContent = user.fullName || user.email || uid;
+    contactsSelect.appendChild(option);
+  });
+  if(contactsSelect.options.length === 0){
+    const option = document.createElement('option');
+    option.disabled = true;
+    option.textContent = 'Tidak ada kontak ditemukan';
+    contactsSelect.appendChild(option);
+  }
+}
+
+// Update user list with status icon
+function updateUser ListWithStatus() {
+  chatUsersList.innerHTML = '';
+  const rooms = Object.entries(chatRooms);
+  if(rooms.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'Tidak ada chat aktif';
+    li.style.userSelect = 'none';
+    chatUsersList.appendChild(li);
+    clearChatArea();
+    return;
+  }
+  rooms.forEach(([roomId, room]) => {
+    const li = document.createElement('li');
+    li.setAttribute('role','option');
+    li.setAttribute('tabindex', '0');
+    li.dataset.roomId = roomId;
+
+    const icon = document.createElement('span');
+    icon.className = 'material-icons';
+    icon.textContent = room.isGroup ? 'group' : 'person';
+    li.appendChild(icon);
+
+    let name = room.name;
+    if(!room.isGroup && room.name === 'Direct Chat'){
+      const membersIds = Object.keys(room.members || {});
+      const otherId = membersIds.find(id => id !== currentUser .uid);
+      if(otherId && allUsers[otherId]){
+        name = allUsers[otherId].fullName || allUsers[otherId].email || otherId.substring(0,8);
+        
+        // Add status dot for user
+        const status = window.userStatuses && window.userStatuses[otherId];
+        const statusDot = document.createElement('span');
+        statusDot.classList.add('status-indicator');
+        if(status && status.state === 'online') statusDot.classList.add('status-online');
+        else if(status && status.state === 'busy') statusDot.classList.add('status-busy');
+        else statusDot.classList.add('status-offline');
+        li.prepend(statusDot);
+      }
+    }
+    const textNode = document.createTextNode(name);
+    li.appendChild(textNode);
+    chatUsersList.appendChild(li);
+  });
+}
+// User presence (online, busy, offline) management
+let userStatusDatabaseRef;
+function setupUser Presence() {
+  if (!currentUser ) return;
+  const uid = currentUser .uid;
+  userStatusDatabaseRef = database.ref(`/status/${uid}`);
+
+  // Firebase Realtime Database connections status
+  const isOfflineForDatabase = {
+    state: 'offline',
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
+  };
+  const isOnlineForDatabase = {
+    state: 'online',
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
+  };
+
+  const connectedRef = database.ref('.info/connected');
+  connectedRef.on('value', snapshot => {
+    if(snapshot.val() === false){
+      userStatusDatabaseRef.set(isOfflineForDatabase);
+      return;
+    }
+    userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(() => {
+      userStatusDatabaseRef.set(isOnlineForDatabase);
+    });
+  });
+}
+
+// Load all users for chat, including their presence status and profile name/email
+function loadAllUsers() {
+  database.ref('users').on('value', snap => {
+    allUsers = snap.val() || {};
+    updateUser ListWithStatus();
+    populateContactsSelect();
+    populateGroupMembersSelect();
+  });
+}
+
+// Update user list with status icon
+function updateUser ListWithStatus() {
+  chatUsersList.innerHTML = '';
+  const rooms = Object.entries(chatRooms);
+  if(rooms.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'Tidak ada chat aktif';
+    li.style.userSelect = 'none';
+    chatUsersList.appendChild(li);
+    clearChatArea();
+    return;
+  }
+  rooms.forEach(([roomId, room]) => {
+    const li = document.createElement('li');
+    li.setAttribute('role','option');
+    li.setAttribute('tabindex', '0');
+    li.dataset.roomId = roomId;
+
+    const icon = document.createElement('span');
+    icon.className = 'material-icons';
+    icon.textContent = room.isGroup ? 'group' : 'person';
+    li.appendChild(icon);
+
+    let name = room.name;
+    if(!room.isGroup && room.name === 'Direct Chat'){
+      const membersIds = Object.keys(room.members || {});
+      const otherId = membersIds.find(id => id !== currentUser .uid);
+      if(otherId && allUsers[otherId]){
+        name = allUsers[otherId].fullName || allUsers[otherId].email || otherId.substring(0,8);
+        
+        // Add status dot for user
+        const status = window.userStatuses && window.userStatuses[otherId];
+        const statusDot = document.createElement('span');
+        statusDot.classList.add('status-indicator');
+        if(status && status.state === 'online') statusDot.classList.add('status-online');
+        else if(status && status.state === 'busy') statusDot.classList.add('status-busy');
+        else statusDot.classList.add('status-offline');
+        li.prepend(statusDot);
+      }
+    }
+    const textNode = document.createTextNode(name);
+    li.appendChild(textNode);
+    chatUsersList.appendChild(li);
+  });
+}
+
 </script>
 </body>
 </html>
