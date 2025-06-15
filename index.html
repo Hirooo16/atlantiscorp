@@ -121,6 +121,7 @@
       flex-direction: column;
       z-index: 0;
       transition: filter 0.3s ease;
+      min-width: 0;
     }
     section.content-area.dimmed {
       filter: blur(3px) brightness(0.7);
@@ -164,6 +165,8 @@
       border-collapse: collapse;
       margin-top: 12px;
       font-size: 0.95rem;
+      table-layout: fixed;
+      word-wrap: break-word;
     }
     thead {
       background-color: #005b8c;
@@ -173,6 +176,7 @@
       text-align: left;
       color: #c7e0ff;
       border-bottom: 2px solid #0077b6;
+      white-space: nowrap;
     }
     tbody tr:nth-child(odd) {
       background-color: #00485a;
@@ -185,9 +189,10 @@
       border-bottom: 1px solid #006ba6;
       color: #cce7ff;
       vertical-align: middle;
-      max-width: 220px;
       word-break: break-word;
       white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     tbody tr:hover {
       background-color: #0077b6;
@@ -206,6 +211,7 @@
       transition: background-color 0.3s ease;
       user-select: none;
       margin-right: 6px;
+      min-width: 72px;
     }
     button.action-btn:hover:not(:disabled) {
       background-color: #0096c7;
@@ -292,11 +298,10 @@
       box-shadow: 0 0 8px rgba(0, 127, 255, 0.4);
       user-select: none;
     }
-
-    /* ---CHAT PANEL--- */
+    /* --- CHAT PANEL --- */
     #chat-panel {
       position: fixed;
-      top: 64px; /* bawah header */
+      top: 64px;
       right: 0;
       width: 400px;
       height: calc(100% - 64px);
@@ -311,6 +316,8 @@
       user-select: none;
       font-size: 0.9rem;
       color: #cce7ff;
+      min-width: 320px;
+      max-width: 480px;
     }
     #chat-panel.open {
       transform: translateX(0);
@@ -336,47 +343,53 @@
       cursor: pointer;
       user-select: none;
     }
-    /* Chat panel body consists of list users/grups and messages */
     #chat-body {
       flex: 1 1 auto;
       display: flex;
       height: 100%;
       overflow: hidden;
+      min-width: 0;
     }
-    /* Chat users list/sidebar */
+    /* Users list */
     #chat-users-list {
-      width: 160px;
+      width: 180px;
       background-color: #00557a;
       border-right: 1px solid #0077b6;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      padding: 0;
+      padding: 8px 0;
       margin: 0;
       user-select: none;
     }
     #chat-users-list h3 {
-      margin: 8px;
+      margin: 0 0 8px 16px;
       font-weight: 700;
       font-size: 1rem;
       color: #a9d8ff;
       border-bottom: 1px solid #0077b6;
-      padding-left: 8px;
+      padding-bottom: 8px;
     }
     #chat-users-list ul {
       list-style: none;
       margin: 0; padding: 0;
       flex: 1 1 auto;
       overflow-y: auto;
+      min-width: 0;
     }
     #chat-users-list li {
-      padding: 10px 8px;
+      padding: 10px 12px;
       cursor: pointer;
       border-bottom: 1px solid #0077b6;
       color: #cce7ff;
+      user-select: none;
       display: flex;
       flex-direction: column;
       gap: 2px;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     #chat-users-list li.selected,
     #chat-users-list li:hover {
@@ -394,6 +407,8 @@
       font-size: 0.8rem;
       color: #d0e9ff;
       user-select: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     /* Chat messages area */
     #chat-messages-area {
@@ -405,6 +420,8 @@
       padding: 12px 16px;
       overflow: hidden;
       user-select: text;
+      min-width: 0;
+      max-width: 100%;
     }
     #chat-messages-header {
       font-weight: 700;
@@ -415,6 +432,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    #delete-chat-room-btn {
+      background:#a92727; color:#fff; border:none; border-radius:10px; padding:4px 10px; font-size:0.8rem; cursor:pointer; display:none;
+      user-select:none;
+      flex-shrink: 0;
     }
     #chat-messages-list {
       flex: 1 1 auto;
@@ -423,6 +447,7 @@
       flex-direction: column;
       gap: 12px;
       padding-right: 8px;
+      min-width: 0;
     }
     #chat-messages-list::-webkit-scrollbar {
       width: 8px;
@@ -439,10 +464,11 @@
       background-color: #0173b1;
       box-shadow: 0 2px 6px rgba(0, 90, 140, 0.7);
       color: #d4e9f7;
-      font-size: 0.9rem;
+      font-size: clamp(0.8rem, 0.9vw, 1.1rem);
       display: flex;
       flex-direction: column;
       gap: 4px;
+      word-break: break-word;
     }
     .chat-message.self {
       align-self: flex-end;
@@ -453,14 +479,14 @@
     .chat-message .sender {
       font-weight: 700;
       color: #b9defb;
-      font-size: 0.75rem;
+      font-size: clamp(0.6rem, 0.8vw, 0.9rem);
       user-select: none;
     }
     .chat-message .text {
       white-space: pre-wrap;
     }
     .chat-message .meta {
-      font-size: 0.7rem;
+      font-size: clamp(0.6rem, 0.7vw, 0.8rem);
       color: #a0c9f7;
       text-align: right;
       font-style: italic;
@@ -522,12 +548,14 @@
     }
     #create-group-container label,
     #create-group-container input,
-    #create-group-container button {
+    #create-group-container button,
+    #create-group-container select {
       display: block;
       width: 100%;
       margin-top: 6px;
     }
-    #create-group-container input {
+    #create-group-container input,
+    #create-group-container select {
       border-radius: 10px;
       border: 1px solid #0077b6;
       background-color: #005a7c;
@@ -537,6 +565,10 @@
       outline-offset: 2px;
       outline-color: #55aaff;
       font-family: 'Inter', sans-serif;
+    }
+    #create-group-container select {
+      height: 120px;
+      resize: vertical;
     }
     #create-group-container button {
       margin-top: 12px;
@@ -551,49 +583,6 @@
       user-select: none;
     }
     #create-group-container button:hover {
-      background-color: #00b0ff;
-    }
-    /* Add contact container */
-    #add-contact-container {
-      padding: 12px 16px;
-      background-color: #004d7a;
-      border-top: 1px solid #0077b6;
-      user-select: none;
-    }
-    #add-contact-container label,
-    #add-contact-container select,
-    #add-contact-container button {
-      display: block;
-      width: 100%;
-      margin-top: 6px;
-    }
-    #add-contact-container select {
-      border-radius: 10px;
-      border: 1px solid #0077b6;
-      background-color: #005a7c;
-      color: #ccefff;
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      outline-offset: 2px;
-      outline-color: #55aaff;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    #add-contact-container button {
-      margin-top: 12px;
-      padding: 10px 16px;
-      border-radius: 14px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      background-color: #0096c7;
-      color: #d0f0fd;
-      transition: background-color 0.25s ease;
-      user-select: none;
-    }
-    #add-contact-container button:hover {
       background-color: #00b0ff;
     }
     /* Responsive */
@@ -712,21 +701,19 @@
             <caption id="desc-aqua-tech">Daftar barang perangkat IT seperti laptop, tablet, hp, monitor</caption>
             <thead>
               <tr>
-                <th scope="col">Kode Barang</th>
-                <th scope="col">Jenis Barang</th>
-                <th scope="col">Model/Merk</th>
-                <th scope="col">Serial Number</th>
+                <th scope="col" style="width:110px;">Kode Barang</th>
+                <th scope="col" style="width:120px;">Jenis Barang</th>
+                <th scope="col" style="width:120px;">Model/Merk</th>
+                <th scope="col" style="width:100px;">Serial Number</th>
                 <th scope="col">Spesifikasi</th>
-                <th scope="col">Harga Beli</th>
-                <th scope="col">Status</th>
-                <th scope="col">PIC</th>
-                <th scope="col">Gambar</th>
+                <th scope="col" style="width:98px;">Harga Beli</th>
+                <th scope="col" style="width:90px;">Status</th>
+                <th scope="col" style="width:100px;">PIC</th>
+                <th scope="col" style="width:100px;">Gambar</th>
                 <th scope="col" style="width:90px;">Aksi</th>
               </tr>
             </thead>
-            <tbody id="aqua-tech-table-body">
-              <tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
-            </tbody>
+            <tbody id="aqua-tech-table-body"><tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr></tbody>
           </table>
         </section>
 
@@ -736,28 +723,25 @@
             <caption id="desc-aqua-threads">Daftar kaos yang dijual</caption>
             <thead>
               <tr>
-                <th scope="col">Kode Barang</th>
-                <th scope="col">Jenis Barang</th>
-                <th scope="col">Model/Merk</th>
-                <th scope="col">Serial Number</th>
+                <th scope="col" style="width:110px;">Kode Barang</th>
+                <th scope="col" style="width:120px;">Jenis Barang</th>
+                <th scope="col" style="width:120px;">Model/Merk</th>
+                <th scope="col" style="width:100px;">Serial Number</th>
                 <th scope="col">Spesifikasi</th>
-                <th scope="col">Harga Beli</th>
-                <th scope="col">Status</th>
-                <th scope="col">PIC</th>
-                <th scope="col">Gambar</th>
+                <th scope="col" style="width:98px;">Harga Beli</th>
+                <th scope="col" style="width:90px;">Status</th>
+                <th scope="col" style="width:100px;">PIC</th>
+                <th scope="col" style="width:100px;">Gambar</th>
                 <th scope="col" style="width:90px;">Aksi</th>
               </tr>
             </thead>
-            <tbody id="aqua-threads-table-body">
-              <tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr>
-            </tbody>
+            <tbody id="aqua-threads-table-body"><tr><td colspan="10" style="color:#8dbfef; text-align:center;">Memuat data...</td></tr></tbody>
           </table>
         </section>
 
         <button id="download-data-btn" style="margin-top:32px; padding:12px 28px; font-weight: 700; border-radius:14px; cursor:pointer; border:none; background:#0096c7; color:#ccefff; user-select:none;">Download Semua Data (Excel)</button>
       </section>
 
-      <!-- Update dashboard -->
       <section id="update-section" role="tabpanel" aria-labelledby="btn-update" hidden>
         <h2>Update Status Barang</h2>
         <section aria-label="Pilih barang yang ingin diupdate" style="max-width:720px;">
@@ -775,7 +759,6 @@
         </section>
       </section>
 
-      <!-- Create data new -->
       <section id="create-section" role="tabpanel" aria-labelledby="btn-create" hidden>
         <h2>Tambah Barang Baru</h2>
         <form id="create-form" class="item-form" aria-label="Formulir tambah barang">
@@ -824,35 +807,30 @@
     <div id="chat-body" role="region" aria-live="polite" aria-relevant="additions">
       <nav id="chat-users-list" aria-label="Daftar pengguna dan grup chat">
         <h3>Kontak & Grup</h3>
-        <ul id="chat-user-items" role="list" tabindex="0" aria-activedescendant="" aria-multiselectable="false">
-          <!-- User & Grup chat list items -->
-        </ul>
-        <div id="add-contact-container" aria-label="Tambah Kontak Baru">
-          <label for="select-add-contact">Tambah Kontak:</label>
-          <select id="select-add-contact" size="8" autocomplete="off">
-            <!-- Loaded contact emails here -->
-          </select>
-          <button id="btn-add-contact" type="button">Tambah ke Chat</button>
+        <ul id="chat-user-items" role="list" tabindex="0" aria-activedescendant="" aria-multiselectable="false"></ul>
+        <div id="add-contact-container" aria-label="Tambah Kontak Baru" style="padding:12px;">
+          <label for="contact-search">Cari Kontak:</label>
+          <input type="text" id="contact-search" placeholder="Cari kontak..." autocomplete="off" style="width:100%; margin-bottom:8px; padding:8px; border-radius:8px; font-size:0.9rem; border: 1px solid #0077b6; background:#005a7c; color:#ccefff;" />
+          <select id="select-add-contact" size="6" autocomplete="off" style="width:100%; font-family: 'Inter', sans-serif; font-size: 0.9rem; border-radius: 8px; background:#005a7c; color:#ccefff; border: 1px solid #0077b6; margin-bottom: 8px;"></select>
+          <button id="btn-add-contact" type="button" style="width:100%; background:#0096c7; color:#d0f0fd; font-weight:700; padding:10px; border:none; border-radius:12px; cursor:pointer; user-select:none;">Tambah ke Chat</button>
         </div>
-        <div id="create-group-container" aria-label="Buat grup chat baru">
+        <div id="create-group-container" aria-label="Buat grup chat baru" style="padding:12px; border-top: 1px solid #0077b6;">
           <label for="new-group-name">Buat Grup Baru:</label>
-          <input type="text" id="new-group-name" placeholder="Nama Grup" autocomplete="off" />
-          <label for="select-add-group-members">Tambah anggota ke grup:</label>
-          <select id="select-add-group-members" multiple size="6" style="margin-bottom:8px; font-family: 'Inter', sans-serif; font-size: 0.9rem; border-radius: 8px; background:#005a7c; color:#ccefff; border: 1px solid #0077b6;"></select>
-          <button id="create-group-btn" type="button">Buat Grup</button>
+          <input type="text" id="new-group-name" placeholder="Nama Grup" autocomplete="off" style="border-radius:10px; border: 1px solid #0077b6; background:#005a7c; color:#ccefff; padding:8px 12px; font-size:0.9rem; font-family: 'Inter', sans-serif; margin-bottom: 8px; width: 100%;" />
+          <label for="select-add-group-members">Pilih anggota grup (Ctrl/Cmd klik untuk multi):</label>
+          <select id="select-add-group-members" multiple size="6" style="margin-bottom:8px; font-family: 'Inter', sans-serif; font-size: 0.9rem; border-radius: 10px; background:#005a7c; color:#ccefff; border: 1px solid #0077b6; width: 100%;"></select>
+          <button id="create-group-btn" type="button" style="width:100%; background:#0096c7; color:#d0f0fd; font-weight:700; padding:10px; border:none; border-radius:12px; cursor:pointer; user-select:none;">Buat Grup</button>
         </div>
       </nav>
-      <section id="chat-messages-area" aria-label="Area pesan chat">
-        <header id="chat-messages-header" aria-live="polite" aria-atomic="true">
+      <section id="chat-messages-area" aria-label="Area pesan chat" style="flex:1 1 auto; display:flex; flex-direction:column; background-color:#015083; padding:12px 16px; overflow:hidden;">
+        <header id="chat-messages-header" aria-live="polite" aria-atomic="true" style="font-weight:700; margin-bottom:8px; border-bottom:1px solid #0173b1; padding-bottom:4px; user-select:none; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
           Pilih kontak untuk mulai chat
-          <button id="delete-chat-room-btn" style="background:#a92727; color:#fff; border:none; border-radius:10px; padding:4px 10px; font-size:0.8rem; cursor:pointer; margin-left:12px; display:none;" aria-label="Hapus chat room saat ini">Hapus Chat</button>
+          <button id="delete-chat-room-btn" style="background:#a92727; color:#fff; border:none; border-radius:10px; padding:4px 10px; font-size:0.8rem; cursor:pointer; display:none; user-select:none; flex-shrink:0;" aria-label="Hapus chat room saat ini">Hapus Chat</button>
         </header>
-        <div id="chat-messages-list" role="log" aria-live="polite" tabindex="0">
-          <!-- Chat messages -->
-        </div>
-        <form id="chat-input-container" aria-label="Formulir kirim pesan" hidden>
-          <textarea id="chat-input" aria-label="Input pesan chat" placeholder="Tulis pesan..." rows="3" required></textarea>
-          <button id="chat-send-btn" type="submit" disabled>Kirim</button>
+        <div id="chat-messages-list" role="log" aria-live="polite" tabindex="0" style="flex:1 1 auto; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding-right:8px; min-width:0; max-width:100%;"></div>
+        <form id="chat-input-container" aria-label="Formulir kirim pesan" hidden style="margin-top:8px; display:flex; gap:12px; flex-shrink:0;">
+          <textarea id="chat-input" aria-label="Input pesan chat" placeholder="Tulis pesan..." rows="3" required style="flex:1 1 auto; border-radius:20px; border:none; padding:12px 16px; font-size:1rem; font-family:'Inter', sans-serif; resize:none; min-height:56px; max-height:120px; outline-offset:2px; outline-color:#55aaff; background-color:#00557a; color:#ccefff; white-space:pre-wrap;"></textarea>
+          <button id="chat-send-btn" type="submit" disabled style="background-color:#008ce6; color:#cce7ff; border:none; border-radius:20px; padding:14px 28px; font-weight:700; cursor:pointer; user-select:none; transition:background-color 0.3s ease; min-height:56px; min-width:100px; font-size:1rem;">Kirim</button>
         </form>
       </section>
     </div>
@@ -923,6 +901,7 @@ const contactsSelect = document.getElementById('select-add-contact');
 const addContactBtn = document.getElementById('btn-add-contact');
 const groupMembersSelect = document.getElementById('select-add-group-members');
 const deleteChatRoomBtn = document.getElementById('delete-chat-room-btn');
+const contactSearchInput = document.getElementById('contact-search');
 
 let chatActive = false;
 let currentUser = null;
@@ -1030,6 +1009,7 @@ function createTableRow(code, item) {
     img.src = item.imageUrl;
     img.alt = `Gambar ${item.type} - ${item.model}`;
     img.className = 'image-preview';
+    tr.style.verticalAlign = 'middle';
     tdImg.appendChild(img);
   } else {
     tdImg.textContent = 'No Image';
@@ -1038,14 +1018,15 @@ function createTableRow(code, item) {
   tr.appendChild(tdImg);
   // Action buttons for update and delete
   const tdActions = document.createElement('td');
-  // Delete button stock item
+  tdActions.style.whiteSpace = 'nowrap';
+  // Delete stock item button
   const delBtn = document.createElement('button');
   delBtn.className = 'action-btn';
   delBtn.textContent = 'Hapus';
   delBtn.title = `Hapus item ${code}`;
+  delBtn.type = 'button';
   delBtn.addEventListener('click', () => {
     if(confirm(`Hapus barang dengan kode ${code}?\nTindakan ini tidak dapat dibatalkan.`)) {
-      // Find category of item
       let category = null;
       if(itemsCache['aqua-tech'][code]) category = 'aqua-tech';
       else if(itemsCache['aqua-threads'][code]) category = 'aqua-threads';
@@ -1236,7 +1217,6 @@ filterInput.addEventListener('input', renderFilteredItems);
 // --- CHAT ROOM MANAGEMENT ---
 const chatRoomsRef = database.ref('chatRooms');
 const messagesRef = database.ref('messages');
-const usersRef = database.ref('users');
 
 function loadChatRooms() {
   chatRoomsRef.orderByChild(`members/${currentUser.uid}`).equalTo(true).on('value', snap=>{
@@ -1244,6 +1224,7 @@ function loadChatRooms() {
     renderChatRooms();
   });
 }
+
 function renderChatRooms() {
   chatUsersList.innerHTML = '';
   const rooms = Object.entries(chatRooms);
@@ -1291,6 +1272,7 @@ function renderChatRooms() {
     chatUsersList.appendChild(li);
   });
 }
+
 function clearChatArea(){
   chatMessagesHeader.textContent = 'Pilih kontak untuk mulai chat';
   chatMessagesList.innerHTML = '';
@@ -1300,13 +1282,17 @@ function clearChatArea(){
   selectedRoomId = null;
   deleteChatRoomBtn.style.display = 'none';
 }
+
 function selectChatRoom(roomId) {
   if(selectedRoomId === roomId) return;
   selectedRoomId = roomId;
   renderChatRooms();
   loadChatMessages(roomId);
-  deleteChatRoomBtn.style.display = 'inline-block'; 
+  deleteChatRoomBtn.style.display = 'inline-block';
+  // Scroll messages container into view for accessibility
+  chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
 }
+
 function loadChatMessages(roomId) {
   chatMessagesList.innerHTML = '';
   chatInputForm.hidden = false;
@@ -1327,8 +1313,8 @@ function loadChatMessages(roomId) {
     if(!msg) return;
     addChatMessage(msg, msg.senderId === currentUser.uid);
   });
-  chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
 }
+
 function addChatMessage(msg, isSelf) {
   const div = document.createElement('div');
   div.className = 'chat-message';
@@ -1349,6 +1335,7 @@ function addChatMessage(msg, isSelf) {
   chatMessagesList.appendChild(div);
   chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
 }
+
 chatInputForm.addEventListener('submit', e => {
   e.preventDefault();
   if(!selectedRoomId){
@@ -1382,6 +1369,7 @@ chatInputForm.addEventListener('submit', e => {
 chatInput.addEventListener('input', () => {
   chatSendBtn.disabled = chatInput.value.trim() === '';
 });
+
 navChatToggle.addEventListener('click', ()=>{
   chatPanel.classList.toggle('open');
   document.querySelector('.content-area').classList.toggle('dimmed', chatPanel.classList.contains('open'));
@@ -1391,7 +1379,15 @@ chatPanelCloseBtn.addEventListener('click', ()=>{
   document.querySelector('.content-area').classList.remove('dimmed');
 });
 
-// Load all users to populate "Tambah Kontak"
+// Load all users from Firebase Authentication listUsers()
+// Because Firebase client SDK doesn't allow reading all users except by Admin SDK on server,
+// here we simulate by loading users list from 'users' node in Realtime Database, which you must maintain on register.
+
+// For demonstration, we update the 'users' node with user details on user creation,
+// including {email, name, avatarUrl (optional)}.
+
+const usersRef = database.ref('users');
+
 function loadAllUsers() {
   usersRef.on('value', snap => {
     allUsers = snap.val() || {};
@@ -1399,29 +1395,45 @@ function loadAllUsers() {
     populateGroupMembersSelect();
   });
 }
+
+// Populate contacts select box with all users except current user
 function populateContactsSelect() {
-  // Clear and create options except current user
   contactsSelect.innerHTML = '';
+  const searchTerm = contactSearchInput.value.trim().toLowerCase();
   Object.entries(allUsers).forEach(([uid, user]) => {
     if(uid === currentUser.uid) return;
+    if(searchTerm && !((user.email||'').toLowerCase().includes(searchTerm) || (user.name||'').toLowerCase().includes(searchTerm))) return;
     const option = document.createElement('option');
     option.value = uid;
-    option.textContent = user.email || uid;
+    option.textContent = user.email || user.name || uid;
     contactsSelect.appendChild(option);
   });
+  if(contactsSelect.options.length === 0){
+    const option = document.createElement('option');
+    option.disabled = true;
+    option.textContent = 'Tidak ada kontak ditemukan';
+    contactsSelect.appendChild(option);
+  }
 }
+
+// Search input event for contacts
+contactSearchInput.addEventListener('input', () => {
+  populateContactsSelect();
+});
+
+// Populate group members multiple select
 function populateGroupMembersSelect() {
   groupMembersSelect.innerHTML = '';
   Object.entries(allUsers).forEach(([uid, user]) => {
     if(uid === currentUser.uid) return;
     const option = document.createElement('option');
     option.value = uid;
-    option.textContent = user.email || uid;
+    option.textContent = user.email || user.name || uid;
     groupMembersSelect.appendChild(option);
   });
 }
 
-// Add selected contact as new chat room or open existing
+// Add selected contact as a new or existing direct chat room
 addContactBtn.addEventListener('click', () => {
   const selectedUid = contactsSelect.value;
   if(!selectedUid){
@@ -1432,7 +1444,6 @@ addContactBtn.addEventListener('click', () => {
     alert('Tidak dapat menambahkan diri sendiri.');
     return;
   }
-  // Check existing direct chat room with this user
   const rooms = Object.entries(chatRooms);
   const existingRoom = rooms.find(([id, room])=>{
     if(!room.isGroup){
@@ -1446,7 +1457,6 @@ addContactBtn.addEventListener('click', () => {
     selectChatRoom(existingRoom[0]);
     return;
   }
-  // Create new direct chat room
   const newRoomId = database.ref('chatRooms').push().key;
   const newRoomData = {
     name: 'Direct Chat',
@@ -1466,7 +1476,7 @@ addContactBtn.addEventListener('click', () => {
     .catch(e => alert('Gagal membuat chat room: ' + e.message));
 });
 
-// Create group chat with selected members
+// Create group chat with selected members + current user
 createGroupBtn.addEventListener('click', () => {
   const name = createGroupInput.value.trim();
   if(name.length < 3){
@@ -1487,7 +1497,6 @@ createGroupBtn.addEventListener('click', () => {
     showError('Gagal membuat grup.');
     return;
   }
-  // Members object include current user and selected
   const membersObj = { [currentUser.uid]: true };
   selectedOptions.forEach(opt => {
     if(opt.value !== currentUser.uid) membersObj[opt.value] = true;
@@ -1507,7 +1516,7 @@ createGroupBtn.addEventListener('click', () => {
     .catch(err => showError('Gagal membuat grup: ' + err.message));
 });
 
-// Delete current chat room handler
+// Delete chat room and its messages
 deleteChatRoomBtn.addEventListener('click', () => {
   if(!selectedRoomId) return;
   const room = chatRooms[selectedRoomId];
@@ -1526,8 +1535,6 @@ deleteChatRoomBtn.addEventListener('click', () => {
     })
     .catch(err => showError('Gagal menghapus chat room: ' + err.message));
 });
-
 </script>
 </body>
 </html>
-
