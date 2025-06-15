@@ -969,7 +969,7 @@
 
     <section class="content-area" tabindex="0">
 
-      <section id="profile-section" role="tabpanel" aria-labelledby="btn-profile" style="display: block;">
+      <section id="profile-section" role="tabpanel" aria-labelledby="btn-profile" style="display: none;">
             <h2>Profil Pengguna</h2>
             <form id="profile-form" class="item-form" aria-label="Formulir profil pengguna">
               <label for="full-name">Nama Lengkap</label>
@@ -1923,31 +1923,38 @@ function loadUserProfile() {
 
   userRef.once('value')
     .then(snapshot => {
-      const data = snapshot.val() || {};  // <-- perubahan di sini
+      const data = snapshot.val();
 
-      // Selalu tampilkan tab profil
+      // Tampilkan tab profil
       activateTab(btnProfile);
 
-      // Isi form, walaupun data masih kosong
-      fullNameInput.value = data.fullName || '';
-      nickNameInput.value = data.nickName || '';
-      birthPlaceSelect.value = data.birthPlace || '';
-      birthDateInput.value = data.birthDate || '';
-      addressInput.value = data.address || '';
-      displayAge();
+      // Tampilkan section profil
+      document.getElementById('profileSection').style.display = 'block';
 
-      // Cek kelengkapan data penting
-      if (!data.fullName || !data.birthPlace || !data.birthDate) {
-        alert("Profil Anda belum lengkap. Mohon isi data diri Anda pada form ini.");
+      if (data) {
+        fullNameInput.value = data.fullName || '';
+        nickNameInput.value = data.nickName || '';
+        birthPlaceSelect.value = data.birthPlace || '';
+        birthDateInput.value = data.birthDate || '';
+        addressInput.value = data.address || '';
+        displayAge();
+
+        if (!data.fullName || !data.birthPlace || !data.birthDate) {
+          showProfileAlert("Profil Anda belum lengkap. Mohon isi data diri Anda.");
+        } else {
+          hideProfileAlert();
+        }
+      } else {
+        showProfileAlert("Profil Anda belum diisi. Mohon lengkapi data diri Anda.");
       }
-
     })
     .catch(err => {
       console.error("Gagal memuat profil:", err);
       activateTab(btnProfile);
-      alert("Terjadi kesalahan saat memuat profil. Mohon isi data diri Anda.");
+      showProfileAlert("Terjadi kesalahan saat memuat profil. Mohon isi data diri Anda.");
     });
 }
+
 
 
 // Hitung umur dari tanggal lahir
